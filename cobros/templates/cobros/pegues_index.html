@@ -1,0 +1,43 @@
+{% extends "cobros/base.html" %}
+{% block title %}Listado de Pegues{% endblock %}
+
+{% block content %}
+
+    <h1>Listado de Pegues</h1>
+    <hr><br>
+   
+    <table class="table table-hover">   
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Codigo</th>
+                <th scope="col">Abonado</th>
+                <th scope="col">Barrio</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Servicios</th>
+                <th scope="col">Fecha de Instalación</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pegue in pegues %}
+            <tr>
+                <td>{{ pegue.id }}</td>
+                <td>{{ pegue.codigo_pegue }}</td>
+                <td>{{ pegue.abonado.nombre }}</td>
+                <td>{{ pegue.barrio.nombre }}</td>
+                <td>{{ pegue.estado }}</td>
+                <td>{% for servicio in pegue.servicios.all %}
+                    <a>{{servicio.nombre}} | </a> 
+                    {% endfor %}
+                    <br>
+                    <small>({{ pegue.servicios.count }} servicios)</small>
+                </td> 
+                <td>{{ pegue.fecha_instalacion }}</td>
+            </tr>
+            {% endfor %}    
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href= {% url "abonados" %}>Ir a Abonados</a>
+
+{% endblock %}

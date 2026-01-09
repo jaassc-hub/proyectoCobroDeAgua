@@ -1,0 +1,154 @@
+@media (min-width: 992px) {
+    .table-responsive {
+        overflow-x: visible !important;
+        overflow: visible !important; 
+    }
+}
+
+.informacionCobro > * {
+    margin-bottom: 5px;
+}
+
+.custom-radio-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.custom-radio-label {
+    display: inline-block;
+    padding: 4px 8px;     
+    border: 1px solid #ccc; 
+    border-radius: 10px; 
+    cursor: pointer;
+    background-color: #f8f9fc;
+    color: #495057;
+    transition: all 0.2s ease;
+    user-select: none;
+    font-size: 0.85rem; 
+}
+
+
+.custom-radio-label:hover {
+    background-color: #e2e6ea;
+    border-color: #adadad;
+}
+
+
+.custom-radio-input:checked + .custom-radio-label {
+    background-color: #4263c4; 
+    color: white; 
+    border-color: #4e73df;
+}
+
+
+.custom-radio-input:focus + .custom-radio-label {
+    box-shadow: 0 0 0 0.25rem rgba(105, 136, 228, 0.25);
+    border-color: #4e73df;
+}
+
+.custom-checkbox-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.custom-checkbox-label {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid #ccc; 
+    border-radius: 8px; 
+    cursor: pointer;
+    background-color: #f8f9fc;
+    color: #495057;
+    transition: all 0.2s ease;
+    user-select: none;
+    white-space: nowrap; 
+}
+
+.custom-checkbox-label:hover {
+    background-color: #e2e6ea;
+    border-color: #adadad;
+}
+
+.custom-checkbox-input:checked + .custom-checkbox-label {
+    background-color: #1cc88a; 
+    color: white;
+    border-color: #1cc88a;
+}
+
+
+.custom-checkbox-input:focus + .custom-checkbox-label {
+    box-shadow: 0 0 0 0.25rem rgba(28, 200, 138, 0.25); 
+    border-color: #1cc88a;
+}
+
+/* ----------------------------------------------------
+   ESTILOS DE DESHABILITADO PARA RADIO BUTTONS
+   ---------------------------------------------------- */
+
+/* 1. Estilo General de Deshabilitado (opcional: hacerlo más gris) */
+/* Aplicamos al label cuando el input asociado está deshabilitado */
+.custom-radio-input[disabled] + .custom-radio-label {
+    opacity: 0.6; /* Hace el color un poco más claro */
+    cursor: not-allowed; /* Muestra el cursor de "prohibido" */
+    pointer-events: none; /* Asegura que no se pueda hacer clic en el label */
+}
+
+/* 2. Neutralizar el HOVER solo para elementos [disabled] */
+.custom-radio-input[disabled] + .custom-radio-label:hover {
+    /* Mantenemos el mismo color de fondo del estado normal */
+    background-color: #f8f9fc; 
+    /* Mantenemos el mismo color de borde del estado normal */
+    border-color: #ccc;
+    /* Aseguramos que el cursor no cambie (aunque 'cursor: not-allowed' es más fuerte) */
+    cursor: not-allowed; 
+}
+
+/* 3. Estilo del estado CHECKED/DISABLED (opcional: para que se vea diferente al checked normal) */
+.custom-radio-input:checked[disabled] + .custom-radio-label {
+    /* Mantenemos el fondo azul (o el color de checked), pero con opacidad reducida */
+    opacity: 0.4; 
+    cursor: not-allowed;
+}
+
+/* ----------------------------------------------------
+   ESTILOS DE DESHABILITADO PARA CHECKBOXES (MESES)
+   ---------------------------------------------------- */
+
+/* 1. Estilo General de Deshabilitado (aplica al input[disabled] y su label) */
+.custom-checkbox-input[disabled] + .custom-checkbox-label {
+    opacity: 0.6; /* Hace el color un poco más claro para indicar inactividad */
+    cursor: not-allowed; /* Muestra el cursor de "prohibido" */
+    /* pointer-events: none; Opcional: Puede ser útil para navegadores antiguos */
+}
+
+/* 2. Neutralizar el HOVER y FOCUS solo para elementos [disabled] */
+.custom-checkbox-input[disabled] + .custom-checkbox-label:hover,
+.custom-checkbox-input[disabled] + .custom-checkbox-label:focus {
+    /* Mantenemos el mismo color de fondo del estado normal */
+    background-color: #f8f9fc;
+    /* Mantenemos el mismo color de borde del estado normal */
+    border-color: #ccc;
+    cursor: not-allowed; 
+}
+
+/* 3. Estilo del estado CHECKED/DISABLED (para cuando un mes ya pagado no puede deseleccionarse) */
+.custom-checkbox-input:checked[disabled] + .custom-checkbox-label {
+    /* Mantenemos el color de checked (verde), pero con opacidad reducida */
+    opacity: 0.4; 
+    cursor: not-allowed;
+    /* Sobrescribimos el hover si se aplica a :checked */
+    background-color: #1cc88a; /* Color de checked original */
+    border-color: #1cc88a; /* Borde de checked original */
+}
+
+/* 4. Neutralizar el hover específicamente si está CHECKED y DISABLED */
+.custom-checkbox-input:checked[disabled] + .custom-checkbox-label:hover {
+    /* Aseguramos que el hover no altere el color deshabilitado/checked */
+    background-color: #1cc88a; 
+    border-color: #1cc88a;
+    opacity: 0.4; 
+}

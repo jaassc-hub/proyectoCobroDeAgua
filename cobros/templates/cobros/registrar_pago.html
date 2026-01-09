@@ -1,0 +1,283 @@
+{% extends "cobros/base.html" %}
+{% block title %}Registrar Pago{% endblock %}
+
+{% block 1row %}
+    <h1>Registrar Pago</h1>
+    <hr><br>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+          {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <h1>{{abonados}}</h1>
+        
+        {% for a in abonados %}
+        <h1>
+            {{a.nombre}}
+
+        </h1>
+        {% endfor %}
+    
+
+
+    {% comment "pegar" %}
+
+
+    <!-- Custom fonts for this template -->
+    <link href="{% static 'cobros/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'cobros/css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="{% static 'cobros/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+
+    
+    <style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 5px;
+        width: 100%;
+    }
+
+    .grid-item {
+        text-align: center;
+        align-items: right;
+        gap: 3px;
+    }
+</style>
+
+<!-- Informacion del Pegue-->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Informacion del Pegue</div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-faucet fa-2x text-gray-300"></i>
+                    </div>
+                </div><br>
+
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="row no-gutters align-items-center">
+                        <div class="input-group">
+                            <input id="input-buscar-pegue" type="text"
+                                class="text-uppercase form-control bg-light border-0 small"
+                                placeholder="Ingrese el codigo del pegue" id="search-pegue" aria-label="Search"
+                                aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" id="buscar-pegue" type="button">
+                                    <i class="fas fa-check fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class=" ">
+                            <strong>Abonado: </strong><span class="font-weight-bold text-primary mb-1" id="abonado-info">--</span><br>
+                            <strong>DNI: </strong><span class="mb-1" id="dni-info">--</span><br>
+                            <strong>Tarifa: </strong><span class="mb-1" id="tarifa-info">--</span><br>
+                            <strong>Servicios: </strong><span class="mb-1" id="servicios-info">--</span><br>
+                            <strong>Barrio: </strong><span class="mb-3" id="barrio-info">--</span><br>
+                            <strong>Línea de Distribución: </strong><span class="mb-1"
+                                id="linea-distribucion-info">--</span>
+                        </div>
+                        <div class="col-auto">
+                            <br>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Informacion del Cobro -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        Informacion del Cobro</div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                </div>
+            </div>
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="row no-gutters align-items-center">
+                        <div class=" ">
+                            <strong>Fecha de Cobro: </strong><span class="mb-1" id="fecha-cobro-info">--</span><br>
+                            <strong>Año a Pagar: </strong>
+                            <div class="grid-container">
+                                {% for anio in anios %}
+                                <div class="grid-item">
+                                    <input type="radio" name="anio-cobro" id="{{anio}}" value="{{anio}}">
+                                    <label for="{{anio}}">{{anio}}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <strong>Meses: </strong>
+                            <div class="grid-container">
+                                {% for mes in meses %}
+                                <div class="grid-item">
+                                    <input type="checkbox" name="meses-cobro" id="{{mes}}" value="{{mes}}">
+                                    <label for="{{mes}}">{{mes}}</label>
+                                </div>
+                                {% endfor %}
+                            </div><br>
+                            <strong>Monto: </strong><span class="font-weight-bold text-success mb-1" id="monto-info">L
+                                960.00</span><br>
+                            <strong>Forma de Pago: </strong>
+                            <div class="grid-container">
+                                <div class="grid-item">
+                                    <input type="radio" name="forma-cobro" id="EFEC" value="EFEC" checked>
+                                    <label for="EFEC">EFEC</label>
+                                </div>
+                                <div class="grid-item">
+                                    <input type="radio" name="forma-cobro" id="TRNF" value="TRNF">
+                                    <label for="TRNF">TRNF</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <br>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Buscador -->
+<div class="col-xl-6 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Buscador</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                         <div class="input-group">
+
+
+                    </div>
+
+
+                   <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+                    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+                        For more information about DataTables, please visit the <a target="_blank"
+                            href="https://datatables.net">official DataTables documentation</a>.</p>
+                        
+
+                        <!-- Tabla de resultados -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="70%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Abonado</th>
+                                            <th>DNI</th>
+                                            <th>Telefono</th>
+                                            <th>Barrio</th>
+                                            <th>Start date</th>
+                                            <th>Salary</th>
+                                        </tr>
+                                    </thead>
+
+                                    
+                                    <tbody id="mostrar-abonados">
+                                        {% for a in pegues %}
+                                        <tr>
+                                            <td>{{ a.codigo_pegue }}</td>
+                                            <td>{{ a.abonado.nombre }}</td>
+                                            <td>{{ a.abonado.dni|slice:":4"}}-{{ a.abonado.dni|slice:"4:8"|default:"vacio"  }}-{{ a.abonado.dni|slice:"8:" }}</td>
+                                            <td>{{ a.abonado.telefono|slice:":4" }}-{{a.abonado.telefono|slice:"4:8"}}</td>
+                                            <td>{{ a.barrio.nombre }}</td>
+                                            <td>{{ a.fecha_instalacion }}</td>
+                                            <td>{{ a.linea_distribucion }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                        
+                                    </tbody>
+                                </table>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-user fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+         
+    
+    {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Script para generar los checkboxes de meses en 4 columnas -->
+    <script>
+        const meses = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+        const contenedor = document.getElementById('meses-checkboxes');
+        const columnas = 4;
+        const filas = 3;
+
+        for (let col = 0; col < columnas; col++) {
+            const colDiv = document.createElement('div');
+            colDiv.className = 'col-md-3';
+            for (let row = 0; row < filas; row++) {
+                const idx = col * filas + row;
+                if (meses[idx]) {
+                    const div = document.createElement('div');
+                    div.className = 'form-check';
+                    div.innerHTML = `
+                        <input class="form-check-input" type="checkbox" name="meses" id="mes_${idx+1}" value="${meses[idx]}">
+                        <label class="form-check-label" for="mes_${idx+1}">${meses[idx]}</label>
+                    `;
+                    colDiv.appendChild(div);
+                }
+            }
+            contenedor.appendChild(colDiv);
+        }
+    </script>
+
+{% endblock %}
