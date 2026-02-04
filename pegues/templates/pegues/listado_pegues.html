@@ -1,26 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Pagos{% endblock %}
-{% block header %}Registro de Pagos{% endblock %}
+{% block header %}Listado de Pegues{% endblock %}
+{% block boton_agregar %}
+    <a class="btn btn-primary m-3" href="{% url "create_pegue" %}">Agregar Pegue</a>
+{% endblock %}
 
 {% block 1row %}
 
-        <!-- Listado de Pegues -->
+    <!-- Listado de Pegues -->
     <div class="col-xl-12 col-md-12 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Pegues</div>
-                    </div>
-
-                    <div class="col-auto">
-                        <button class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar Pegue</button>
-                        <i class="fas fa-map-marked-alt fa-2x text-gray-300"></i>
-                    </div>
-                </div>
                 <div class="card  mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Listado de Pegues</h6>
@@ -63,30 +54,8 @@
         </div>
     </div>
 
-    <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Launch static backdrop modal
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
-      </div>
-    </div>
-  </div>
-</div>
-    {% endblock %}
+{% endblock %}
 
 {% block modales %}
 

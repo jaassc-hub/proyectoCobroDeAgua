@@ -1,7 +1,15 @@
 from collections import defaultdict
 from django.http import HttpResponse, JsonResponse
 from django.db import transaction
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfbase.ttfonts import TTFont # Para fuentes personalizadas si es necesario
+from reportlab.pdfbase import pdfmetrics
+from reportlab.lib.units import mm, inch
+
+
 
 from cobros.models import Pago, Pegue
 
@@ -14,7 +22,7 @@ def index(request):
 
 def cobro(request):
     pegues = Pegue.objects.all().select_related('abonado')
-    anios = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+    anios = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
     print(meses)
     return render(request, "cobros/cobro.html", {"anios": anios, "meses": meses, "pegues": pegues})
 
@@ -132,3 +140,37 @@ def registrar_pago(request):
 
 
     return render(request,"cobros/registrar_pago.html")
+
+pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
+
+def imprimir_recibo(request, id):
+    pago = get_object_or_404(Pago, id=id)
+    # Nombre del archivo
+    filename = f"{pago.fecha_pago.strftime('%d_%m_%Y')}-{pago.pegue.codigo_pegue}_{pago.pegue.abonado}.pdf"
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+    # Crea el canvas
+    c = canvas.Canvas(response, pagesize=(76*mm, 290*mm))
+
+    # Configura la fuente (Courier es ideal para matriciales)
+    c.setFont("Courier", 8)
+    data= {
+        'Fecha': pago.fecha_pago.strftime('%d/%m/%Y'),
+        'Monto' : f"L {pago.monto}",
+        'Tarifa': pago.pegue.tarifa_mensual,
+    }
+
+
+    c.drawString(10*mm, 280*mm, "JUNTA DE AGUA Y SANEAMIENTO")
+    c.drawString(10*mm, 275*mm, "      Santa Cruz           ")
+    posicion_y = 260
+    for clave, valor in data.items():
+        c.drawString(10*mm, posicion_y*mm, f"{clave}: {valor}")
+        posicion_y -= 5 # Baja la posición para la siguiente línea
+        
+    # Finaliza el PDF
+    c.showPage()
+    c.save()
+    return response

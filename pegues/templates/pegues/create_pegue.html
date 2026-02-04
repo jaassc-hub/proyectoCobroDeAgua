@@ -1,14 +1,5 @@
 {% extends "base.html" %}
-{% load static  %}
-{% block title %}Agregar Abonado{% endblock title %}
-{% block header %}Agregar Abonado{% endblock header %}
 {% load crispy_forms_tags %}
-
-{% block links %}
-
-
-{% endblock %}
-
 {% block 1row %}
 
 <form method="POST">
@@ -21,7 +12,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Agregar Abonado</div>
+                            Agregar Pegue</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-faucet fa-2x text-gray-300"></i>
@@ -36,17 +27,4 @@
     </div>
 </form>
 
-{% if 'ok' in request.GET %}
-    <div class="alert alert-success" role="alert">
-        <strong> Abonado creado correctamente</strong>
-    </div>
-{% endif %}
-
-{% if 'error' in request.GET %}
-    <div class="alert alert-danger" role="alert">
-        <strong>Hubo un error en la creacion del abonado</strong>
-    </div>
-{% endif %}
-
 {% endblock 1row %}
-

@@ -9,9 +9,9 @@
 <style>
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(12, 1fr);
         gap: 1px;
-        width: 100%;
+        width: 80%;
     }
 
     .grid-item {
@@ -24,145 +24,143 @@
 {% endblock %}
 
 
-{% block 1row %}
 
-    <!-- Informacion del Pegue-->
-    <div class="col-xl col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Informacion del Pegue</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-faucet fa-2x text-gray-300"></i>
-                    </div>
-                </div><br>
-    
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="row no-gutters align-items-center">
-                            <div class="input-group">
-                                <input id="input-buscar-pegue" type="text"
-                                    class="text-uppercase form-control bg-light border-0 small"
-                                    placeholder="Ingrese el codigo del pegue" id="search-pegue" aria-label="Search"
-                                    aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" id="buscar-pegue" type="button">
-                                        <i class="fas fa-check fa-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="informacionCobro mt-2">
-                                <strong>Abonado: </strong><span class="font-weight-bold text-primary mb-1"
-                                    id="abonado-info">--</span><br>
-                                <strong>DNI: </strong><span class="mb-1" id="dni-info">--</span><br>
-                                <strong>Tarifa: </strong><span class="mb-1" id="tarifa-info">--</span><br>
-                                <strong>Servicios: </strong><span class="mb-1" id="servicios-info">--</span><br>
-                                <strong>Barrio: </strong><span class="mb-3" id="barrio-info">--</span><br>
-                                <strong>Línea de Distribución: </strong><span class="mb-1"
-                                    id="linea-distribucion-info">--</span><hr>
-                                <strong>Pagado hasta: </strong><span class="mb-1"
-                                    id="ultimo-pago-info">--</span><br>
-                                <strong>Fecha de ultimo pago: </strong><span class="mb-1"
-                                    id="fecha-ultimo-pago-info">--</span>
-                            </div>
-                            <div class="col-auto">
-                                <br>
-                                <br>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
+{% block content %}
+
+    <!---------------------------------------- Informacion del Abonado ---------------------------------------->
+
+    <div class="row">
+        <div class="col-8">
+            <div class="input-group">
+                <input id="input-buscar-pegue" type="text"
+                    class="text-uppercase form-control bg-light border-0 small"
+                    placeholder="Ingrese el codigo del pegue" id="search-pegue" aria-label="Search"
+                    aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" id="buscar-pegue" type="button">
+                        <i class="fas fa-check fa-sm"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Informacion del Cobro -->
-    <div class="col-xl col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
 
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Informacion del Cobro</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                </div>    
-                
-                <div class="informacionCobro">
+    <hr>
 
-                    <form id="envioDatos" action="{% url "registrar_pago" %}" method="POST">
-                        {% csrf_token %}
-                    
-                    
-                        <strong>Fecha de Cobro: </strong>
-                        <span class="mb-1" id="fecha-cobro-info" name="fecha-cobro-info">--</span><br>        
-                                
-                        <strong>Año a Pagar: </strong>
-                        <div class="grid-container">
-                            {% for anio in anios %}
-                            <div class="grid-item">
-                                <input type="radio" name="anio-cobro" id="{{anio}}" value="{{anio}}" class="custom-radio-input" required>
-                                <label for="{{anio}}" class="custom-radio-label">{{anio}}</label>
-                            </div>
-                            {% endfor %}
-                        </div>
-        
-                        <strong>Meses: </strong>
-                        <div class="grid-container">
-                            {% for numero, abreviatura in meses %}
-                            <div class="grid-item">
-                                <input type="checkbox" name="meses-cobro" id="{{numero}}" value="{{numero}}" class="custom-checkbox-input">
-                                <label for="{{numero}}" class="custom-checkbox-label">{{abreviatura}}</label>
-                            </div>
-                            {% endfor %}
-                        </div>
+    <div class="row">
 
-                        <div class="row">                       
-                           
-                            <div class="col">
-                                <strong>Forma de Pago: </strong><br>
-                                <input type="radio" name="forma-cobro" id="EFEC" value="EFEC" checked required>
-                                <label class="mr-4" for="EFEC">EFEC</label>
-        
-                                <input type="radio" name="forma-cobro" id="TRNF" value="TRNF" required>
-                                <label for="TRNF">TRNF</label>
-                            </div>
-
-                        </div>
-                        
-                        
-                        <hr>
-                        <div class="row">
-                            <div class="col text-left mr-2">
-                               <strong>Total a pagar: </strong>
-                               <span class="font-weight-bold text-xl text-success mb-1" id="display-total-pagar">L 0.00</span>
-                           </div>
-                            <div class="col text-right">
-                                <button class="btn btn-success" type="submit"><spam class="fa fa-check"></spam> Enviar </button>
-                            </div>
-                        </div>
-
-                        <input type="hidden" id="total-pagar-send" name="total-pagar" value="">
-                        <input type="hidden" id="pegue-id-send" name="pegue-id" value="">
-
-                    </form>
-                </div>
-
-            </div>
+        <div class="col">
+            <strong>Abonado: </strong><br>
+            <strong>DNI: </strong><br>
+            <strong>Tarifa: </strong><br>
+            <strong>Servicios: </strong><br>
+            <strong>Barrio: </strong><br>
+            <strong>Línea de Distribución: </strong><br>
         </div>
+    
+        <div class="col">
+            <span class="font-weight-bold text-primary mb-1" id="abonado-info">--</span><br>
+            <span class="mb-1" id="dni-info">--</span><br>
+            <span class="mb-1" id="tarifa-info">--</span><br>
+            <span class="mb-1" id="servicios-info">--</span><br>
+            <span class="mb-3" id="barrio-info">--</span><br>
+            <span class="mb-1"  id="linea-distribucion-info">--</span>
+        </div>
+    
+        <div class="col">
+            <strong>Pagado hasta: </strong><br>
+            <strong>Fecha de ultimo pago: </strong><br>
+        </div>
+            
+        <div class="col">
+            <span class="mb-1" id="ultimo-pago-info">--</span><br>
+            <span class="mb-1" id="fecha-ultimo-pago-info">--</span>
+        </div>
+
     </div>
 
+    <!---------------------------------------- Informacion del Cobro ---------------------------------------->
 
-{% endblock%}
+    <div class="row">
 
-{% block 2row %}
+        <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                Informacion del Cobro
+            </div>
+        </div>
+    
+        <div class="col-auto">
+            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+        </div>
+
+    </div>
+
+    <div class="col">
+
+        <form id="envioDatos" action="{% url "registrar_pago" %}" method="POST">
+            {% csrf_token %}
+        
+            <strong>Fecha de Cobro: </strong>
+            <span class="mb-1" id="fecha-cobro-info" name="fecha-cobro-info">--</span><br>        
+                    
+            <strong>Año a Pagar: </strong>
+            <div class="grid-container">
+                {% for anio in anios %}
+                <div class="grid-item">
+                    <input type="radio" name="anio-cobro" id="{{anio}}" value="{{anio}}" class="custom-radio-input" required>
+                    <label for="{{anio}}" class="custom-radio-label">{{anio}}</label>
+                </div>
+                {% endfor %}
+            </div>
+
+            <strong>Meses: </strong>
+            <div class="grid-container">
+                {% for numero, abreviatura in meses %}
+                <div class="grid-item">
+                    <input type="checkbox" name="meses-cobro" id="{{numero}}" value="{{numero}}" class="custom-checkbox-input">
+                    <label for="{{numero}}" class="custom-checkbox-label">{{abreviatura}}</label>
+                </div>
+                {% endfor %}
+            </div>
+
+            <strong>Forma de Pago: </strong>
+            <input type="radio" name="forma-cobro" id="EFEC" value="EFEC" checked required>
+            <label class="mr-4" for="EFEC">EFEC</label>
+
+            <input type="radio" name="forma-cobro" id="TRNF" value="TRNF" required>
+            <label class="mr-4" for="TRNF">TRNF</label>
+
+            <input type="radio" name="forma-cobro" id="DEPO" value="DEPO" required>
+            <label for="DEPO">DEPO</label>
+            
+            <hr>
+            
+            <div class="row">
+                <div class="col text-left mr-2">
+                    <strong>Total a pagar: </strong>
+                    <span class="font-weight-bold text-xl text-success mb-1" id="display-total-pagar">L 0.00</span>
+                </div>
+                <div class="col text-right">
+                    <button class="btn btn-success" type="submit"><spam class="fa fa-check"></spam> Enviar </button>
+                </div>
+            </div>
+
+            <input type="hidden" id="total-pagar-send" name="total-pagar" value="">
+            <input type="hidden" id="pegue-id-send" name="pegue-id" value="">
+
+        </form>
+
+    </div>
+    
+    <div class="row">                       
+        
+        <div class="col">
+
+        </div>
+
+    </div>
+    
+    
 
     <!-- Listado de Pegues -->
     <div class="col-xl col-md-12 mb-4">
@@ -220,7 +218,7 @@
         </div>
     </div>
     
-{% endblock 2row %}
+{% endblock %}
 
 {% block scripts %}
 <script src={% static 'app.js' %}></script>

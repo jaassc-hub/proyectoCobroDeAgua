@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
-from pegues.models import Pegue
+from pegues.forms import PegueForm
+from pegues.models import Pegue, Abonado
 
 # Create your views here.
 #Pegues
@@ -35,6 +36,11 @@ def listado_pegues(request):
     pegues = Pegue.objects.all().order_by('codigo_pegue')
     return render(request, "pegues/listado_pegues.html", {"pegues": pegues})
 
+def create_pegue(request):
+    abonados = Abonado.objects.all()
+    form = PegueForm()
+    return render(request, "pegues/create_pegue.html", {"abonados": abonados, 'form': form})
+    
 def pegues_mora(request):
     return render(request, "pegues/pegues_mora.html")
 

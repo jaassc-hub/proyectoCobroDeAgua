@@ -54,7 +54,7 @@
                                         <td>L {{ p.tarifa_actual }}</td>
                                         <td>{{ p.meses_pagados_str|join:", " }} ({{ p.meses_pagados_str|length }})</td>
                                         <td>L {{ p.monto_total }}</td>
-                                        <td class= "text-center"><a class="badge rounded-pill bg-warning text-white" type="button">Editar</a> | <a class="badge rounded-pill bg-danger text-white" type="button">Eliminar</a></td>
+                                        <td class= "text-center"><a class=" badge rounded-pill bg-warning text-white" href="{% url "imprimir_recibo" id=p.id %}" type="button">Imprimir</a> | <a class="badge rounded-pill bg-danger text-white" type="button">Eliminar</a></td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>

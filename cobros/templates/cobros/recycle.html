@@ -1,0 +1,124 @@
+   <!-- Informacion del Pegue-->
+    <div class="col-xl col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Informacion del Pegue</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-faucet fa-2x text-gray-300"></i>
+                    </div>
+                </div><br>
+    
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="row no-gutters align-items-center">
+                            
+                            <div class="informacionCobro mt-2">
+                                <strong>Abonado: </strong><span class="font-weight-bold text-primary mb-1"
+                                    id="abonado-info">--</span><br>
+                                <strong>DNI: </strong><span class="mb-1" id="dni-info">--</span><br>
+                                <strong>Tarifa: </strong><span class="mb-1" id="tarifa-info">--</span><br>
+                                <strong>Servicios: </strong><span class="mb-1" id="servicios-info">--</span><br>
+                                <strong>Barrio: </strong><span class="mb-3" id="barrio-info">--</span><br>
+                                <strong>Línea de Distribución: </strong><span class="mb-1"
+                                    id="linea-distribucion-info">--</span><hr>
+                                <strong>Pagado hasta: </strong><span class="mb-1"
+                                    id="ultimo-pago-info">--</span><br>
+                                <strong>Fecha de ultimo pago: </strong><span class="mb-1"
+                                    id="fecha-ultimo-pago-info">--</span>
+                            </div>
+                            <div class="col-auto">
+                                <br>
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+       <div class="row">
+        <!-- Informacion del Cobro -->
+        <div class="col-xl col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+    
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Informacion del Cobro</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>    
+                    
+                    <div class="informacionCobro">
+    
+                        <form id="envioDatos" action="{% url "registrar_pago" %}" method="POST">
+                            {% csrf_token %}
+                        
+                        
+                            <strong>Fecha de Cobro: </strong>
+                            <span class="mb-1" id="fecha-cobro-info" name="fecha-cobro-info">--</span><br>        
+                                    
+                            <strong>Año a Pagar: </strong>
+                            <div class="grid-container">
+                                {% for anio in anios %}
+                                <div class="grid-item">
+                                    <input type="radio" name="anio-cobro" id="{{anio}}" value="{{anio}}" class="custom-radio-input" required>
+                                    <label for="{{anio}}" class="custom-radio-label">{{anio}}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+            
+                            <strong>Meses: </strong>
+                            <div class="grid-container">
+                                {% for numero, abreviatura in meses %}
+                                <div class="grid-item">
+                                    <input type="checkbox" name="meses-cobro" id="{{numero}}" value="{{numero}}" class="custom-checkbox-input">
+                                    <label for="{{numero}}" class="custom-checkbox-label">{{abreviatura}}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+    
+                            <div class="row">                       
+                               
+                                <div class="col">
+                                    <strong>Forma de Pago: </strong><br>
+                                    <input type="radio" name="forma-cobro" id="EFEC" value="EFEC" checked required>
+                                    <label class="mr-4" for="EFEC">EFEC</label>
+            
+                                    <input type="radio" name="forma-cobro" id="TRNF" value="TRNF" required>
+                                    <label for="TRNF">TRNF</label>
+                                </div>
+    
+                            </div>
+                            
+                            
+                            <hr>
+                            <div class="row">
+                                <div class="col text-left mr-2">
+                                   <strong>Total a pagar: </strong>
+                                   <span class="font-weight-bold text-xl text-success mb-1" id="display-total-pagar">L 0.00</span>
+                               </div>
+                                <div class="col text-right">
+                                    <button class="btn btn-success" type="submit"><spam class="fa fa-check"></spam> Enviar </button>
+                                </div>
+                            </div>
+    
+                            <input type="hidden" id="total-pagar-send" name="total-pagar" value="">
+                            <input type="hidden" id="pegue-id-send" name="pegue-id" value="">
+    
+                        </form>
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+    </div>
