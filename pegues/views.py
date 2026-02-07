@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from pegues.forms import PegueForm
 from pegues.models import Pegue, Abonado
 
@@ -37,9 +37,17 @@ def listado_pegues(request):
     return render(request, "pegues/listado_pegues.html", {"pegues": pegues})
 
 def create_pegue(request):
-    abonados = Abonado.objects.all()
-    form = PegueForm()
-    return render(request, "pegues/create_pegue.html", {"abonados": abonados, 'form': form})
+
+    if request.method == 'POST':
+
+        form = PegueForm(request.POST)
+        if form.is_valid():
+            nuevo_pegue = form.save() 
+            return redirect('listado-pegues')
+    else:
+        form = PegueForm()
+
+    return render(request, "pegues/create_pegue.html", {'form': form})
     
 def pegues_mora(request):
     return render(request, "pegues/pegues_mora.html")

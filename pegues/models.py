@@ -1,12 +1,18 @@
 from django.db import models
-
+from django.core.validators import RegexValidator
 from abonados.models import Abonado
 from barrios.models import Barrio
 from servicios.models import LineaDistribucion, Servicio
 
 # Create your models here.
 class Pegue(models.Model):
-    codigo_pegue = models.CharField(max_length=6, unique=True)
+    codigo_pegue = models.CharField(max_length=6, unique=True, validators=[
+            RegexValidator(
+                regex=r'^[A-Z0-9]*$', 
+                message='Solo se permiten letras mayúsculas y números.',
+                code='invalid_uppercase'
+            )
+        ])
     abonado = models.ForeignKey(Abonado, on_delete=models.CASCADE, related_name="pegues")
     barrio = models.ForeignKey(Barrio, on_delete=models.PROTECT, related_name="abonados")
     linea_distribucion = models.ForeignKey(LineaDistribucion,on_delete=models.PROTECT, related_name="abonados", blank=True, null=True)
