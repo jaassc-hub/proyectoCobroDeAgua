@@ -19,7 +19,7 @@
                     </div>
                 </div><br>
                 <div class="informacionCobro mt-2">
-                    <form id="envioDatos" action="{% url "create_pegue" %}" method="POST">
+                    <form id="envioDatos" action= "{% url 'pegues:create' %}" method="POST">
                     {% csrf_token %}
                     {{form | crispy}}
                     </form>

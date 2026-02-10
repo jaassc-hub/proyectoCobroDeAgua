@@ -1,46 +1,58 @@
 {% extends "base.html" %}
 {% block title %}Listado de Abonados{% endblock %}
-{% block header %}Abonados{% endblock %}
 {% block boton_agregar %}
-    <a class="btn btn-primary m-3" href="{% url "create_abonado" %}">Agregar Abonado</a>
 {% endblock %}
 
 {% block content %}
 
- <div class="col-xl-12 col-md-12 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
+
+
+
+<div class="col-xl-12 col-md-12 mb-4">
+    <div class="card shadow h-100 py-2">
         <div class="card-body">
+            <a class="btn btn-primary mb-3" href="{% url 'abonados:create' %}">
+                <i class="fas fa-user-plus"></i>
+                <span>Nuevo Abonado</span>
+            </a>
             <div class="card  mb-4">
+
                 <div class="card-header py-3">
 
-            <h6 class="m-0 font-weight-bold text-primary">Listado de Abonados</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable">   
-                    <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">DNI</th>
-                            <th scope="col">Telefono</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for abonado in abonados %}
-                        <tr>
-                            <td>{{ abonado.id }}</td>
-                            <td>{{ abonado.nombre | default:"-"}}</td>
-                            <td>{{ abonado.dni|slice:":4" }}-{{ abonado.dni|slice:"4:8" }}-{{ abonado.dni|slice:"8:" }}</td>
-                            <td>{{ abonado.telefono|slice:":4" | default:""}}-{{ abonado.telefono|slice:"4:8" | default:""}}</td>
-                        </tr>
-                        {% endfor %}    
-                    </tbody>
-                </table>
+                    <h6 class="m-0 font-weight-bold text-primary text-center">Listado de Abonados</h6>
+
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">DNI</th>
+                                    <th scope="col">Telefono</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for abonado in abonados %}
+                                <tr>
+                                    <td>{{ abonado.id }}</td>
+                                    <td>{{ abonado.nombre | default:"-"}}</td>
+                                    <td>{{ abonado.dni|slice:":4" }}-{{ abonado.dni|slice:"4:8" }}-{{
+                                        abonado.dni|slice:"8:" }}</td>
+                                    <td>{{ abonado.telefono|slice:":4" | default:""}}-{{ abonado.telefono|slice:"4:8" |
+                                        default:""}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 </div>
-    
 
 
-{% endblock %}
+            {% endblock %}

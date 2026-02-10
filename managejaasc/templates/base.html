@@ -71,58 +71,13 @@
                                         <i class="fas fa-user-plus"></i>
                                         <span>Nuevo Abonado</span>
                                     </a>
-                                    <a class="dropdown-item" href="lista-clientes.php">
+                                    <a class="dropdown-item" href="{% url 'abonados:view'%}">
                                         <i class="fas fa-list"></i>
                                         <span>Lista de Abonados</span>
                                     </a>
                                     <a class="dropdown-item" href="buscar-cliente.php">
                                         <i class="fas fa-search"></i>
                                         <span>Buscar Abonados</span>
-                                    </a>
-                                </div>
-                            </li>
-
-                            <!-- Lecturas -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarLecturas" data-toggle="dropdown">
-                                    <i class="fas fa-tachometer-alt"></i>
-                                    <span>Lecturas</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-modern">
-                                    <a class="dropdown-item" href="nueva-lectura.php">
-                                        <i class="fas fa-plus-circle"></i>
-                                        <span>Nueva Lectura</span>
-                                    </a>
-                                    <a class="dropdown-item" href="historial-lecturas.php">
-                                        <i class="fas fa-history"></i>
-                                        <span>Historial</span>
-                                    </a>
-                                    <a class="dropdown-item" href="lecturas-pendientes.php">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Pendientes</span>
-                                    </a>
-                                </div>
-                            </li>
-
-                            <!-- Facturación -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarFacturacion"
-                                    data-toggle="dropdown">
-                                    <i class="fas fa-file-invoice-dollar"></i>
-                                    <span>Facturación</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-modern">
-                                    <a class="dropdown-item" href="generar-facturas.php">
-                                        <i class="fas fa-file-invoice"></i>
-                                        <span>Generar Facturas</span>
-                                    </a>
-                                    <a class="dropdown-item" href="facturas-emitidas.php">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Emitidas</span>
-                                    </a>
-                                    <a class="dropdown-item" href="facturas-pendientes.php">
-                                        <i class="fas fa-exclamation-circle"></i>
-                                        <span>Pendientes</span>
                                     </a>
                                 </div>
                             </li>
@@ -148,6 +103,52 @@
                                     </a>
                                 </div>
                             </li>
+
+                             <!-- Facturación -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarFacturacion"
+                                    data-toggle="dropdown">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <span>Facturación</span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-modern">
+                                    <a class="dropdown-item" href="generar-facturas.php">
+                                        <i class="fas fa-file-invoice"></i>
+                                        <span>Generar Facturas</span>
+                                    </a>
+                                    <a class="dropdown-item" href="facturas-emitidas.php">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Emitidas</span>
+                                    </a>
+                                    <a class="dropdown-item" href="facturas-pendientes.php">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        <span>Pendientes</span>
+                                    </a>
+                                </div>
+                            </li>
+
+                            <!-- Pegues -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarLecturas" data-toggle="dropdown">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span>Pegues</span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-modern">
+                                    <a class="dropdown-item" href="{% url 'pegues:create'%}">
+                                        <i class="fas fa-plus-circle"></i>
+                                        <span>Nuevo Pegue</span>
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'pegues:view'%}">
+                                        <i class="fas fa-list"></i>
+                                        <span>Listado de Pegues</span>
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'pegues:view'%}">
+                                        <i class="fas fa-clock"></i>
+                                        <span>Pegues a Futuro</span>
+                                    </a>
+                                </div>
+                            </li>
+
 
                             <!-- Reportes -->
                             <li class="nav-item dropdown">
