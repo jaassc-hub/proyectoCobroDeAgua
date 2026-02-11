@@ -1,52 +1,19 @@
-{% extends "base.html" %}
-{% load static  %}
-{% block title %}Agregar Abonado{% endblock title %}
-{% block header %}Agregar Abonado{% endblock header %}
+{% load static %}
 {% load crispy_forms_tags %}
-
-{% block links %}
-
-
-{% endblock %}
 
 {% block content %}
 
-<form method="POST">
-    {% csrf_token %}
-
-    <!-- Informacion del Pegue-->
-    <div class="col-xl col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Agregar Abonado</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-faucet fa-2x text-gray-300"></i>
-                    </div>
-                </div><br>
-                <div class="informacionCobro mt-2">
-                    {{form | crispy}}
-                </div>
-                <button class="btn btn-success" type="submit">Guardar</button>
-            </div>
+<!-- Agregar abonado-->
+<div class="informacionCobro mt-2">
+    <form method="POST" hx-post="{% url 'abonados:create' %}" hx-swap="outerHTML">
+        {% csrf_token %}
+        {{form | crispy}}
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            <button type="button submit" class="btn btn-success">Guardar</button>
         </div>
-    </div>
-</form>
+    </form>
+</div>
 
-{% if 'ok' in request.GET %}
-    <div class="alert alert-success" role="alert">
-        <strong> Abonado creado correctamente</strong>
-    </div>
-{% endif %}
 
-{% if 'error' in request.GET %}
-    <div class="alert alert-danger" role="alert">
-        <strong>Hubo un error en la creacion del abonado</strong>
-    </div>
-{% endif %}
-
-{% endblock  %}
-
+{% endblock %}

@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.http import HttpResponse
 
 from abonados.models import Abonado
 from abonados.forms import AbonadoForm
@@ -39,9 +40,14 @@ def crear_abonado(request):
         form = AbonadoForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(reverse('create_abonado')+'?ok')
+            response = HttpResponse()
+            response['HX-Redirect'] = reverse('abonados:view')
+            print("Si lo guarda")
+
+            return response
         else:
-            return redirect(reverse('create_abonado')+'?error')      
+            return redirect('abonados:view')
+            print("No lo guarda")
         
     else:
         form = AbonadoForm()

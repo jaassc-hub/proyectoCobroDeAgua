@@ -104,7 +104,7 @@
                                 </div>
                             </li>
 
-                             <!-- Facturación -->
+                            <!-- Facturación -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarFacturacion"
                                     data-toggle="dropdown">
@@ -299,11 +299,36 @@
         </div>
     </div>
 
-    {% block modales %}{% endblock modales %}
+    {% block modales %}
+
+    <div class="modal fade" id="modal_create" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col mr-2">
+                        
+                        <i id="iconModal" class="text-primary"></i>
+
+                        <span class=" font-weight-bold text-primary text-uppercase modal-title" id="modalTitulo">
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-body" id="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock modales %}
 
 
 
-    <!-- Bootstrap core JavaScript-->
+    <!-- HTMX-->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <script src={% static 'modales.js' %}></script>
+
     <!-- Bootstrap core JavaScript (jQuery ya viene incluido) -->
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
