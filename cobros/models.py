@@ -15,6 +15,7 @@ class Pago(models.Model):
     class Meta:
         unique_together = ('pegue', 'anio', 'mes')
         ordering = ['-anio', '-mes']
+    
 
     def __str__(self):
         return f"{self.pegue} - {self.mes}/{self.anio} - {self.monto} L"

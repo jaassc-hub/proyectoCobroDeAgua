@@ -3,10 +3,10 @@
 {% block title %}Pagos{% endblock %}
 {% block header %}Listado de Pegues{% endblock %}
 {% block boton_agregar %}
-    <a class="btn btn-primary m-3" href="{% url "create_pegue" %}">Agregar Pegue</a>
+    <a class="btn btn-primary m-3" href="{% url 'pegues:create' %}">Agregar Pegue</a>
 {% endblock %}
 
-{% block 1row %}
+{% block content %}
 
     <!-- Listado de Pegues -->
     <div class="col-xl-12 col-md-12 mb-4">

@@ -141,7 +141,6 @@ def registrar_pago(request):
 
     return render(request,"cobros/registrar_pago.html")
 
-pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
 
 def imprimir_recibo(request, id):
     pago = get_object_or_404(Pago, id=id)

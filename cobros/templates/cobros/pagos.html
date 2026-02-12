@@ -3,7 +3,7 @@
 {% block title %}Pagos{% endblock %}
 {% block header %}Registro de Pagos{% endblock %}
 
-{% block 1row %}
+{% block content %}
 
         <!-- Listado de Pagos -->
     <div class="col-xl-12 col-md-12 mb-4">
@@ -52,9 +52,11 @@
                                         <td>{{ p.barrio }}</td>
                                         <td>{{ p.fecha_pago }}</td>
                                         <td>L {{ p.tarifa_actual }}</td>
-                                        <td>{{ p.meses_pagados_str|join:", " }} ({{ p.meses_pagados_str|length }})</td>
+                                        <td>{% for id, nombre in p.meses_pagados_str %}
+                                                {{ nombre }}{% if not forloop.last %}, {% endif %}
+                                            {% endfor %}({{ p.meses_pagados_str|length }})</td>
                                         <td>L {{ p.monto_total }}</td>
-                                        <td class= "text-center"><a class=" badge rounded-pill bg-warning text-white" href="{% url "imprimir_recibo" id=p.id %}" type="button">Imprimir</a> | <a class="badge rounded-pill bg-danger text-white" type="button">Eliminar</a></td>
+                                        <td class= "text-center"><a class=" badge rounded-pill bg-warning text-white"  type="button">Imprimir</a> | <a class="badge rounded-pill bg-danger text-white" type="button">Eliminar</a></td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -66,4 +68,4 @@
         </div>
     </div>
 
-{% endblock 1row %}
+{% endblock  %}

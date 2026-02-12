@@ -78,18 +78,22 @@ function capturarDatosAbonado() {
       } else {
         ultimoPagoInfo.textContent = "-- Sin pagos --";
         fechaUltimoPagoInfo.textContent = "-- Sin pagos --";
+        aniosCancelados.forEach((a) => {
+          a.checked = false;
+          a.disabled = false;
+        });
+        mesesCancelados.forEach((m) => {
+          m.checked = false;
+          m.disabled = false;
+        });
       }
 
       switch (data.tarifa_mensual) {
-        case "40.00":
+        case "50.00":
           tarifa.className = "";
           tarifa.classList.add("font-weight-bold");
           break;
-        case "55.00":
-          tarifa.className = "";
-          tarifa.classList.add("font-weight-bold", "text-primary");
-          break;
-        case "95.00":
+        case "100.00":
           tarifa.className = "";
           tarifa.classList.add("font-weight-bold", "text-success");
           break;
@@ -133,6 +137,7 @@ function limpiarCampos() {
 function checarMeses(data) {
   const ultimoAnioPagado = data.ultimo_pago.anio;
   const ultimoMesPagado = data.ultimo_pago.mes;
+
 
   if (ultimoMesPagado != 12) {
     Array.from(mesesCancelados).forEach((mesInput, indice) => {
