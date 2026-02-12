@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "tu_proyecto/wsgi.py",
+      "src": "managejaasc/wsgi.py",
       "use": "@vercel/python"
     }
   ],
@@ -13,10 +13,10 @@
     },
     {
       "src": "/(.*)",
-      "dest": "tu_proyecto/wsgi.py"
+      "dest": "managejaasc/wsgi.py"
     }
   ],
   "env": {
-    "DJANGO_SETTINGS_MODULE": "tu_proyecto.settings"
+    "DJANGO_SETTINGS_MODULE": "managejaasc.settings"
   }
 }
