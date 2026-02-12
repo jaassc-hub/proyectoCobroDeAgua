@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.http import HttpResponse
@@ -12,7 +13,7 @@ MESES_NUMEROS = list(range(1, 13))
 meses = list(zip(MESES_NUMEROS, MESES_ABREVIADOS))
 
 
-# Abonados
+@login_required
 def abonados_index(request):
     abonados = Abonado.objects.all()
     return render(request, "abonados_index.html", {"abonados": abonados})
