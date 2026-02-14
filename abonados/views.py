@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.http import HttpResponse
@@ -12,7 +13,7 @@ MESES_NUMEROS = list(range(1, 13))
 meses = list(zip(MESES_NUMEROS, MESES_ABREVIADOS))
 
 
-# Abonados
+@login_required
 def abonados_index(request):
     abonados = Abonado.objects.all()
     return render(request, "abonados_index.html", {"abonados": abonados})
@@ -35,7 +36,7 @@ def agregar_abonado_buscador(request, codigo_pegue):
         'codigo_pegue': pegue_seleccionado,
     })
 
-def crear_abonado(request):
+def create_abonado(request):
     if(request.method == 'POST'):
         form = AbonadoForm(request.POST)
         if form.is_valid():
@@ -45,12 +46,35 @@ def crear_abonado(request):
             print("Si lo guarda")
 
             return response
-        else:
-            return redirect('abonados:view')
-            print("No lo guarda")
         
     else:
         form = AbonadoForm()
     
-    return render(request, 'crear_abonado.html', {'form': form})
+    return render(request, 'create_abonado.html', {'form': form})
+
+def edit_abonado(request, id):
+    abonado = get_object_or_404(Abonado, id=id)
+
+    if request.method == 'POST':
+        form = AbonadoForm(request.POST, instance=abonado)
+        if form.is_valid():
+            form.save()
+            response = HttpResponse()
+            response['HX-Redirect'] = reverse('abonados:view')
+            return response
+    else:
+        form = AbonadoForm(instance=abonado)
+    
+    return render(request, 'edit_abonado.html', {'form': form, 'abonado': abonado})
+
+def delete_abonado(request, id):
+    abonado = get_object_or_404(Abonado, id=id)
+
+    if request.method == 'POST':
+        abonado.delete()
+        response = HttpResponse()
+        response['HX-Redirect'] = reverse('abonados:view')
+        return response
+
+    return render(request, 'delete_abonado.html', {'abonado': abonado})
 

@@ -12,10 +12,367 @@
     <title>{% block title %}{% endblock%}</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/css/sb-admin-2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="{% static 'css/custom-styles.css' %}" rel="stylesheet" />
+    <style>
+        /* ========================================
+   NAVBAR EJECUTIVO - MINIMALISTA
+======================================== */
+
+        /* Navbar principal */
+        .navbar {
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid #e8e9ed;
+            transition: all 0.3s ease;
+        }
+
+        /* Brand/Logo */
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #ffffff !important;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .brand-text {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Nav Items */
+        .navbar-nav {
+            gap: 0.25rem;
+        }
+
+        .nav-link {
+            color: #ffffff !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.6rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover {
+            background-color: #f8f9fa;
+            color: #667eea !important;
+        }
+
+        .nav-link.active {
+            background-color: #eef2ff;
+            color: #667eea !important;
+        }
+
+        .nav-link i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Dropdown menu moderno */
+        .dropdown-menu-modern {
+            border: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            min-width: 220px;
+        }
+
+        .dropdown-item {
+            padding: 0.65rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #5a6c7d;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2px;
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.95rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: #667eea;
+            transform: translateX(4px);
+        }
+
+        .dropdown-item:hover i {
+            color: #667eea;
+        }
+
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            border-color: #e8e9ed;
+        }
+
+        /* User menu */
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.4rem 0.8rem !important;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2c3e50;
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                margin-top: 1rem;
+                padding: 1rem;
+                background: #f8f9fa;
+                border-radius: 12px;
+            }
+
+            .navbar-nav {
+                gap: 0.5rem;
+            }
+
+            .nav-link {
+                padding: 0.75rem 1rem !important;
+            }
+
+            .dropdown-menu-modern {
+                box-shadow: none;
+                background: #ffffff;
+                margin-top: 0.25rem;
+            }
+        }
+
+        /* Animación suave para dropdowns */
+        .dropdown-menu {
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hover effect en el toggle */
+        .dropdown-toggle::after {
+            transition: transform 0.2s ease;
+        }
+
+        .dropdown-toggle[aria-expanded="true"]::after {
+            transform: rotate(180deg);
+        }
+
+
+        @media (min-width: 992px) {
+            .table-responsive {
+                overflow-x: visible !important;
+                overflow: visible !important;
+            }
+        }
+
+        .informacionCobro>* {
+            margin-bottom: 5px;
+        }
+
+        .custom-radio-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .custom-radio-label {
+            display: inline-block;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: #f8f9fc;
+            color: #495057;
+            transition: all 0.2s ease;
+            user-select: none;
+            font-size: 0.85rem;
+        }
+
+
+        .custom-radio-label:hover {
+            background-color: #e2e6ea;
+            border-color: #adadad;
+        }
+
+
+        .custom-radio-input:checked+.custom-radio-label {
+            background-color: #4263c4;
+            color: white;
+            border-color: #4e73df;
+        }
+
+
+        .custom-radio-input:focus+.custom-radio-label {
+            box-shadow: 0 0 0 0.25rem rgba(105, 136, 228, 0.25);
+            border-color: #4e73df;
+        }
+
+        .custom-checkbox-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .custom-checkbox-label {
+            display: inline-block;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #f8f9fc;
+            color: #495057;
+            transition: all 0.2s ease;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .custom-checkbox-label:hover {
+            background-color: #e2e6ea;
+            border-color: #adadad;
+        }
+
+        .custom-checkbox-input:checked+.custom-checkbox-label {
+            background-color: #1cc88a;
+            color: white;
+            border-color: #1cc88a;
+        }
+
+
+        .custom-checkbox-input:focus+.custom-checkbox-label {
+            box-shadow: 0 0 0 0.25rem rgba(28, 200, 138, 0.25);
+            border-color: #1cc88a;
+        }
+
+        /* ----------------------------------------------------
+   ESTILOS DE DESHABILITADO PARA RADIO BUTTONS
+   ---------------------------------------------------- */
+
+        /* 1. Estilo General de Deshabilitado (opcional: hacerlo más gris) */
+        /* Aplicamos al label cuando el input asociado está deshabilitado */
+        .custom-radio-input[disabled]+.custom-radio-label {
+            opacity: 0.6;
+            /* Hace el color un poco más claro */
+            cursor: not-allowed;
+            /* Muestra el cursor de "prohibido" */
+            pointer-events: none;
+            /* Asegura que no se pueda hacer clic en el label */
+        }
+
+        /* 2. Neutralizar el HOVER solo para elementos [disabled] */
+        .custom-radio-input[disabled]+.custom-radio-label:hover {
+            /* Mantenemos el mismo color de fondo del estado normal */
+            background-color: #f8f9fc;
+            /* Mantenemos el mismo color de borde del estado normal */
+            border-color: #ccc;
+            /* Aseguramos que el cursor no cambie (aunque 'cursor: not-allowed' es más fuerte) */
+            cursor: not-allowed;
+        }
+
+        /* 3. Estilo del estado CHECKED/DISABLED (opcional: para que se vea diferente al checked normal) */
+        .custom-radio-input:checked[disabled]+.custom-radio-label {
+            /* Mantenemos el fondo azul (o el color de checked), pero con opacidad reducida */
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* ----------------------------------------------------
+   ESTILOS DE DESHABILITADO PARA CHECKBOXES (MESES)
+   ---------------------------------------------------- */
+
+        /* 1. Estilo General de Deshabilitado (aplica al input[disabled] y su label) */
+        .custom-checkbox-input[disabled]+.custom-checkbox-label {
+            opacity: 0.6;
+            /* Hace el color un poco más claro para indicar inactividad */
+            cursor: not-allowed;
+            /* Muestra el cursor de "prohibido" */
+            /* pointer-events: none; Opcional: Puede ser útil para navegadores antiguos */
+        }
+
+        /* 2. Neutralizar el HOVER y FOCUS solo para elementos [disabled] */
+        .custom-checkbox-input[disabled]+.custom-checkbox-label:hover,
+        .custom-checkbox-input[disabled]+.custom-checkbox-label:focus {
+            /* Mantenemos el mismo color de fondo del estado normal */
+            background-color: #f8f9fc;
+            /* Mantenemos el mismo color de borde del estado normal */
+            border-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* 3. Estilo del estado CHECKED/DISABLED (para cuando un mes ya pagado no puede deseleccionarse) */
+        .custom-checkbox-input:checked[disabled]+.custom-checkbox-label {
+            /* Mantenemos el color de checked (verde), pero con opacidad reducida */
+            opacity: 0.4;
+            cursor: not-allowed;
+            /* Sobrescribimos el hover si se aplica a :checked */
+            background-color: #1cc88a;
+            /* Color de checked original */
+            border-color: #1cc88a;
+            /* Borde de checked original */
+        }
+
+        /* 4. Neutralizar el hover específicamente si está CHECKED y DISABLED */
+        .custom-checkbox-input:checked[disabled]+.custom-checkbox-label:hover {
+            /* Aseguramos que el hover no altere el color deshabilitado/checked */
+            background-color: #1cc88a;
+            border-color: #1cc88a;
+            opacity: 0.4;
+        }
+    </style>
 
     {% block links %}{% endblock links %}
 
@@ -54,7 +411,7 @@
 
                             <!-- Inicio -->
                             <li class="nav-item">
-                                <a class="nav-link active" href="/cobros/">
+                                <a class="nav-link active" href="/index/">
                                     <i class="fas fa-home"></i>
                                     <span>Inicio</span>
                                 </a>
@@ -216,7 +573,7 @@
                                         <span>Mi Perfil</span>
                                     </a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-danger" href="logout.php">
+                                    <a class="dropdown-item text-danger" href="{% url 'logout'%}">
                                         <i class="fas fa-sign-out-alt"></i>
                                         <span>Cerrar Sesión</span>
                                     </a>
@@ -307,7 +664,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="col mr-2">
-                        
+
                         <i id="iconModal" class="text-primary"></i>
 
                         <span class=" font-weight-bold text-primary text-uppercase modal-title" id="modalTitulo">
@@ -322,17 +679,54 @@
 
     {% endblock modales %}
 
-<script src="https://unpkg.com/htmx.org@1.9.10"></script>
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/js/sb-admin-2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
-<script src="{% static 'js/modales.js' %}"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/js/sb-admin-2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        document.addEventListener('htmx:beforeRequest', function (event) {
+            const titulo = event.detail.elt.getAttribute('data-modal-title');
+            const icon = event.detail.elt.getAttribute('data-modal-icon');
 
-{% block scripts %} {% endblock scripts %}
+            if (titulo) {
+                document.getElementById('modalTitulo').textContent = titulo;
+            }
+
+            if (icon) {
+                iconoModal = document.getElementById('iconModal');
+                iconoModal.className = "text-primary " + icon;
+            }
+        });
+
+        // Cerrar modal
+        document.body.addEventListener('cerrarModal', function () {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modal_create'));
+            if (modal) {
+                modal.hide();
+            }
+        });
+
+        $(document).ready(function() {
+        // Inicializa DataTable con configuración en español
+        $('#dataTable').DataTable({
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+            },
+            "paging": true,       // Paginación
+            "searching": true,    // BARRA DE BÚSQUEDA
+            "ordering": true,     // Ordenar columnas
+            "info": true,         // Información de registros
+            "responsive": true    // Adaptable a móviles
+        });
+    });
+
+    </script>
+
+    {% block scripts %} {% endblock scripts %}
 </body>
 
 </html>

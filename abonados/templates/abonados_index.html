@@ -34,14 +34,23 @@
                     {% for abonado in abonados %}
                     <tr>
                         <td>{{ abonado.id }}</td>
-                        <td>{{ abonado.nombre | default:"-"}}</td>
-                        <td>{{ abonado.dni|slice:":4" }}-{{ abonado.dni|slice:"4:8" }}-{{
-                            abonado.dni|slice:"8:" }}</td>
-                        <td>{{ abonado.telefono|slice:":4" | default:""}}-{{ abonado.telefono|slice:"4:8" |
-                            default:""}}</td>
+                        <td>{{ abonado.nombre}}</td>
+                        <td>{{ abonado.dni|slice:":4" | default:""}}-{{ abonado.dni|slice:"4:8"}}-{{abonado.dni|slice:"8:" | default:"" }}</td>
+                        <td>{{ abonado.telefono|slice:":4" | default:""}}-{{ abonado.telefono|slice:"4:8" | default:""}} </td>
                         <td>
-                            <button class="btn btn-sm btn-warning">Editar</button>
-                            <button class="btn btn-sm btn-danger">Eliminar</button>
+                            <button class="btn btn-sm btn-warning mb-3" hx-get="{% url 'abonados:edit' abonado.id %}"
+                                hx-target="#modal-body" data-modal-icon="fas fa-user-edit"
+                                data-modal-title="Editar Abonado" data-toggle="modal" data-target="#modal_create">
+                                <i class="fas fa-user-edit"></i>
+                                <span>Editar</span>
+                            </button>
+                            <button class="btn btn-sm btn-danger mb-3" hx-get="{% url 'abonados:delete' abonado.id %}"
+                                hx-target="#modal-body" data-modal-icon="fa fa-trash"
+                                data-modal-title="Eliminar Abonado" data-toggle="modal" data-target="#modal_create">
+                                <i class="fas fa-trash"></i>
+                                <span>Eliminar</span>
+                            </button>
+                            
                         </td>
                     </tr>
                     {% endfor %}
