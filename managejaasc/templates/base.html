@@ -13,9 +13,12 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/css/sb-admin-2.min.css" rel="stylesheet" />
     <link href="{% static 'css/custom-styles.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         /* ========================================
    NAVBAR EJECUTIVO - MINIMALISTA
@@ -373,6 +376,366 @@
         }
     </style>
 
+    <style>
+        /* ══════════════════════════════════════════════════════════════
+       VARIABLES CSS - LIGHT & DARK MODE
+    ══════════════════════════════════════════════════════════════ */
+        :root {
+            /* Colores principales */
+            --primary: #4e73df;
+            --success: #1cc88a;
+            --warning: #f6c23e;
+            --danger: #e74a3b;
+            --info: #36b9cc;
+
+            /* Modo claro */
+            --bg-primary: #f0f4f8;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #5a6481;
+            --text-muted: #8e9ab0;
+            --border-color: #e3e8f0;
+            --shadow: 0 4px 24px rgba(78, 115, 223, 0.10);
+            --card-radius: 16px;
+
+            /* Total bar */
+            --total-bar-bg: linear-gradient(135deg, #1a1f36 0%, #2d3561 100%);
+            --total-bar-label: rgba(255, 255, 255, 0.65);
+
+            /* Warning colors */
+            --warning-bg: #fff7e6;
+            --warning-text: #b7720a;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+       DARK MODE
+    ══════════════════════════════════════════════════════════════ */
+        [data-theme="dark"] {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2533;
+            --text-primary: #e2e8f0;
+            --text-secondary: #a0aec0;
+            --text-muted: #718096;
+            --border-color: #2d3748;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.40);
+
+            /* Total bar dark */
+            --total-bar-bg: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+            --total-bar-label: rgba(255, 255, 255, 0.50);
+
+            /* Warning colors dark */
+            --warning-bg: #2d2416;
+            --warning-text: #f6c23e;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+       BASE STYLES
+    ══════════════════════════════════════════════════════════════ */
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+       CARDS
+    ══════════════════════════════════════════════════════════════ */
+        .card-modern {
+            background: var(--bg-card);
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+       PAGE HEADER
+    ══════════════════════════════════════════════════════════════ */
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .page-header-icon {
+            background: linear-gradient(135deg, #4e73df, #6f8ff5);
+            border-radius: 12px;
+            padding: 10px 14px;
+        }
+
+        .page-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            margin: 0;
+        }
+
+        .page-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+       LABELS & FIELDS
+    ══════════════════════════════════════════════════════════════ */
+        .section-label {
+            font-size: 0.70rem;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .field-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.9px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+       INFO GRID
+    ══════════════════════════════════════════════════════════════ */
+        .info-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-field {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 0.65rem 1rem;
+            border-left: 4px solid var(--border-color);
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .info-field.hl-primary {
+            border-left-color: var(--primary);
+        }
+
+        .info-field.hl-success {
+            border-left-color: var(--success);
+        }
+
+        .info-field.hl-warning {
+            border-left-color: var(--warning);
+        }
+
+        .info-field label {
+            font-size: 0.70rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .info-field span {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+       TABLES
+    ══════════════════════════════════════════════════════════════ */
+        .table-card {
+            background: var(--bg-card);
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-header {
+            background: linear-gradient(90deg, var(--primary) 0%, #6f8ff5 100%);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-header h6 {
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .table thead th {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--border-color);
+            padding: 0.85rem 1rem;
+        }
+
+        .table tbody td {
+            font-size: 0.87rem;
+            color: var(--text-primary);
+            vertical-align: middle;
+            padding: 0.78rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-card);
+        }
+
+        .table tbody tr:hover td {
+            background: var(--bg-secondary);
+        }
+
+        .link_abonado {
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            padding: 3px 10px;
+            border-radius: 6px;
+            background: rgba(78, 115, 223, 0.08);
+            transition: background 0.15s;
+        }
+
+        .link_abonado:hover {
+            background: rgba(78, 115, 223, 0.18);
+            text-decoration: none;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+       DIVIDER
+    ══════════════════════════════════════════════════════════════ */
+        .divider {
+            border: none;
+            border-top: 2px solid var(--border-color);
+            margin: 1.1rem 0;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+       DARK MODE TOGGLE BUTTON
+    ══════════════════════════════════════════════════════════════ */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: transform 0.2s, background 0.3s;
+            z-index: 1000;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+       FORM CONTROLS
+    ══════════════════════════════════════════════════════════════ */
+        .form-control {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .form-control:focus {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-color: var(--primary);
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+       MOBILE RESPONSIVE
+    ══════════════════════════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .page-title {
+                font-size: 1.3rem;
+            }
+
+            .card-modern {
+                padding: 1rem;
+            }
+
+            .dark-mode-toggle {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+
+    <!-- SCRIPT DE DARK MODE -->
+    <script>
+        // ══════════════════════════════════════════════════════════════
+        // DARK MODE FUNCTIONALITY
+        // ══════════════════════════════════════════════════════════════
+
+        // Detectar preferencia del sistema
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+        // Obtener tema guardado o usar preferencia del sistema
+        const currentTheme = localStorage.getItem("theme") ||
+            (prefersDarkScheme.matches ? "dark" : "light");
+
+        // Aplicar tema al cargar
+        document.documentElement.setAttribute("data-theme", currentTheme);
+
+        // Función para cambiar tema
+        function toggleDarkMode() {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+
+            // Actualizar icono del botón
+            const icon = document.querySelector(".dark-mode-toggle i");
+            if (icon) {
+                icon.className = newTheme === "dark" ? "fas fa-sun" : "fas fa-moon";
+            }
+        }
+
+        // Agregar botón de dark mode cuando el DOM esté listo
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const toggleBtn = document.createElement("button");
+            toggleBtn.className = "dark-mode-toggle";
+            toggleBtn.innerHTML = `<i class="fas fa-${currentTheme === "dark" ? "sun" : "moon"}"></i>`;
+            toggleBtn.onclick = toggleDarkMode;
+            toggleBtn.title = "Cambiar tema";
+            document.body.appendChild(toggleBtn);
+        });
+    </script>
+
     {% block links %}{% endblock links %}
 
 </head>
@@ -445,7 +808,7 @@
                                     <span>Pagos</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-modern">
-                                    <a class="dropdown-item" href="registrar-pago.php">
+                                    <a class="dropdown-item" href="{% url 'cobros:cobro'%}">
                                         <i class="fas fa-cash-register"></i>
                                         <span>Registrar Pago</span>
                                     </a>
@@ -593,9 +956,7 @@
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-            <!-- Main Content -->
             <div id="content">
-                <!-- Begin Page Content -->
                 <div class="container">
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -655,6 +1016,8 @@
         </div>
     </div>
 
+
+
     {% block modales %}
 
     <div class="modal fade" id="modal_create" data-backdrop="static" data-keyboard="false" tabindex="-1"
@@ -709,20 +1072,42 @@
             }
         });
 
-        $(document).ready(function() {
-        // Inicializa DataTable con configuración en español
-        $('#dataTable').DataTable({
-            "language": {
-                "url": "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
-            },
-            "paging": true,       // Paginación
-            "searching": true,    // BARRA DE BÚSQUEDA
-            "ordering": true,     // Ordenar columnas
-            "info": true,         // Información de registros
-            "responsive": true    // Adaptable a móviles
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+                },
+                "paging": true,       // Paginación
+                "searching": true,    // BARRA DE BÚSQUEDA
+                "ordering": true,     // Ordenar columnas
+                "info": true,         // Información de registros
+                "responsive": true    // Adaptable a móviles
+            });
         });
-    });
 
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    {% if messages %}
+        {% for message in messages %}
+        Swal.fire({
+            icon: '{% if message.tags == "success" %}success{% else %}info{% endif %}',
+            title: '<span style="color: #ffffff; font-family: sans-serif;">¡Registro Exitoso!</span>',
+            text: '{{ message|escapejs }}',
+            background: '#2c3e50', 
+            color: '#ffffff', 
+            confirmButtonColor: '#1cc88a',
+            confirmButtonText: 'Entendido',
+            iconColor: '#1cc88a', 
+            backdrop: `rgba(0,0,0,0.5)`, 
+            customClass: {
+                popup: 'border-radius-15', 
+            }
+        });
+        {% endfor %}
+    {% endif %}
+    });
     </script>
 
     {% block scripts %} {% endblock scripts %}

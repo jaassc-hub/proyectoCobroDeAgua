@@ -3,56 +3,71 @@
 {% block title %}Pagos{% endblock %}
 {% block header %}Listado de Pegues{% endblock %}
 {% block boton_agregar %}
-    <a class="btn btn-primary m-3" href="{% url 'pegues:create' %}">Agregar Pegue</a>
+<a class="btn btn-primary m-3" href="{% url 'pegues:create' %}">Agregar Pegue</a>
 {% endblock %}
 
 {% block content %}
 
-    <!-- Listado de Pegues -->
-    <div class="col-xl-12 col-md-12 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="card  mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Listado de Pegues</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>N</th> 
-                                        <th>Codigo Pegue</th> 
-                                        <th>Propietario</th> 
-                                        <th>Barrio</th>  
-                                        <th>Tipo</th>  
-                                        <th>Estado</th> 
-                                        <th>Linea de distribución</th> 
-                                        <th>Acciones</th> 
+<!-- Listado de Pegues -->
+<div class="col-xl-12 col-md-12 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="card  mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Listado de Pegues</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>N</th>
+                                    <th>Codigo Pegue</th>
+                                    <th>Propietario</th>
+                                    <th>Barrio</th>
+                                    <th>Tipo</th>
+                                    <th>Estado</th>
+                                    <th>Linea de distribución</th>
+                                    <th>Acciones</th>
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for pegue in pegues %}
-                                    <tr>
-                                        <td>{{ pegue.id }}</td>
-                                        <td>{{ pegue.codigo_pegue }}</td>
-                                        <td>{{ pegue.abonado.nombre }}</td>
-                                        <td>{{ pegue.barrio.nombre }}</td>
-                                        <td>{{ pegue.get_tipo_display }}</td>
-                                        <td>{{ pegue.estado }}</td>
-                                        <td>{{ pegue.linea_distribucion.codigo }}</td>
-                                        <td class= "text-center"><a class="badge rounded-pill bg-warning text-white" type="button">Editar</a> | <a class="badge rounded-pill bg-danger text-white" type="button">Eliminar</a></td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pegue in pegues %}
+                                <tr>
+                                    <td>{{ pegue.id }}</td>
+                                    <td>{{ pegue.codigo_pegue }}</td>
+                                    <td>{{ pegue.abonado.nombre }}</td>
+                                    <td>{{ pegue.barrio.nombre }}</td>
+                                    <td>{{ pegue.get_tipo_display }}</td>
+                                    <td>{{ pegue.estado }}</td>
+                                    <td>{{ pegue.linea_distribucion.codigo }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning mb-3"
+                                            hx-get="{% url 'pegues:edit' pegue.id %}" hx-target="#modal-body"
+                                            data-modal-icon="fas fa-user-edit" data-modal-title="Editar Pegue"
+                                            data-toggle="modal" data-target="#modal_create">
+                                            <i class="fas fa-edit"></i>
+                                            <span>Editar</span>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger mb-3"
+                                            hx-get="{% url 'pegues:delete' pegue.id %}" hx-target="#modal-body"
+                                            data-modal-icon="fa fa-trash" data-modal-title="Eliminar Pegue"
+                                            data-toggle="modal" data-target="#modal_create">
+                                            <i class="fas fa-trash"></i>
+                                            <span>Eliminar</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
 {% endblock %}

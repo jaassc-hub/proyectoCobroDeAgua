@@ -2,232 +2,397 @@
 {% load static %}
 {% block title %}Cobro Abonados{% endblock %}
 
-{% block header %}Sistema de Cobro{% endblock %}
-
 {% block links %}
-
 <style>
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        gap: 1px;
-        width: 80%;
+    /* ══════════════════════════════════════════════════════════════
+       VARIABLES ESPECÍFICAS DE ESTA VISTA
+    ══════════════════════════════════════════════════════════════ */
+    .pill-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0.6rem 0 1.2rem;
     }
 
-    .grid-item {
-        text-align: center;
-        align-items: right;
-        gap: 1px;
+    .pill-grid input[type="radio"],
+    .pill-grid input[type="checkbox"] {
+        display: none;
+    }
+
+    .pill-grid label {
+        cursor: pointer;
+        padding: 6px 18px;
+        border-radius: 50px;
+        border: 2px solid var(--border-color);
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        background: var(--bg-secondary);
+        transition: all 0.18s;
+        user-select: none;
+    }
+
+    .pill-grid.years input[type="radio"]:checked + label {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+        box-shadow: 0 2px 10px rgba(78,115,223,0.30);
+    }
+
+    .pill-grid.months input[type="checkbox"]:checked + label {
+        background: var(--success);
+        border-color: var(--success);
+        color: #fff;
+        box-shadow: 0 2px 10px rgba(28,200,138,0.25);
+    }
+
+    .pill-grid input:disabled + label {
+        opacity: 0.38;
+        cursor: not-allowed;
+    }
+
+    /* Forma de pago */
+    .pay-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 0.6rem 0 1.2rem;
+    }
+
+    .pay-group input[type="radio"] {
+        display: none;
+    }
+
+    .pay-group label {
+        cursor: pointer;
+        padding: 8px 20px;
+        border-radius: 10px;
+        border: 2px solid var(--border-color);
+        font-size: 0.87rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+        background: var(--bg-secondary);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        transition: all 0.18s;
+    }
+
+    .pay-group input[type="radio"]:checked + label {
+        background: var(--warning-bg);
+        border-color: var(--warning);
+        color: var(--warning-text);
+        box-shadow: 0 2px 10px rgba(246,194,62,0.20);
+    }
+
+    /* Total bar */
+    .total-bar {
+        background: var(--total-bar-bg);
+        border-radius: 14px;
+        padding: 1.1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .total-bar .total-label {
+        color: var(--total-bar-label);
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+    }
+
+    .total-bar .total-amount {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: var(--success);
+        letter-spacing: -0.5px;
+    }
+
+    .btn-submit {
+        background: var(--success);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 11px 28px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+        box-shadow: 0 2px 14px rgba(28,200,138,0.30);
+    }
+
+    .btn-submit:hover {
+        background: #17a773;
+        transform: translateY(-1px);
+    }
+
+    /* Layout de 2 columnas */
+    .two-column-layout {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 1.5rem;
+        align-items: start;
+    }
+
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .sidebar-content {
+        position: sticky;
+        top: 20px;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .two-column-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .sidebar-content {
+            position: static;
+            max-height: none;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .info-row {
+            grid-template-columns: 1fr;
+        }
+
+        .total-bar {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .btn-submit {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
     }
 </style>
-
 {% endblock %}
-
-
 
 {% block content %}
 
-<!---------------------------------------- Informacion del Abonado ---------------------------------------->
-
-<div class="row">
-    <div class="col-8">
-        <div class="input-group">
-            <input id="input-buscar-pegue" type="text" class="text-uppercase form-control bg-light border-0 small"
-                placeholder="Ingrese el codigo del pegue" id="search-pegue" aria-label="Search"
-                aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary" id="buscar-pegue" type="button">
-                    <i class="fas fa-check fa-sm"></i>
-                </button>
-            </div>
-        </div>
+<!-- ══════════════════════════════════════════════════════════════
+     PAGE HEADER
+══════════════════════════════════════════════════════════════ -->
+<div class="page-header">
+    <div class="page-header-icon">
+        <i class="fas fa-hand-holding-usd fa-lg text-white"></i>
+    </div>
+    <div>
+        <div class="page-title">Sistema de Cobro</div>
+        <div class="page-subtitle">Registro y gestión de pagos de abonados</div>
     </div>
 </div>
 
-<hr>
-
-<div class="row">
-
-    <div class="col">
-        <strong>Abonado: </strong><br>
-        <strong>DNI: </strong><br>
-        <strong>Tarifa: </strong><br>
-        <strong>Servicios: </strong><br>
-        <strong>Barrio: </strong><br>
-        <strong>Línea de Distribución: </strong><br>
-    </div>
-
-    <div class="col">
-        <span class="font-weight-bold text-primary mb-1" id="abonado-info">--</span><br>
-        <span class="mb-1" id="dni-info">--</span><br>
-        <span class="mb-1" id="tarifa-info">--</span><br>
-        <span class="mb-1" id="servicios-info">--</span><br>
-        <span class="mb-3" id="barrio-info">--</span><br>
-        <span class="mb-1" id="linea-distribucion-info">--</span>
-    </div>
-
-    <div class="col">
-        <strong>Pagado hasta: </strong><br>
-        <strong>Fecha de ultimo pago: </strong><br>
-    </div>
-
-    <div class="col">
-        <span class="mb-1" id="ultimo-pago-info">--</span><br>
-        <span class="mb-1" id="fecha-ultimo-pago-info">--</span>
-    </div>
-
-</div>
-
-<!---------------------------------------- Informacion del Cobro ---------------------------------------->
-
-<div class="row">
-
-    <div class="col mr-2">
-        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-            Informacion del Cobro
-        </div>
-    </div>
-
-    <div class="col-auto">
-        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-    </div>
-
-</div>
-
-<div class="col">
-
-    <form id="envioDatos" action="{% url " registrar_pago" %}" method="POST">
-        {% csrf_token %}
-
-        <strong>Fecha de Cobro: </strong>
-        <span class="mb-1" id="fecha-cobro-info" name="fecha-cobro-info">--</span><br>
-
-        <strong>Año a Pagar: </strong>
-        <div class="grid-container">
-            {% for anio in anios %}
-            <div class="grid-item">
-                <input type="radio" name="anio-cobro" id="{{anio}}" value="{{anio}}" class="custom-radio-input"
-                    required>
-                <label for="{{anio}}" class="custom-radio-label">{{anio}}</label>
+<!-- ══════════════════════════════════════════════════════════════
+     TWO COLUMN LAYOUT
+══════════════════════════════════════════════════════════════ -->
+<div class="two-column-layout">
+    
+    <!-- COLUMNA PRINCIPAL (IZQUIERDA) -->
+    <div class="main-content">
+        
+        <!-- BÚSQUEDA -->
+        <div class="card-modern">
+            <div class="field-label mb-2">
+                <i class="fas fa-search mr-1"></i> Buscar Pegue
             </div>
-            {% endfor %}
-        </div>
-
-        <strong>Meses: </strong>
-        <div class="grid-container">
-            {% for numero, abreviatura in meses %}
-            <div class="grid-item">
-                <input type="checkbox" name="meses-cobro" id="{{numero}}" value="{{numero}}"
-                    class="custom-checkbox-input">
-                <label for="{{numero}}" class="custom-checkbox-label">{{abreviatura}}</label>
-            </div>
-            {% endfor %}
-        </div>
-
-        <strong>Forma de Pago: </strong>
-        <input type="radio" name="forma-cobro" id="EFEC" value="EFEC" checked required>
-        <label class="mr-4" for="EFEC">EFEC</label>
-
-        <input type="radio" name="forma-cobro" id="TRNF" value="TRNF" required>
-        <label class="mr-4" for="TRNF">TRNF</label>
-
-        <input type="radio" name="forma-cobro" id="DEPO" value="DEPO" required>
-        <label for="DEPO">DEPO</label>
-
-        <hr>
-
-        <div class="row">
-            <div class="col text-left mr-2">
-                <strong>Total a pagar: </strong>
-                <span class="font-weight-bold text-xl text-success mb-1" id="display-total-pagar">L 0.00</span>
-            </div>
-            <div class="col text-right">
-                <button class="btn btn-success" type="submit">
-                    <spam class="fa fa-check"></spam> Enviar
-                </button>
-            </div>
-        </div>
-
-        <input type="hidden" id="total-pagar-send" name="total-pagar" value="">
-        <input type="hidden" id="pegue-id-send" name="pegue-id" value="">
-
-    </form>
-
-</div>
-
-<div class="row">
-
-    <div class="col">
-
-    </div>
-
-</div>
-
-
-
-<!-- Listado de Pegues -->
-<div class="col-xl col-md-12 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        Informacion del Pegue</div>
-                </div>
-
-                <div class="col-auto">
-                    <i class="fas fa-faucet fa-2x text-gray-300"></i>
-                </div>
-
-            </div>
-
-            <div class="card  mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Listado de Pegues</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Codigo</th>
-                                    <th>Abonado</th>
-                                    <th>DNI</th>
-                                    <th>Telefono</th>
-                                    <th>Barrio</th>
-                                    <th>Start date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for a in pegues %}
-                                <tr>
-                                    <td>
-                                        <a href="#" class="link_abonado" id="{{a.codigo_pegue}}">{{ a.codigo_pegue
-                                            }}</a>
-                                    </td>
-                                    <td>{{ a.abonado.nombre }}</td>
-                                    <td>{{ a.abonado.dni|slice:":4"}}-{{ a.abonado.dni|slice:"4:8"|default:"vacio"
-                                        }}-{{a.abonado.dni|slice:"8:" }}</td>
-                                    <td>{{ a.abonado.telefono|slice:":4" }}-{{a.abonado.telefono|slice:"4:8"}}</td>
-                                    <td>{{ a.barrio.nombre }}</td>
-                                    <td>{{ a.fecha_instalacion }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <input id="input-buscar-pegue" type="text" class="form-control text-uppercase"
+                            placeholder="Ingrese el código del pegue"
+                            style="border-radius: 10px 0 0 10px; border: 2px solid var(--border-color); background: var(--bg-secondary);">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" id="buscar-pegue" type="button"
+                                style="border-radius: 0 10px 10px 0;">
+                                <i class="fas fa-check fa-sm"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div><br>
+            </div>
         </div>
+
+        <!-- INFORMACIÓN DEL ABONADO -->
+        <div class="card-modern">
+            <div class="section-label">
+                <i class="fas fa-user-circle"></i> Información del Abonado
+            </div>
+            <div class="info-row">
+                <div class="info-field hl-primary">
+                    <label>Abonado</label>
+                    <span id="abonado-info">--</span>
+                </div>
+                <div class="info-field">
+                    <label>DNI</label>
+                    <span id="dni-info">--</span>
+                </div>
+                <div class="info-field hl-success">
+                    <label>Tarifa Mensual</label>
+                    <span id="tarifa-info">--</span>
+                </div>
+                <div class="info-field">
+                    <label>Servicios</label>
+                    <span id="servicios-info">--</span>
+                </div>
+                <div class="info-field">
+                    <label>Barrio</label>
+                    <span id="barrio-info">--</span>
+                </div>
+                <div class="info-field">
+                    <label>Línea de Distribución</label>
+                    <span id="linea-distribucion-info">--</span>
+                </div>
+                <div class="info-field hl-warning">
+                    <label>Pagado hasta</label>
+                    <span id="ultimo-pago-info">--</span>
+                </div>
+                <div class="info-field">
+                    <label>Fecha de último pago</label>
+                    <span id="fecha-ultimo-pago-info">--</span>
+                </div>
+            </div>
+        </div>
+              
+        <div class="table-card">
+            <div class="table-header">
+                <i class="fas fa-faucet text-white"></i>
+                <h6>Pegues Disponibles</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-sm" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Abonado</th>
+                                <th>Barrio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in pegues %}
+                            <tr>
+                                <td>
+                                    <a href="#" class="link_abonado" id="{{a.codigo_pegue}}">
+                                        {{ a.codigo_pegue }}
+                                    </a>
+                                </td>
+                                <td style="font-size: 0.8rem;">{{ a.abonado.nombre|truncatechars:20 }}</td>
+                                <td style="font-size: 0.8rem;">{{ a.barrio.nombre|truncatechars:15 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <!-- COLUMNA LATERAL (DERECHA) - TABLA DE PEGUES -->
+    <div class="content">
+        
+        <!-- FORMULARIO DE COBRO -->
+        <div class="card-modern">
+            <div class="section-label">
+                <i class="fas fa-dollar-sign"></i> Información del Cobro
+            </div>
+
+            <form id="envioDatos" action="{% url 'cobros:registrar_pago' %}" method="POST">
+                {% csrf_token %}
+
+                <div class="" style="padding: 0.5rem 1rem;">
+                    <label>Fecha de Cobro</label>
+                    <span id="fecha-cobro-info">--</span>
+                </div>
+
+                <hr class="divider">
+
+                <div class="field-label">Año a Pagar</div>
+                <div class="pill-grid years">
+                    {% for anio in anios %}
+                    <input type="radio" name="anio-cobro" id="anio_{{anio}}" value="{{anio}}" required>
+                    <label for="anio_{{anio}}">{{anio}}</label>
+                    {% endfor %}
+                </div>
+
+                <div class="field-label">Meses</div>
+                <div class="pill-grid months">
+                    {% for numero, abreviatura in meses %}
+                    <input type="checkbox" name="meses-cobro" id="mes_{{numero}}" value="{{numero}}">
+                    <label for="mes_{{numero}}">{{abreviatura}}</label>
+                    {% endfor %}
+                </div>
+
+                <div class="field-label">Forma de Pago</div>
+                <div class="pay-group">
+                    <input type="radio" name="forma-cobro" id="EFEC" value="EFEC" checked required>
+                    <label for="EFEC">
+                        <i class="fas fa-money-bill-wave"></i> Efectivo
+                    </label>
+
+                    <input type="radio" name="forma-cobro" id="TRNF" value="TRNF" required>
+                    <label for="TRNF">
+                        <i class="fas fa-exchange-alt"></i> Transferencia
+                    </label>
+
+                    <input type="radio" name="forma-cobro" id="DEPO" value="DEPO" required>
+                    <label for="DEPO">
+                        <i class="fas fa-university"></i> Depósito
+                    </label>
+                </div>
+
+                <div class="total-bar">
+                    <div>
+                        <div class="total-label">Total a Pagar</div>
+                        <div class="total-amount" id="display-total-pagar">L 0.00</div>
+                    </div>
+                    <button class="btn-submit" type="submit">
+                        <i class="fas fa-check-circle"></i> Registrar Pago
+                    </button>
+                </div>
+
+                <input type="hidden" id="total-pagar-send" name="total-pagar" value="">
+                <input type="hidden" id="pegue-id-send" name="pegue-id" value="">
+            </form>
+        </div>
+
+    </div>
+
+        <div class="sidebar-content">  
+             </div>
+
 </div>
 
 {% endblock %}
 
 {% block scripts %}
 <script>
-    // Informacion del pegue
+    // ══════════════════════════════════════════════════════════════
+    // DOM REFERENCES
+    // ══════════════════════════════════════════════════════════════
     const pegueSelect = document.getElementById("input-buscar-pegue");
     const abonadoInfo = document.getElementById("abonado-info");
     const dniInfo = document.getElementById("dni-info");
@@ -235,9 +400,7 @@
     const serviciosInfo = document.getElementById("servicios-info");
     const barrioInfo = document.getElementById("barrio-info");
     const totalPagar = document.getElementById("display-total-pagar");
-    const lineaDistribucionInfo = document.getElementById(
-        "linea-distribucion-info"
-    );
+    const lineaDistribucionInfo = document.getElementById("linea-distribucion-info");
     const ultimoPagoInfo = document.getElementById("ultimo-pago-info");
     const fechaUltimoPagoInfo = document.getElementById("fecha-ultimo-pago-info");
     const aniosCancelados = document.querySelectorAll(`input[name="anio-cobro"]`);
@@ -248,65 +411,50 @@
 
     pegueSelect.value = "";
 
-    meses = [
-        "ENE",
-        "FEB",
-        "MAR",
-        "ABR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AGO",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DIC",
-    ];
+    const MESES = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
 
-    // Buscador de pegue
-    document
-        .getElementById("buscar-pegue")
-        .addEventListener("click", capturarDatosAbonado);
+    // ══════════════════════════════════════════════════════════════
+    // BUSCAR PEGUE
+    // ══════════════════════════════════════════════════════════════
+    document.getElementById("buscar-pegue").addEventListener("click", capturarDatosAbonado);
+    pegueSelect.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") capturarDatosAbonado();
+    });
 
     function capturarDatosAbonado() {
         const pegue = pegueSelect.value.toUpperCase();
         fetch(`/pegues/obtener_informacion_pegue/${pegue}/`)
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error(pegue + " No encontrado");
+                    throw new Error(pegue + " — No encontrado");
                 }
-
                 return response.json();
             })
             .then((data) => {
                 limpiarCampos();
-                let tieneUltimoPago = data.ultimo_pago != null ? true : false;
-                abonadoInfo.classList.add("font-weight-bold", "text-success");
-                dniInfo.textContent = data.dni;
+                let tieneUltimoPago = data.ultimo_pago != null;
+                
                 abonadoInfo.textContent = data.nombre;
+                abonadoInfo.style.color = "#1cc88a";
+                dniInfo.textContent = data.dni;
                 tarifa.textContent = data.tarifa_mensual;
                 barrioInfo.textContent = data.barrio;
                 lineaDistribucionInfo.textContent = data.linea_distribucion;
                 serviciosInfo.textContent = data.servicios.join(" | ");
-                console.log("Datos recibidos:", data);
-                console.log("Ultimo Pago:", data.ultimo_pago);
 
                 if (tieneUltimoPago) {
-                    ultimoPagoInfo.textContent =
-                        meses[data.ultimo_pago.mes - 1] + "/" + data.ultimo_pago.anio;
-                    fechaUltimoPagoInfo.textContent = new Date(
-                        data.ultimo_pago.fecha_pago
-                    ).toLocaleDateString("es-MX", {
-                        weekday: "long",
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                    });
-
+                    ultimoPagoInfo.textContent = MESES[data.ultimo_pago.mes - 1] + "/" + data.ultimo_pago.anio;
+                    fechaUltimoPagoInfo.textContent = new Date(data.ultimo_pago.fecha_pago)
+                        .toLocaleDateString("es-MX", {
+                            weekday: "long",
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                        });
                     checarMeses(data);
                 } else {
-                    ultimoPagoInfo.textContent = "-- Sin pagos --";
-                    fechaUltimoPagoInfo.textContent = "-- Sin pagos --";
+                    ultimoPagoInfo.textContent = "Sin pagos registrados";
+                    fechaUltimoPagoInfo.textContent = "Sin pagos registrados";
                     aniosCancelados.forEach((a) => {
                         a.checked = false;
                         a.disabled = false;
@@ -317,38 +465,28 @@
                     });
                 }
 
-                switch (data.tarifa_mensual) {
-                    case "50.00":
-                        tarifa.className = "";
-                        tarifa.classList.add("font-weight-bold");
-                        break;
-                    case "100.00":
-                        tarifa.className = "";
-                        tarifa.classList.add("font-weight-bold", "text-success");
-                        break;
-                    default:
-                        break;
-                }
+                const colores = { "50.00": "#4e73df", "100.00": "#1cc88a" };
+                tarifa.style.color = colores[data.tarifa_mensual] || "#2d3748";
             })
             .catch((error) => {
-                limpiarCampos(error);
-                abonadoInfo.classList.add("font-weight-bold", "text-danger");
-                abonadoInfo.textContent = error;
+                limpiarCampos();
+                abonadoInfo.textContent = error.message;
+                abonadoInfo.style.color = "#e74a3b";
                 console.error(error);
             });
     }
 
     function limpiarCampos() {
-        abonadoInfo.className = "";
-        abonadoInfo.className = "";
+        abonadoInfo.textContent = "--";
+        abonadoInfo.style.color = "";
         dniInfo.textContent = "--";
         tarifa.textContent = "--";
+        tarifa.style.color = "";
         barrioInfo.textContent = "--";
         lineaDistribucionInfo.textContent = "--";
-        serviciosInfo.textContent = "";
+        serviciosInfo.textContent = "--";
         ultimoPagoInfo.textContent = "--";
         fechaUltimoPagoInfo.textContent = "--";
-        tarifa.value = "";
         totalPagar.textContent = "L 0.00";
 
         tPS.value = "";
@@ -367,7 +505,6 @@
         const ultimoAnioPagado = data.ultimo_pago.anio;
         const ultimoMesPagado = data.ultimo_pago.mes;
 
-
         if (ultimoMesPagado != 12) {
             Array.from(mesesCancelados).forEach((mesInput, indice) => {
                 if (indice >= ultimoMesPagado) {
@@ -382,110 +519,80 @@
             });
         }
 
-        habilitarSiguienteAnio = false;
+        let habilitarSiguienteAnio = false;
 
         for (const a of aniosCancelados) {
             const anioActual = a.value;
 
-            if (habilitarSiguienteAnio)
+            if (habilitarSiguienteAnio) {
                 a.disabled = false;
-            habilitarSiguienteAnio = false;
+                habilitarSiguienteAnio = false;
+            }
 
             if (anioActual == ultimoAnioPagado && ultimoMesPagado != 12) {
                 a.disabled = false;
             } else if (anioActual == ultimoAnioPagado && ultimoMesPagado == 12) {
                 habilitarSiguienteAnio = true;
-                console.log(anioActual);
-
             }
-
         }
-
-        console.log(
-            "Pagado hasta: ",
-            data.ultimo_pago.mes,
-            " / ",
-            data.ultimo_pago.anio,
-            aniosCancelados
-        );
     }
 
+    // ══════════════════════════════════════════════════════════════
+    // CALCULAR TOTAL
+    // ══════════════════════════════════════════════════════════════
     mesesCancelados.forEach((checkbox) => {
         checkbox.addEventListener("change", calcularTotalAPagar);
     });
 
     function calcularTotalAPagar() {
-        montoTotal = contarCheckboxMarcados() * parseInt(tarifa.textContent);
-        totalPagar.textContent = `L ${montoTotal}.00`;
-
-        llenarDatosHidden();
+        const montoTotal = contarCheckboxMarcados() * parseInt(tarifa.textContent);
+        totalPagar.textContent = `L ${isNaN(montoTotal) ? "0" : montoTotal}.00`;
+        llenarDatosHidden(isNaN(montoTotal) ? 0 : montoTotal);
     }
-
-    document.addEventListener("DOMContentLoaded", (event) => {
-        limpiarCampos();
-        const linkAbonadoElements = document.querySelectorAll(".link_abonado");
-        linkAbonadoElements.forEach((link) => {
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
-                const codigoPegue = this.id;
-                console.log("Codigo pegue seleccionado:", codigoPegue);
-                pegueSelect.value = codigoPegue;
-                capturarDatosAbonado();
-            });
-        });
-    });
-
-    // Asegúrate de que este script se ejecute DESPUÉS de que se cargue el formulario en el DOM.
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const form = document.querySelector('form[method="POST"]');
-
-        // Función que valida si al menos un checkbox está marcado
-        function validarMeses() {
-            let checkedCount = contarCheckboxMarcados();
-            console.log(checkedCount);
-
-            return checkedCount > 0;
-        }
-
-        form.addEventListener("submit", function (event) {
-            if (!validarMeses()) {
-                event.preventDefault(); // Detiene el envío del formulario
-
-                alert("¡Atención! Debe seleccionar al menos un mes para el cobro.");
-
-                const primerCheckbox = document.querySelector(
-                    'input[name="meses-cobro"]'
-                );
-                if (primerCheckbox) primerCheckbox.focus();
-            }
-        });
-    });
 
     function contarCheckboxMarcados() {
         let checkedCount = 0;
-        // Contar los checkboxes marcados
         mesesCancelados.forEach((checkbox) => {
             if (checkbox.checked) {
                 checkedCount++;
             }
         });
-
         return checkedCount;
     }
 
-    function llenarDatosHidden() {
-        tPS.value = montoTotal;
+    function llenarDatosHidden(monto) {
+        tPS.value = monto;
         pIS.value = pegueSelect.value;
     }
 
-    // Informacion del Cobro
-    const fechaCobro = document.getElementById("fecha-cobro-info");
-    const anioAPagar = document.getElementById("anio-pagar-info");
-    const mesesAPagar = document.getElementById("meses-pagar-info");
-    const formaPago = document.getElementById("forma-pago-info");
+    // ══════════════════════════════════════════════════════════════
+    // DOM CONTENT LOADED
+    // ══════════════════════════════════════════════════════════════
+    document.addEventListener("DOMContentLoaded", function () {
+        limpiarCampos();
+        
+        document.getElementById("fecha-cobro-info").textContent = new Date().toLocaleString("es-MX");
 
-    fechaCobro.textContent = new Date().toLocaleString("es-MX");
-    //anioAPagar.add(document.createElement(new Date().getFullYear()));
+        const linkAbonadoElements = document.querySelectorAll(".link_abonado");
+        linkAbonadoElements.forEach((link) => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+                const codigoPegue = this.id;
+                pegueSelect.value = codigoPegue;
+                capturarDatosAbonado();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+        });
+
+        const form = document.querySelector('form[method="POST"]');
+        form.addEventListener("submit", function (event) {
+            if (contarCheckboxMarcados() === 0) {
+                event.preventDefault();
+                alert("¡Atención! Debe seleccionar al menos un mes para el cobro.");
+                const primerCheckbox = document.querySelector('input[name="meses-cobro"]');
+                if (primerCheckbox) primerCheckbox.focus();
+            }
+        });
+    });
 </script>
 {% endblock scripts %}

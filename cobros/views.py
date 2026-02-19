@@ -8,10 +8,11 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase.ttfonts import TTFont # Para fuentes personalizadas si es necesario
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.units import mm, inch
+from django.contrib import messages
 
 
 
-from cobros.models import Pago, Pegue
+from cobros.models import Pago, Pegue, User
 
 MESES_ABREVIADOS = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"]
 MESES_NUMEROS = list(range(1, 13))
@@ -81,8 +82,13 @@ def pagos_index(request):
         "pagos": lista_final_pagos, 
     })
 
-def registrar_pago(request):
+from django.db import transaction
+from django.shortcuts import redirect, render
+from django.http import HttpResponse
+from .models import Pegue, Pago
+from django.contrib.auth.models import User
 
+def registrar_pago(request):
     if request.method == "POST":
         data = request.POST
         codigo_pegue = data.get("pegue-id")
@@ -91,55 +97,44 @@ def registrar_pago(request):
         metodo_pago = data.get("forma-cobro")
         total_pagar = data.get("total-pagar")
 
-
-        print(meses_cobrados)
-        print(metodo_pago)
+        # 1. Validación de usuario
+        if not request.user.is_authenticated:
+            return HttpResponse("Inicie sesión primero", status=401)
 
         try:
+            # 2. Validación de datos básicos
             pegue_obj = Pegue.objects.get(codigo_pegue=codigo_pegue)
-        except Pegue.DoesNotExist:
-            return HttpResponse("Error: Código de Pegue no válido o faltante.", status=400)
-        
-        try:
-            # Convertir Año a entero y Total a float o Decimal
+            
+            if not meses_cobrados:
+                return HttpResponse("Seleccione al menos un mes", status=400)
+            
             anio_cobrado = int(anio_cobrado)
             total_pagar = float(total_pagar)
-            tarifa = total_pagar/len(meses_cobrados)
-        except (TypeError, ValueError):
-            return HttpResponse("Error: Datos numéricos (año/total) no válidos.", status=400)
-        
-        if not meses_cobrados:
-            return HttpResponse("Error: Debe seleccionar al menos un mes.", status=400)
-             
-        try:
+            tarifa = total_pagar / len(meses_cobrados)
+
             with transaction.atomic():
-                
-                # Iteramos sobre la lista de meses para crear un registro por cada mes cobrado
                 for mes in meses_cobrados:
-                    
-                    # Convertimos el valor del mes (ej. '1', '2') a entero
-                    mes_cobrado = int(mes) 
-                    
-                    # Creamos la instancia de Pago y asignamos todos los atributos
                     Pago.objects.create(
-                        pegue=pegue_obj,              # Objeto Pegue relacionado
-                        anio=anio_cobrado,            # Año entero
-                        mes=mes_cobrado,              # Mes entero (ej. 1, 2, 3)
-                        monto=tarifa,                  # Monto calculado
-                        forma_pago=metodo_pago,      # 'EFEC' o 'TRNF'
-                        registrado_por_id= 1,           #Siempre lo registra con el usuario 1
-                        # Asignar fecha_pago si tu modelo lo requiere
+                        pegue=pegue_obj,
+                        anio=anio_cobrado,
+                        mes=int(mes),
+                        monto=tarifa,
+                        forma_pago=metodo_pago,
+                        registrado_por=request.user, # Usamos el usuario de la sesión directamente
                     )
-            
-            # Si todo sale bien, redirigir a una página de éxito
-            return redirect('cobro') 
-        
+            messages.success(request, "¡Pago registrado exitosamente!")
+            return redirect('cobros:cobro')
+
+        except Pegue.DoesNotExist:
+            return HttpResponse(f"El pegue {codigo_pegue} no existe.", status=404)
         except Exception as e:
-            # Manejar cualquier error de base de datos o lógica
-            return HttpResponse(f"Error al guardar los pagos: {e}", status=500)
+            print("--- DIAGNÓSTICO DE ERROR ---")
+            print(f"Error: {e}")
+            print(f"ID del Pegue encontrado: {pegue_obj.pk if 'pegue_obj' in locals() else 'No encontrado'}")
+            print(f"ID del Usuario: {request.user.id}")
+            return HttpResponse(f"Error crítico: {e}", status=500)
 
-
-    return render(request,"cobros/registrar_pago.html")
+    return render(request, "cobros/cobro.html")
 
 
 def imprimir_recibo(request, id):

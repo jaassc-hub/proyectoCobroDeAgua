@@ -3,8 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from pegues.forms import PegueForm
 from pegues.models import Pegue, Abonado
 
-# Create your views here.
-#Pegues
+
 def pegues_index(request):
     pegues = Pegue.objects.all()
     return render(request, "/pegues_index.html", {"pegues": pegues})
@@ -43,11 +42,37 @@ def create(request):
         form = PegueForm(request.POST)
         if form.is_valid():
             nuevo_pegue = form.save() 
-            return redirect('view')
+            return redirect('pegues:view')
     else:
         form = PegueForm()
 
     return render(request, "pegues/create_pegue.html", {'form': form})
+
+
+
+def edit(request, id):
+    pegue = get_object_or_404(Pegue, id=id)
+
+    if request == 'POST':
+        form = PegueForm(request.POST, instance=pegue)
+        if form.is_valid():
+            form.save()
+            response = HttpResponse()
+        response['HX-Redirect'] = reverse('pegues:view')
+        return response
+
+    return render(request, 'edit_pegue.html', {'pegue': pegue})
+
+def delete(request, id):
+    pegue = get_object_or_404(Pegue, id=id)
+
+    if request == 'POST':
+        pegue.delete()
+        response = HttpResponse()
+        response['HX-Redirect'] = reverse('pegues:view')
+        return response
+
+    return render(request, 'delete_pegue.html', {'pegue': pegue})
     
 def pegues_mora(request):
     return render(request, "pegues/pegues_mora.html")
