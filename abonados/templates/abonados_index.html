@@ -1,56 +1,92 @@
 {% extends "base.html" %}
 {% block title %}Listado de Abonados{% endblock %}
-{% block boton_agregar %}
-{% endblock %}
 
 {% block content %}
 
-<!-- Boton Agregar-->
-<button class="btn btn-primary mb-3" hx-get="{% url 'abonados:create' %}" hx-target="#modal-body"
-    data-modal-icon="fas fa-user-plus" data-modal-title="Agregar Abonado" data-toggle="modal"
-    data-target="#modal_create">
-    <i class="fas fa-user-plus"></i>
-    <span>Nuevo Abonado</span>
-</button>
-
-<div class="card  mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary text-center">Listado de Abonados</h6>
+<div class="page-header d-flex align-items-center justify-content-between mb-4">
+    <div class="d-flex align-items-center">
+        <div class="page-header-icon mr-3" style="background-color: #4e73df; padding: 10px; border-radius: 10px;">
+            <i class="fas fa-users fa-lg text-white"></i>
+        </div>
+        <div>
+            <div class="page-title h4 mb-0">Listado de Abonados</div>
+            <div class="page-subtitle text-muted small">Gestión de clientes y contactos</div>
+        </div>
     </div>
 
+    <div>
+        <button class="btn btn-primary shadow-sm" 
+                hx-get="{% url 'abonados:create' %}" 
+                hx-target="#modal-body"
+                data-modal-icon="fas fa-user-plus" 
+                data-modal-title="Agregar Abonado" 
+                data-toggle="modal"
+                data-target="#modal_create">
+            <i class="fas fa-user-plus mr-1"></i>
+            <span>Nuevo Abonado</span>
+        </button>
+    </div>
+</div>
+
+<div class="card mb-4">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">DNI</th>
-                        <th scope="col">Telefono</th>
-                        <th scope="col">Acciones</th>
-                    </tr>
+            <table class="table table-borderless" id="dataTable">
+                <thead class="d-none">
+                    <tr><th>Detalles</th></tr>
                 </thead>
                 <tbody>
                     {% for abonado in abonados %}
-                    <tr>
-                        <td>{{ abonado.id }}</td>
-                        <td>{{ abonado.nombre}}</td>
-                        <td>{{ abonado.dni|slice:":4" | default:""}}-{{ abonado.dni|slice:"4:8"}}-{{abonado.dni|slice:"8:" | default:"" }}</td>
-                        <td>{{ abonado.telefono|slice:":4" | default:""}}-{{ abonado.telefono|slice:"4:8" | default:""}} </td>
-                        <td>
-                            <button class="btn btn-sm btn-warning mb-3" hx-get="{% url 'abonados:edit' abonado.id %}"
-                                hx-target="#modal-body" data-modal-icon="fas fa-user-edit"
-                                data-modal-title="Editar Abonado" data-toggle="modal" data-target="#modal_create">
-                                <i class="fas fa-user-edit"></i>
-                                <span>Editar</span>
-                            </button>
-                            <button class="btn btn-sm btn-danger mb-3" hx-get="{% url 'abonados:delete' abonado.id %}"
-                                hx-target="#modal-body" data-modal-icon="fa fa-trash"
-                                data-modal-title="Eliminar Abonado" data-toggle="modal" data-target="#modal_create">
-                                <i class="fas fa-trash"></i>
-                                <span>Eliminar</span>
-                            </button>
-                            
+                    <tr class="mb-2">
+                        <td class="px-0 py-3 border-bottom" style="background: transparent;">
+                            <div class="d-flex align-items-center justify-content-between">
+
+                                <div class="d-flex align-items-center">
+                                    <div class="text-center mr-4">
+                                        <h4 class="mb-0 font-weight-light text-secondary">{{ forloop.counter }}</h4>
+                                        <small class="text-muted text-uppercase" style="font-size: 10px; letter-spacing: 1px;">N°</small>
+                                    </div>
+                                    <div>
+                                        <div class="d-flex align-items-baseline">
+                                            <h5 class="mb-0 font-weight-bold text-dark mr-2">
+                                                <i class="fas fa-user text-muted mr-1" style="font-size: 0.8rem;"></i> {{ abonado.nombre }}
+                                            </h5>
+                                            <span class="badge badge-pill badge-light border text-muted" style="font-size: 10px; padding: 3px 8px;">ID: {{ abonado.id }}</span>
+                                        </div>
+                                        <p class="mb-0 text-muted" style="font-size: 0.9rem;">
+                                            <i class="fas fa-id-card mr-1"></i> 
+                                            {{ abonado.dni|slice:":4"|default:"" }}-{{ abonado.dni|slice:"4:8"|default:"" }}-{{ abonado.dni|slice:"8:"|default:"" }}
+                                            <span class="mx-2 text-light">|</span>
+                                            <i class="fas fa-phone mr-1"></i> 
+                                            {{ abonado.telefono|slice:":4"|default:"" }}-{{ abonado.telefono|slice:"4:8"|default:"" }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="text-right d-flex align-items-center">
+                                    <div class="d-flex ml-3">
+                                        <button class="btn btn-sm btn-light text-warning shadow-sm border mr-2 d-flex align-items-center justify-content-center"
+                                                hx-get="{% url 'abonados:edit' abonado.id %}" 
+                                                hx-target="#modal-body"
+                                                data-toggle="modal" data-target="#modal_create" 
+                                                data-modal-icon="fas fa-user-edit" 
+                                                data-modal-title="Editar"
+                                                style="width: 38px; height: 38px; border-radius: 10px;">
+                                            <i class="fas fa-user-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-light text-danger shadow-sm border d-flex align-items-center justify-content-center"
+                                                hx-get="{% url 'abonados:delete' abonado.id %}" 
+                                                hx-target="#modal-body"
+                                                data-toggle="modal" data-target="#modal_create" 
+                                                data-modal-icon="fas fa-trash-alt" 
+                                                data-modal-title="Eliminar"
+                                                style="width: 38px; height: 38px; border-radius: 10px;">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
@@ -59,6 +95,5 @@
         </div>
     </div>
 </div>
-
 
 {% endblock %}

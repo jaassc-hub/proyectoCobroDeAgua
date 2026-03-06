@@ -43,14 +43,15 @@ def create_abonado(request):
             form.save()
             response = HttpResponse()
             response['HX-Redirect'] = reverse('abonados:view')
-            print("Si lo guarda")
 
             return response
         
     else:
         form = AbonadoForm()
     
-    return render(request, 'create_abonado.html', {'form': form})
+    return render(request, 'create_abonado.html', {'form': form})       
+
+
 
 def edit_abonado(request, id):
     abonado = get_object_or_404(Abonado, id=id)

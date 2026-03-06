@@ -9,6 +9,11 @@ from reportlab.pdfbase.ttfonts import TTFont # Para fuentes personalizadas si es
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.units import mm, inch
 from django.contrib import messages
+from django.db import transaction
+from django.shortcuts import redirect, render
+from django.http import HttpResponse
+from .models import Pegue, Pago
+from django.contrib.auth.models import User
 
 
 
@@ -18,16 +23,14 @@ MESES_ABREVIADOS = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP
 MESES_NUMEROS = list(range(1, 13))
 meses = list(zip(MESES_NUMEROS, MESES_ABREVIADOS))
 
-def index(request):
-    return render(request, "cobros/index.html")
+def view(request):
+    return render(request, "view.html")
 
 def cobro(request):
     pegues = Pegue.objects.all().select_related('abonado')
     anios = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
     print(meses)
-    return render(request, "cobros/cobro.html", {"anios": anios, "meses": meses, "pegues": pegues})
-
-
+    return render(request, "cobro.html", {"anios": anios, "meses": meses, "pegues": pegues})
 
 #Pagos
 def pagos_index(request):
@@ -82,12 +85,6 @@ def pagos_index(request):
         "pagos": lista_final_pagos, 
     })
 
-from django.db import transaction
-from django.shortcuts import redirect, render
-from django.http import HttpResponse
-from .models import Pegue, Pago
-from django.contrib.auth.models import User
-
 def registrar_pago(request):
     if request.method == "POST":
         data = request.POST
@@ -135,6 +132,14 @@ def registrar_pago(request):
             return HttpResponse(f"Error crítico: {e}", status=500)
 
     return render(request, "cobros/cobro.html")
+
+def day_payments(request):
+    pagos
+    return render(request, "view.html")
+
+def view(request):
+    pagos = Pegue.objects.all()
+    return render(request, "cobros.html", {"pagos": pagos})
 
 
 def imprimir_recibo(request, id):

@@ -17,13 +17,12 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/css/sb-admin-2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="{% static 'css/custom-styles.css' %}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         /* ========================================
-   NAVBAR EJECUTIVO - MINIMALISTA
-======================================== */
+        NAVBAR EJECUTIVO - MINIMALISTA
+        ======================================== */
 
         /* Navbar principal */
         .navbar {
@@ -302,8 +301,8 @@
         }
 
         /* ----------------------------------------------------
-   ESTILOS DE DESHABILITADO PARA RADIO BUTTONS
-   ---------------------------------------------------- */
+        ESTILOS DE DESHABILITADO PARA RADIO BUTTONS
+        ---------------------------------------------------- */
 
         /* 1. Estilo General de Deshabilitado (opcional: hacerlo más gris) */
         /* Aplicamos al label cuando el input asociado está deshabilitado */
@@ -334,8 +333,8 @@
         }
 
         /* ----------------------------------------------------
-   ESTILOS DE DESHABILITADO PARA CHECKBOXES (MESES)
-   ---------------------------------------------------- */
+        ESTILOS DE DESHABILITADO PARA CHECKBOXES (MESES)
+        ---------------------------------------------------- */
 
         /* 1. Estilo General de Deshabilitado (aplica al input[disabled] y su label) */
         .custom-checkbox-input[disabled]+.custom-checkbox-label {
@@ -379,8 +378,8 @@
 
     <style>
         /* ══════════════════════════════════════════════════════════════
-       VARIABLES CSS - LIGHT & DARK MODE
-    ══════════════════════════════════════════════════════════════ */
+          VARIABLES CSS - LIGHT & DARK MODE
+        ══════════════════════════════════════════════════════════════ */
         :root {
             /* Colores principales */
             --primary: #4e73df;
@@ -411,7 +410,7 @@
 
         /* ══════════════════════════════════════════════════════════════
        DARK MODE
-    ══════════════════════════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════════════ */
         [data-theme="dark"] {
             --bg-primary: #0f1419;
             --bg-secondary: #1a1f2e;
@@ -433,7 +432,7 @@
 
         /* ══════════════════════════════════════════════════════════════
        BASE STYLES
-    ══════════════════════════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════════════ */
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
@@ -442,7 +441,7 @@
 
         /* ══════════════════════════════════════════════════════════════
        CARDS
-    ══════════════════════════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════════════ */
         .card-modern {
             background: var(--bg-card);
             border-radius: var(--card-radius);
@@ -454,7 +453,7 @@
 
         /* ══════════════════════════════════════════════════════════════
        PAGE HEADER
-    ══════════════════════════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════════════ */
         .page-header {
             display: flex;
             align-items: center;
@@ -484,7 +483,7 @@
 
         /* ══════════════════════════════════════════════════════════════
        LABELS & FIELDS
-    ══════════════════════════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════════════ */
         .section-label {
             font-size: 0.70rem;
             font-weight: 700;
@@ -508,7 +507,7 @@
 
         /* ══════════════════════════════════════════════════════════════
        INFO GRID
-    ══════════════════════════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════════════ */
         .info-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -553,7 +552,7 @@
 
         /* ══════════════════════════════════════════════════════════════
        TABLES
-    ══════════════════════════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════════════ */
         .table-card {
             background: var(--bg-card);
             border-radius: var(--card-radius);
@@ -619,7 +618,7 @@
 
         /* ══════════════════════════════════════════════════════════════
        DIVIDER
-    ══════════════════════════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════════════ */
         .divider {
             border: none;
             border-top: 2px solid var(--border-color);
@@ -628,7 +627,7 @@
 
         /* ══════════════════════════════════════════════════════════════
        DARK MODE TOGGLE BUTTON
-    ══════════════════════════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════════════ */
         .dark-mode-toggle {
             position: fixed;
             bottom: 30px;
@@ -655,7 +654,7 @@
 
         /* ══════════════════════════════════════════════════════════════
        FORM CONTROLS
-    ══════════════════════════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════════════ */
         .form-control {
             background: var(--bg-secondary);
             color: var(--text-primary);
@@ -670,7 +669,7 @@
 
         /* ══════════════════════════════════════════════════════════════
        MOBILE RESPONSIVE
-    ══════════════════════════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════════════ */
         @media (max-width: 768px) {
             .page-header {
                 flex-direction: column;
@@ -787,17 +786,9 @@
                                     <span>Abonados</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-modern">
-                                    <a class="dropdown-item" href="{% url 'abonados:create'%}">
-                                        <i class="fas fa-user-plus"></i>
-                                        <span>Nuevo Abonado</span>
-                                    </a>
                                     <a class="dropdown-item" href="{% url 'abonados:view'%}">
                                         <i class="fas fa-list"></i>
-                                        <span>Lista de Abonados</span>
-                                    </a>
-                                    <a class="dropdown-item" href="buscar-cliente.php">
-                                        <i class="fas fa-search"></i>
-                                        <span>Buscar Abonados</span>
+                                        <span>Listado de Abonados</span>
                                     </a>
                                 </div>
                             </li>
@@ -813,13 +804,13 @@
                                         <i class="fas fa-cash-register"></i>
                                         <span>Registrar Pago</span>
                                     </a>
-                                    <a class="dropdown-item" href="historial-pagos.php">
-                                        <i class="fas fa-list-alt"></i>
-                                        <span>Historial</span>
-                                    </a>
-                                    <a class="dropdown-item" href="pagos-dia.php">
+                                    <a class="dropdown-item" href="{% url 'cobros:day_payments'%}">
                                         <i class="fas fa-calendar-day"></i>
                                         <span>Pagos del Día</span>
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'cobros:view'%}">
+                                        <i class="fas fa-list-alt"></i>
+                                        <span>Historial de pagos</span>
                                     </a>
                                 </div>
                             </li>
@@ -954,7 +945,6 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
@@ -1023,7 +1013,7 @@
 
     <div class="modal fade" id="modal_create" data-backdrop="static" data-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog ">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="col mr-2">
@@ -1089,26 +1079,26 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    {% if messages %}
-        {% for message in messages %}
-        Swal.fire({
-            icon: '{% if message.tags == "success" %}success{% else %}info{% endif %}',
-            title: '<span style="color: #ffffff; font-family: sans-serif;">¡Registro Exitoso!</span>',
-            text: '{{ message|escapejs }}',
-            background: '#2c3e50', 
-            color: '#ffffff', 
-            confirmButtonColor: '#1cc88a',
-            confirmButtonText: 'Entendido',
-            iconColor: '#1cc88a', 
-            backdrop: `rgba(0,0,0,0.5)`, 
-            customClass: {
-                popup: 'border-radius-15', 
-            }
+        document.addEventListener("DOMContentLoaded", function () {
+        {% if messages %}
+            {% for message in messages %}
+            Swal.fire({
+                icon: '{% if message.tags == "success" %}success{% else %}info{% endif %}',
+                title: '<span style="color: #ffffff; font-family: sans-serif;">¡Registro Exitoso!</span>',
+                text: '{{ message|escapejs }}',
+                background: '#2c3e50', 
+                color: '#ffffff', 
+                confirmButtonColor: '#1cc88a',
+                confirmButtonText: 'Entendido',
+                iconColor: '#1cc88a', 
+                backdrop: `rgba(0,0,0,0.5)`, 
+                customClass: {
+                    popup: 'border-radius-15', 
+                }
+            });
+            {% endfor %}
+        {% endif %}
         });
-        {% endfor %}
-    {% endif %}
-    });
     </script>
 
     {% block scripts %} {% endblock scripts %}

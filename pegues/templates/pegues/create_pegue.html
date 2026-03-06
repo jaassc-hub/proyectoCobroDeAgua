@@ -1,33 +1,18 @@
-{% extends "base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-
-<form method="POST">
+<div class="informacionCobro mt-2">
+    <form id="envioDatos" method="POST" hx-post="{% url 'pegues:create' %}" 
+          hx-target="#modal-body" 
+          hx-swap="innerHTML">
     {% csrf_token %}
-
-    <!-- Informacion del Pegue-->
-    <div class="col-xl col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Agregar Pegue</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-faucet fa-2x text-gray-300"></i>
-                    </div>
-                </div><br>
-                <div class="informacionCobro mt-2">
-                    <form id="envioDatos" action= "{% url 'pegues:create' %}" method="POST">
-                    {% csrf_token %}
-                    {{form | crispy}}
-                    </form>
-                </div>
-                <button class="btn btn-success" type="submit">Guardar</button>
-            </div>
-        </div>
+    {{form | crispy}}
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        <button type="button submit" class="btn btn-success">Guardar</button>
     </div>
-</form>
+    </form>
+</div>
+
 
 {% endblock %}

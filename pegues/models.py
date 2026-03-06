@@ -27,6 +27,9 @@ class Pegue(models.Model):
 
     @property
     def tarifa_mensual(self):
-        """Suma de todos los servicios activos asignados al pegue"""
         return sum(servicio.monto for servicio in self.servicios.filter(activo=True))
+
+    @property
+    def lista_servicios_activos(self):
+        return self.servicios.filter(activo=True).values_list('nombre', flat=True)
     

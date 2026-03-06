@@ -4,10 +4,9 @@ from . import views
 app_name = 'pegues'
 
 urlpatterns = [
-    path("", views.pegues_index, name="views"),
+    path("", views.view, name="view"),
     path("obtener_informacion_pegue/<str:codigo_pegue>/", views.obtener_informacion_pegue, name="obtener_informacion_pegue"),
-    path("listado_pegues/", views.view, name="view"),
-    path("create_pegue/", views.create, name="create"),
+    path("create/", views.create, name="create"),
     path("edit/<int:id>/", views.edit, name="edit"),
     path("delete/<int:id>/", views.delete, name="delete"),
 

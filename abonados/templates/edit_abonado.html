@@ -4,7 +4,7 @@
 {% block content %}
 <!-- Editar abonado-->
     <div class="informacionCobro mt-2">
-        <form method="POST" hx-post="{% url 'abonados:edit' abonado.id %}" hx-swap="outerHTML">
+    <form method="POST" hx-post="{% url 'abonados:edit' abonado.id %}" hx-swap="outerHTML">
             {% csrf_token %}
             {{form | crispy}}
             <div class="modal-footer">
@@ -13,5 +13,4 @@
             </div>
         </form>
     </div>
-
-{% endblock %}
+{% endblock %}    

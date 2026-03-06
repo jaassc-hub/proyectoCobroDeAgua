@@ -1,12 +1,10 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from pegues.forms import PegueForm
 from pegues.models import Pegue, Abonado
+from django.urls import reverse
 
 
-def pegues_index(request):
-    pegues = Pegue.objects.all()
-    return render(request, "/pegues_index.html", {"pegues": pegues})
 
 def obtener_informacion_pegue(request, codigo_pegue):  
     pegue = get_object_or_404(Pegue, codigo_pegue=codigo_pegue)
@@ -38,12 +36,13 @@ def view(request):
 def create(request):
 
     if request.method == 'POST':
-
         form = PegueForm(request.POST)
         if form.is_valid():
-            nuevo_pegue = form.save() 
-            return redirect('pegues:view')
-    else:
+            form.save()
+            response = HttpResponse()
+            response['HX-Redirect'] = reverse('pegues:view')
+            return response         
+    else: 
         form = PegueForm()
 
     return render(request, "pegues/create_pegue.html", {'form': form})
@@ -53,26 +52,28 @@ def create(request):
 def edit(request, id):
     pegue = get_object_or_404(Pegue, id=id)
 
-    if request == 'POST':
+    if request.method == 'POST':
         form = PegueForm(request.POST, instance=pegue)
         if form.is_valid():
             form.save()
             response = HttpResponse()
-        response['HX-Redirect'] = reverse('pegues:view')
-        return response
+            response['HX-Redirect'] = reverse('pegues:view')
+            return response
+    else:
+        form = PegueForm(instance=pegue)
 
-    return render(request, 'edit_pegue.html', {'pegue': pegue})
+    return render(request, 'pegues/edit_pegue.html', {'form': form, 'pegue': pegue})
 
 def delete(request, id):
     pegue = get_object_or_404(Pegue, id=id)
 
-    if request == 'POST':
+    if request.method == 'POST':
         pegue.delete()
         response = HttpResponse()
         response['HX-Redirect'] = reverse('pegues:view')
         return response
 
-    return render(request, 'delete_pegue.html', {'pegue': pegue})
+    return render(request, 'pegues/delete_pegue.html', {'pegue': pegue})
     
 def pegues_mora(request):
     return render(request, "pegues/pegues_mora.html")

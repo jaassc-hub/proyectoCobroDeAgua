@@ -1,77 +1,131 @@
 {% extends "base.html" %}
-{% load static %}
 {% block title %}Pagos{% endblock %}
-{% block header %}Listado de Pegues{% endblock %}
-{% block boton_agregar %}
-<a class="btn btn-primary m-3" href="{% url 'pegues:create' %}">Agregar Pegue</a>
-{% endblock %}
 
 {% block content %}
 
-<!-- Listado de Pegues -->
-<div class="col-xl-12 col-md-12 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-        <div class="card-body">
-            <div class="card  mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Listado de Pegues</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>N</th>
-                                    <th>Codigo Pegue</th>
-                                    <th>Propietario</th>
-                                    <th>Barrio</th>
-                                    <th>Tipo</th>
-                                    <th>Estado</th>
-                                    <th>Linea de distribución</th>
-                                    <th>Acciones</th>
+<div class="page-header d-flex align-items-center justify-content-between mb-4">
+    <div class="d-flex align-items-center">
+        <div class="page-header-icon mr-3">
+            <i class="fas fa-faucet fa-lg text-white"></i>
+        </div>
+        <div>
+            <div class="page-title h4 mb-0">Listado de Pegues</div>
+            <div class="page-subtitle text-muted small">Registro y gestión de pegues</div>
+        </div>
+    </div>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for pegue in pegues %}
-                                <tr>
-                                    <td>{{ pegue.id }}</td>
-                                    <td>{{ pegue.codigo_pegue }}</td>
-                                    <td>{{ pegue.abonado.nombre }}</td>
-                                    <td>{{ pegue.barrio.nombre }}</td>
-                                    <td>{{ pegue.get_tipo_display }}</td>
-                                    <td>{{ pegue.estado }}</td>
-                                    <td>{{ pegue.linea_distribucion.codigo }}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-warning mb-3"
-                                            hx-get="{% url 'pegues:edit' pegue.id %}" hx-target="#modal-body"
-                                            data-modal-icon="fas fa-user-edit" data-modal-title="Editar Pegue"
-                                            data-toggle="modal" data-target="#modal_create">
-                                            <i class="fas fa-edit"></i>
-                                            <span>Editar</span>
+    <div>
+        <button class="btn btn-primary shadow-sm" 
+                hx-get="{% url 'pegues:create' %}" 
+                hx-target="#modal-body"
+                data-modal-icon="fas fa-plus-circle" 
+                data-modal-title="Nuevo Pegue" 
+                data-toggle="modal"
+                data-target="#modal_create">
+            <i class="fas fa-plus-circle mr-1"></i>
+            <span>Nuevo Pegue</span>
+        </button>
+    </div>
+</div>
+
+<!-- Listado de Pegues -->
+<div class="card  mb-4 ">
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-borderless" id="dataTable">
+                <thead class="d-none">
+                    <tr>
+                        <th>Detalles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pegue in pegues %}
+                    <tr class="mb-2">
+                        <td class="px-0 py-3 border-bottom" style="background: transparent;">
+                            <div class="d-flex align-items-center justify-content-between">
+
+                                <div class="d-flex align-items-center">
+                                    <div class="text-center mr-4">
+                                        <h4 class="mb-0 font-weight-light text-secondary">{{ forloop.counter }}</h4>
+                                        <small class="text-muted text-uppercase"
+                                            style="font-size: 10px; letter-spacing: 1px;">N°</small>
+                                    </div>
+                                    <div>
+                                        <div class="d-flex align-items-baseline">
+                                            <h5 class="mb-0 font-weight-bold text-dark mr-2">
+                                                <i class="fas fa-faucet text-muted mr-1"
+                                                    style="font-size: 0.8rem;"></i> {{ pegue.codigo_pegue }}
+                                            </h5>
+                                            <span
+                                                class="badge badge-pill {% if pegue.estado == 'Activo' %}badge-success{% else %}badge-light{% endif %}"
+                                                style="font-size: 10px; padding: 3px 8px;">{{ pegue.estado }}</span>
+                                        </div>
+                                        <p class="mb-0 text-muted" style="font-size: 0.9rem;">
+                                            <i class="fas fa-user-circle mr-1"></i> {{ pegue.abonado.nombre }}
+                                            <span class="mx-2 text-light">|</span>
+                                            <i class="fas fa-map-marker-alt mr-1"></i> {{ pegue.barrio.nombre }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="text-right d-flex align-items-center">
+                                    <div class="mr-4">
+                                        <div class="text-success font-weight-bold" style="font-size: 1.1rem;">
+                                            <i class="fas fa-wallet mr-1" style="font-size: 0.9rem;"></i> L {{pegue.tarifa_mensual }}
+                                        </div>
+                                        <div class="text-muted small" style="letter-spacing: 0.5px;">
+                                            <i class="fas fa-network-wired mr-1"></i> {{pegue.linea_distribucion.codigo }}
+                                            <span class="mx-1">•</span>
+                                            <i class="fas fa-home mr-1"></i> {{ pegue.get_tipo_display }}
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex ml-3">
+                                        <button
+                                            class="btn btn-sm btn-light text-warning shadow-sm border mr-2 d-flex align-items-center justify-content-center"
+                                            hx-get="{% url 'pegues:edit' pegue.id %}" 
+                                            hx-target="#modal-body"
+                                            data-toggle="modal" 
+                                            data-target="#modal_create" 
+                                            data-modal-icon="fas fa-pen"
+                                            data-modal-title="Editar"
+                                            style="width: 38px; height: 38px; border-radius: 10px;">
+                                            <i class="fas fa-pen"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-danger mb-3"
+                                        <button
+                                            class="btn btn-sm btn-light text-danger shadow-sm border d-flex align-items-center justify-content-center"
                                             hx-get="{% url 'pegues:delete' pegue.id %}" hx-target="#modal-body"
-                                            data-modal-icon="fa fa-trash" data-modal-title="Eliminar Pegue"
-                                            data-toggle="modal" data-target="#modal_create">
-                                            <i class="fas fa-trash"></i>
-                                            <span>Eliminar</span>
+                                            data-toggle="modal" data-target="#modal_create" title="Eliminar"
+                                            style="width: 38px; height: 38px; border-radius: 10px;">
+                                            <i class="fas fa-trash-alt"></i>
                                         </button>
-                                    </td>
-                                </tr>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="mt-2 pl-5 ml-4">
+                                <small class="text-muted mr-2">Servicios:</small>
+                                {% for servicio in pegue.servicios.all %}
+                                {% if servicio.activo %}
+                                <span class="small text-muted mr-3 bg-light px-2 py-1 rounded"
+                                    style="border: 1px solid #f0f0f0;">
+                                    <i class="fas fa-check text-primary mr-1" style="font-size: 0.7rem;"></i> {{servicio.nombre }}
+                                </span>
+                                {% endif %}
                                 {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 
+
+
 {% endblock %}
-
-{% block modales %}
-
-{% endblock modales %}
