@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard jaassc Style</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --jaassc-dark: #001529;
+            --jaassc-blue: #007bff;
+            --sidebar-width: 240px;
+        }
+
+        body {
+            background-color: #f5f7f9;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Superior */
+        .navbar-jaassc {
+            background-color: var(--jaassc-dark);
+            height: 60px;
+            position: fixed;
+            width: 100%;
+            z-index: 1030;
+        }
+
+        /* Sidebar Lateral */
+        .sidebar-jaassc {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            background-color: #ffffff;
+            border-right: 1px solid #e0e4e9;
+            overflow-y: auto;
+            z-index: 1020;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #8c96a3;
+            padding: 1.5rem 1.5rem 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .nav-link-jaassc {
+            color: #4a5568;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-link-jaassc:hover {
+            background-color: #f0f4f8;
+            color: var(--jaassc-blue);
+        }
+
+        .nav-link-jaassc.active {
+            background-color: #e6f7ff;
+            color: var(--jaassc-blue);
+            border-left-color: var(--jaassc-blue);
+            font-weight: 600;
+        }
+
+        .nav-link-jaassc i {
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        /* Contenedor de Contenido Principal */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding-top: 80px;
+            padding-right: 20px;
+            padding-left: 20px;
+            min-height: 100vh;
+        }
+
+        /* Ajuste para móviles */
+        @media (max-width: 768px) {
+            .sidebar-jaassc { margin-left: -var(--sidebar-width); }
+            .main-content { margin-left: 0; }
+        }
+
+    </style>
+
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --primary: #2c23e2;
+            --primary-soft: #eef2ff;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border-soft: #f1f5f9;
+        }
+
+        body { background-color: var(--bg-main); }
+
+        /* Estilo del Buscador de DataTable */
+        .dataTables_filter input {
+            border: 1px solid var(--border-soft) !important;
+            border-radius: 10px !important;
+            padding: 10px 15px !important;
+            background: white !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            width: 300px !important;
+        }
+
+        /* Card Principal */
+        .pegue-card {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 16px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .pegue-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Badge de Estado Circular */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+        .dot { width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; }
+        
+        .status-hab { background: #ecfdf5; color: #065f46; }
+        .status-hab .dot { background: var(--success); }
+        
+        .status-no-hab { background: #fef2f2; color: #991b1b; }
+        .status-no-hab .dot { background: var(--danger); }
+
+        /* Tipografía */
+        .pegue-code { color: var(--primary); font-family: 'Monaco', monospace; font-weight: 700; font-size: 0.9rem; }
+        .abonado-title { color: var(--text-dark); font-weight: 700; font-size: 1.1rem; margin: 0; }
+        .info-cobro-title { color: var(--text-dark); font-weight: 700; font-size: 1rem; margin: 0; }
+        .meta-info { color: var(--text-light); font-size: 0.85rem; }
+
+        /* Botones de Acción */
+        .btn-action {
+            width: 38px; height: 38px; border-radius: 10px; border: none;
+            display: inline-flex; align-items: center; justify-content: center;
+            transition: 0.2s; background: var(--border-soft); color: var(--text-light);
+        }
+        .btn-action:hover { filter: brightness(0.95); transform: scale(1.05); }
+        .btn-edit:hover { color: var(--primary); background: var(--primary-soft); }
+        .btn-delete:hover { color: var(--danger); background: #fee2e2; }
+
+        /* Ocultar tabla nativa pero mantener funcionalidad */
+        #dataTable thead { display: none; }
+        #dataTable, #dataTable borderless td { border: none !important; }
+        table.dataTable.no-footer { border-bottom: none !important; }
+
+        @media (max-width: 768px) {
+            .pegue-card { flex-direction: column; text-align: center; gap: 1rem; }
+            .price-box { border-left: none !important; border-top: 1px solid var(--border-soft); padding-top: 1rem; width: 100%; }
+            .actions-box { width: 100%; justify-content: center; }
+        }
+    </style>
+
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-jaassc px-3">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <span class="fw-bold">JAASSC</span>
+            <span class="ms-2 fs-6 opacity-50">Santa Cruz</span>
+        </a>
+        
+        <div class="ms-auto d-flex align-items-center text-white">
+            <div class="input-group input-group-sm me-3 d-none d-md-flex">
+                <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control bg-dark border-secondary text-white" placeholder="Search...">
+            </div>
+            <i class="bi bi-bell me-3"></i>
+            <i class="bi bi-person-circle fs-4"></i>
+        </div>
+    </nav>
+
+    <div class="sidebar-jaassc">
+        <div class="nav-section-title">Principal</div>
+        <a href="#" class="nav-link-jaassc active">
+            <i class="bi bi-grid-fill"></i> Resumen
+        </a>
+        <a href="{% url 'abonados:view'%}" class="nav-link-jaassc">
+            <i class="bi bi-people"></i> Abonados
+        </a>
+
+        <div class="nav-section-title">Cobros</div>
+        <a href="{% url 'cobros:cobro'%}" class="nav-link-jaassc">
+            <i class="bi bi-wallet2"></i> Cobrar
+        </a>
+        <a href="{% url 'cobros:view'%}" class="nav-link-jaassc">
+            <i class="bi bi-wallet2"></i> Pagos
+        </a>
+        <a href="#" class="nav-link-jaassc">
+            <i class="bi bi-file-earmark-text"></i> Facturación
+        </a>
+        
+        <div class="nav-section-title">Pegues</div>
+        <a href="{% url 'pegues:view'%}" class="nav-link-jaassc">
+            <i class="bi bi-search"></i> Listado de pegues
+        </a>
+        <a href="#" class="nav-link-jaassc">
+            <i class="bi bi-gear"></i> Pegues en pagos
+        </a>
+         <a href="#" class="nav-link-jaassc">
+            <i class="bi bi-gear"></i> Pegues a futuro
+        </a>
+
+        <div class="nav-section-title">Análisis</div>
+        <a href="#" class="nav-link-jaassc">
+            <i class="bi bi-bar-chart"></i> Reportes
+        </a>
+        <a href="#" class="nav-link-jaassc">
+            <i class="bi bi-gear"></i> Configuración
+        </a>
+    </div>
+
+    <main class="main-content">
+        <div class="container-fluid">
+            
+            {% block content %}
+            {% endblock %}
+
+            {% block modales %}
+
+                <div class="modal fade" id="modal_create" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="col mr-2">
+
+                                    <i id="iconModal" class="text-primary"></i>
+
+                                    <span class=" font-weight-bold text-primary text-uppercase modal-title" id="modalTitulo">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="modal-body" id="modal-body">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endblock modales %}
+
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/js/sb-admin-2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Configuración de títulos e iconos dinámicos para modales con HTMX
+        document.addEventListener('htmx:beforeRequest', function (event) {
+            const target = event.detail.elt;
+            const titulo = target.getAttribute('data-modal-title');
+            const icon = target.getAttribute('data-modal-icon');
+
+            if (titulo) {
+                const elTitulo = document.getElementById('modalTitulo');
+                if (elTitulo) elTitulo.textContent = titulo;
+            }
+
+            if (icon) {
+                const iconoModal = document.getElementById('iconModal');
+                if (iconoModal) {
+                    iconoModal.className = "text-primary " + icon;
+                }
+            }
+        });
+
+        // Escuchar evento personalizado para cerrar el modal desde Django (HX-Trigger: "cerrarModal")
+        // Se usa la sintaxis de jQuery compatible con Bootstrap 4.6
+        document.body.addEventListener('cerrarModal', function () {
+            $('#modal_create').modal('hide');
+        });
+
+        // Inicialización de DataTables
+        $(document).ready(function () {
+            const tableElement = $('#dataTable');
+            
+            if (tableElement.length > 0) {
+                tableElement.DataTable({
+                    "language": {
+                        "url": "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+                    },
+                    "paging": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "responsive": true,
+                    "retrieve": true // Evita errores si se intenta reinicializar
+                });
+            }
+        });
+
+        // Opcional: Reinicializar DataTables si HTMX reemplaza el contenido de la tabla
+        document.addEventListener('htmx:afterSwap', function(event) {
+            if (event.detail.target.id === 'contenedor-tabla-ajax') {
+                $('#dataTable').DataTable().destroy(); // Destruye la instancia previa si existe
+                $('#dataTable').DataTable({
+                    "language": { "url": "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json" },
+                    "responsive": true
+                });
+            }
+        });
+    </script>
+
+    {% block scripts %} {% endblock scripts %}
+
+</body>
+</html>

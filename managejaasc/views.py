@@ -12,7 +12,7 @@ def login_view(request):
         
         if user is not None:
             login(request, user)
-            return redirect('cobros:index')  # Cambia por tu vista principal
+            return redirect('cobros:cobro')  
         else:
             messages.error(request, 'Usuario o contraseña incorrectos')
     

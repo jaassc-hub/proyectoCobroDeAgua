@@ -15,3 +15,124 @@
     </div>
 
 {% endblock %}
+
+
+{% block holo %}
+    <div class="container py-4">
+        
+        <div class="mb-4">
+            <h2 class="fw-bold text-dark m-0">Sistema de Cobro</h2>
+            <p class="text-muted">Registro de recaudación y gestión de pagos mensuales.</p>
+        </div>
+
+        <div class="two-column-layout">
+            
+            <div class="main-side">
+                
+                <div class="card-modern">
+                    <div class="section-label"><i class="bi bi-search"></i> Localizar Pegue</div>
+                    <div class="search-container">
+                        <input id="input-buscar-pegue" type="text" class="text-uppercase" placeholder="Ingrese código del pegue (Ej: P-100)...">
+                        <button id="buscar-pegue" type="button"><i class="bi bi-arrow-right-short fs-4"></i></button>
+                    </div>
+                </div>
+
+                <div class="card-modern">
+                    <div class="section-label"><i class="bi bi-person-badge"></i> Expediente del Abonado</div>
+                    <div class="info-grid">
+                        <div class="info-item hl-primary"><label>Nombre Completo</label><span id="abonado-info">--</span></div>
+                        <div class="info-item"><label>DNI</label><span id="dni-info">--</span></div>
+                        <div class="info-item hl-success"><label>Tarifa</label><span id="tarifa-info">--</span></div>
+                        <div class="info-item"><label>Barrio</label><span id="barrio-info">--</span></div>
+                        <div class="info-item"><label>Servicios</label><span id="servicios-info">--</span></div>
+                        <div class="info-item"><label>Línea</label><span id="linea-distribucion-info">--</span></div>
+                        <div class="info-item hl-warning"><label>Pagado Hasta</label><span id="ultimo-pago-info">--</span></div>
+                        <div class="info-item"><label>Último Pago</label><span id="fecha-ultimo-pago-info" style="font-size: 0.8rem;">--</span></div>
+                    </div>
+                </div>
+
+                <div class="card-modern p-0 overflow-hidden">
+                    <div class="p-3 border-bottom bg-light d-flex justify-content-between align-items-center">
+                        <span class="fw-bold small text-muted text-uppercase">Pegues Registrados</span>
+                        <i class="bi bi-list-ul"></i>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table mini-table table-hover m-0" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Abonado</th>
+                                    <th>Barrio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for a in pegues %}
+                                <tr>
+                                    <td><a href="#" class="link_abonado link-pegue" id="{{a.codigo_pegue}}">{{ a.codigo_pegue }}</a></td>
+                                    <td>{{ a.abonado.nombre|truncatechars:25 }}</td>
+                                    <td>{{ a.barrio.nombre|truncatechars:15 }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-side">
+                <div class="card-modern sticky-top" style="top: 20px;">
+                    <div class="section-label"><i class="bi bi-cash-stack"></i> Panel de Cobro</div>
+                    
+                    <form id="envioDatos" action="{% url 'cobros:registrar_pago' %}" method="POST">
+                        {% csrf_token %}
+
+                        <div class="mb-3 d-flex justify-content-between align-items-center">
+                            <label class="small text-muted fw-bold">FECHA PROCESO</label>
+                            <span id="fecha-cobro-info" class="badge bg-white text-dark border">--</span>
+                        </div>
+
+                        <div class="mb-2"><label class="small fw-bold text-muted">AÑO A PAGAR</label></div>
+                        <div class="pill-grid years">
+                            {% for anio in anios %}
+                            <input type="radio" name="anio-cobro" id="anio_{{anio}}" value="{{anio}}" required>
+                            <label for="anio_{{anio}}">{{anio}}</label>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-2"><label class="small fw-bold text-muted">MESES SELECCIONADOS</label></div>
+                        <div class="pill-grid months">
+                            {% for numero, abreviatura in meses %}
+                            <input type="checkbox" name="meses-cobro" id="mes_{{numero}}" value="{{numero}}">
+                            <label for="mes_{{numero}}">{{abreviatura}}</label>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-2"><label class="small fw-bold text-muted">MÉTODO DE PAGO</label></div>
+                        <div class="pay-group">
+                            <input type="radio" name="forma-cobro" id="EFEC" value="EFEC" checked required>
+                            <label for="EFEC"><i class="bi bi-cash d-block"></i> Efectivo</label>
+
+                            <input type="radio" name="forma-cobro" id="TRNF" value="TRNF" required>
+                            <label for="TRNF"><i class="bi bi-bank d-block"></i> Transf.</label>
+
+                            <input type="radio" name="forma-cobro" id="DEPO" value="DEPO" required>
+                            <label for="DEPO"><i class="bi bi-building d-block"></i> Depósito</label>
+                        </div>
+
+                        <div class="total-bar">
+                            <div class="small fw-bold text-uppercase text-muted" style="letter-spacing: 1px;">Monto Total</div>
+                            <div class="total-amount" id="display-total-pagar">L 0.00</div>
+                            <button class="btn-submit" type="submit">
+                                <i class="bi bi-check-circle-fill me-2"></i> Procesar Pago
+                            </button>
+                        </div>
+
+                        <input type="hidden" id="total-pagar-send" name="total-pagar" value="">
+                        <input type="hidden" id="pegue-id-send" name="pegue-id" value="">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -773,20 +773,20 @@
 
                             <!-- Inicio -->
                             <li class="nav-item">
-                                <a class="nav-link active" href="/index/">
+                                <a class="nav-link" href="/index/">
                                     <i class="fas fa-home"></i>
                                     <span>Inicio</span>
                                 </a>
                             </li>
 
-                            <!-- Clientes -->
+                            <!-- Abonados -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarClientes" data-toggle="dropdown">
+                                <a class="nav-link" href="{% url 'abonados:view'%}" id="navbarClientes">
                                     <i class="fas fa-users"></i>
                                     <span>Abonados</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-modern">
-                                    <a class="dropdown-item" href="{% url 'abonados:view'%}">
+                                    <a class="dropdown-item" href=>
                                         <i class="fas fa-list"></i>
                                         <span>Listado de Abonados</span>
                                     </a>
@@ -845,13 +845,13 @@
                                     <span>Pegues</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-modern">
-                                    <a class="dropdown-item" href="{% url 'pegues:create'%}">
-                                        <i class="fas fa-plus-circle"></i>
-                                        <span>Nuevo Pegue</span>
-                                    </a>
                                     <a class="dropdown-item" href="{% url 'pegues:view'%}">
                                         <i class="fas fa-list"></i>
                                         <span>Listado de Pegues</span>
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'pegues:create'%}">
+                                        <i class="fas fa-money-bill"></i>
+                                        <span>Pegues en plan de pago</span>
                                     </a>
                                     <a class="dropdown-item" href="{% url 'pegues:view'%}">
                                         <i class="fas fa-clock"></i>

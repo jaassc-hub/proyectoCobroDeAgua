@@ -28,7 +28,7 @@ def view(request):
 
 def cobro(request):
     pegues = Pegue.objects.all().select_related('abonado')
-    anios = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+    anios = [2020, 2021, 2022, 2023, 2024, 2025, 2026]
     print(meses)
     return render(request, "cobro.html", {"anios": anios, "meses": meses, "pegues": pegues})
 

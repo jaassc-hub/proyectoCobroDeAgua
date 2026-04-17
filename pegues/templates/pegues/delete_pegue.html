@@ -6,7 +6,7 @@
     <form hx-post="{% url 'pegues:delete' pegue.id %}" hx-swap="outerHTML">
         {% csrf_token %}
         <div class="alert alert-danger">
-            ¿Estás seguro de que deseas el pegue <strong>{{ pegue.codigo_pegue }}</strong> que pertenece a <strong>{{ pegue.abonado.nombre }}</strong> ?
+            ¿Estás seguro de que deseas eliminar el pegue <strong>{{ pegue.codigo_pegue }}</strong> que pertenece a <strong>{{ pegue.abonado.nombre }}</strong> ?
             Esta acción no se puede deshacer.
         </div>
 
