@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 {% load static %}
 {% block title %}Pagos{% endblock %}
 {% block header %}Registro de Pagos{% endblock %}
@@ -6,66 +6,77 @@
 {% block content %}
 
         <!-- Listado de Pagos -->
-    <div class="col-xl-12 col-md-12 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Pagos</div>
-                    </div>
-
-                    <div class="col-auto">
-                        <i class="fas fa-cash-register fa-2x text-gray-300"></i>
-                    </div>
-
-                </div>
-
-                <div class="card  mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Listado de Pagos</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>N</th> 
-                                        <th>Codigo</th> 
-                                        <th>Abonado</th> 
-                                        <th>Barrio</th> 
-                                        <th>Fecha Pago </th> 
-                                        <th>Tarifa </th> 
-                                        <th>Mes(es) pagado(s) </th> 
-                                        <th>Monto</th> 
-                                        <th>Acciones</th> 
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for p in pagos %}
-                                    <tr>
-                                        <td>{{ p.id }}</td>
-                                        <td>{{ p.codigo }}</td>
-                                        <td>{{ p.abonado }}</td>
-                                        <td>{{ p.barrio }}</td>
-                                        <td>{{ p.fecha_pago }}</td>
-                                        <td>L {{ p.tarifa_actual }}</td>
-                                        <td>{% for id, nombre in p.meses_pagados_str %}
-                                                {{ nombre }}{% if not forloop.last %}, {% endif %}
-                                            {% endfor %}({{ p.meses_pagados_str|length }})</td>
-                                        <td>L {{ p.monto_total }}</td>
-                                        <td class= "text-center"><a class=" badge rounded-pill bg-warning text-white"  type="button">Imprimir</a> | <a class="badge rounded-pill bg-danger text-white" type="button">Eliminar</a></td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div><br>
-            </div>
+ 
+        <div class="col-xl-12 col-md-12 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+        <div>
+            <h2 class="fw-bold text-dark m-0" style="letter-spacing: -0.5px;">Historial de Pagos</h2>
+            <p class="text-muted mb-0">Registro detallado de recaudación y cobros realizados.</p>
+        </div>
+        <div class="icon-box d-flex align-items-center justify-content-center" 
+             style="min-width: 50px; height: 50px; background: var(--primary-soft); border-radius: var(--radius-md); color: var(--jaassc-blue);">
+            <i class="bi bi-cash-stack fs-4"></i>
         </div>
     </div>
+
+    <div class="table-responsive" style="overflow: visible;">
+        <table id="dataTable" class="table w-100">
+            <thead>
+                <tr><th class="border-0">Detalle de Transacción</th></tr>
+            </thead>
+            <tbody>
+                {% for p in pagos %}
+                <tr>
+                    <td class="p-0 border-0 bg-transparent">
+                        <div class="pegue-card d-flex align-items-center justify-content-between">
+                            
+                            <div class="d-flex align-items-center flex-grow-1">
+                                <div class="text-start">
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <span class="pegue-code">REC-{{ p.id }}</span>
+                                        <span class="badge" style="background: var(--border-soft); color: var(--text-light); font-size: 0.7rem; border-radius: 6px;">
+                                            <i class="bi bi-calendar-event me-1"></i>{{ p.fecha_pago }}
+                                        </span>
+                                    </div>
+                                    <h5 class="abonado-title">{{ p.abonado }}</h5>
+                                    <div class="meta-info mt-1">
+                                        <span class="me-2"><i class="bi bi-hash me-1 text-primary"></i>{{ p.codigo }}</span>
+                                        <span class="mx-2 text-silver">•</span>
+                                        <span class="me-2"><i class="bi bi-geo-alt me-1"></i>{{ p.barrio }}</span>
+                                        <span class="mx-2 text-silver">•</span>
+                                        <span class="badge bg-primary-soft text-primary border-0" style="font-size: 0.75rem;">
+                                            {{ p.meses_pagados_str|length }} Mes(es): 
+                                            {% for id, nombre in p.meses_pagados_str %}
+                                                {{ nombre }}{% if not forloop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-4 price-box ps-md-4 border-start">
+                                <div class="text-end">
+                                    <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.6rem; letter-spacing: 1px;">Monto Total</div>
+                                    <div class="fw-bold text-success fs-5">L {{ p.monto_total }}</div>
+                                    <div class="text-muted" style="font-size: 0.7rem;">Tarifa: L {{ p.tarifa_actual }}</div>
+                                </div>
+                                <div class="d-flex gap-2 actions-box">
+                                    <button class="btn-action btn-edit" title="Imprimir Recibo" type="button">
+                                        <i class="bi bi-printer"></i>
+                                    </button>
+                                    <button class="btn-action btn-delete" title="Anular Pago" type="button">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {% endblock  %}

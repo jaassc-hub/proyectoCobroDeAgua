@@ -27,15 +27,14 @@ def view(request):
     return render(request, "view.html")
 
 def cobro(request):
-    pegues = Pegue.objects.all().select_related('abonado')
-    anios = [2020, 2021, 2022, 2023, 2024, 2025, 2026]
+    pegues = Pegue.objects.all().select_related('abonado').filter(estado='HAB')
+    anios = [2024, 2025, 2026]
     print(meses)
     return render(request, "cobro.html", {"anios": anios, "meses": meses, "pegues": pegues})
 
 #Pagos
 def pagos_index(request):
-   # Obtener todos los pagos, ordenados para asegurar que las fechas de pago    
-    # se procesen correctamente y las sumas sean consistentes.
+
     todos_pagos = Pago.objects.all().select_related('pegue__abonado').prefetch_related('pegue__servicios').order_by('pegue__codigo_pegue', '-fecha_pago')
     
     # Estructura de agrupamiento: defaultdict para agrupar las transacciones
@@ -81,7 +80,7 @@ def pagos_index(request):
     # Convertir a lista para pasar a la plantilla
     lista_final_pagos = list(pagos_agrupados.values())
 
-    return render(request, "cobros/pagos.html", {
+    return render(request, "pagos.html", {
         "pagos": lista_final_pagos, 
     })
 

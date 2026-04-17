@@ -92,70 +92,110 @@
 
                   </br>
                 
-                 <ul class="list-group ">
-
-                    <li class=" row list-group-item d-flex justify-content-between align-items-start">
-                        <div class=" col ms-2 me-auto">
-                            <div class="fw-bold">Fecha de Cobro</div>
-                        </div>
-                            <span id="fecha-cobro-info" class="col text-success info-cobro-title"></span>
-                    </li>
-
-                    <li class=" col list-group-item d-flex justify-content-between align-items-start">
-                        <div class=" col ms-2 me-auto">
-                            <div class="fw-bold">Año a Cobrar</div>
-                        </div>
-                    </li>
-                    
-                    <div class=" row list-group-item d-flex justify-content-between align-items-start">
-                        <div class="col">
-                            {% for anio in anios %}
-                                <input type="radio" class="btn-check" name="anio-cobro" id="anio_{{anio}}" value="{{anio}}" required>
-                                <label class="btn btn-outline-primary text-xs" for="anio_{{anio}}">{{anio}}</label>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-
-                </ul>
-
-
-                <div class="">
-                    <div class="" style="top: 20px;">
-                        <div class="section-label"><i class="bi bi-cash-stack"></i> Panel de Cobro</div>
-
+                  
+                  
+                  <div class="">
+                      <div class="" style="top: 20px;">
+                          
                         <form id="envioDatos" action="{% url 'cobros:registrar_pago' %}" method="POST">
-                            {% csrf_token %}
+                              {% csrf_token %}
 
-                            <div class="mb-3 d-flex justify-content-between align-items-center">
-                                <label class="small text-muted fw-bold">FECHA</label>
-                                <span id="fecha-cobro-info" class="badge bg-light text-dark border">--</span>
-                            </div>
+                            <ul class="list-group ">
+            
+                                <li class=" row list-group-item d-flex justify-content-between align-items-start">
+                                    <div class=" col ms-2 me-auto">
+                                        <div class="fw-bold">Fecha de Cobro</div>
+                                    </div>
+                                        <span id="fecha-cobro-info" class="col text-success info-cobro-title"></span>
+                                </li>
+            
+                                <li class=" row list-group-item d-flex justify-content-between align-items-start">
+                                    <div class=" col ms-2 me-auto">
+                                        <div class="fw-bold">Año a Cobrar</div>
+                                    </div>
+            
+                                    <div class="col">
+                                        {% for anio in anios %}
+                                            <input type="radio" class="btn-check" name="anio-cobro" id="anio_{{anio}}" value="{{anio}}" required>
+                                            <label class="btn btn-outline-primary text-xs" for="anio_{{anio}}">{{anio}}</label>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                </li>
+            
+                                <li class=" row list-group-item d-flex justify-content-between align-items-start">
+                                    <div class=" col ms-2 me-auto">
+                                        <div class="fw-bold">Meses a Cobrar</div>
+                                    </div>
+            
+                                    <div >
+                                        {% for numero, abreviatura in meses %}
+                                            <input type="checkbox" name="meses-cobro" class="btn-check" id="mes_{{numero}}" value="{{numero}}">
+                                            <label class="btn btn-outline-success" for="mes_{{numero}}">{{abreviatura}}</label>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                </li>
 
-                            <div class="mb-2"><label class="small fw-bold text-muted">AÑO</label></div>
-                            <div class="">
-                                {% for anio in anios %}
-                                <input type="radio" class="btn-check" name="anio-cobro" id="anio_{{anio}}" value="{{anio}}" required>
-                                <label class="btn btn-outline-primary" for="anio_{{anio}}">{{anio}}</label>
-                                {% endfor %}
-                            </div>
+                                 <li class=" row list-group-item d-flex justify-content-between align-items-start">
+                                    <div class=" col ms-2 me-auto">
+                                        <div class="fw-bold">Forma de pago</div>
+                                    </div>
+            
+                                    <div class="col">
+                                         <input type="radio" name="forma-cobro" id="EFEC" class="btn-check" value="EFEC" checked="" required="">
+                                        <label class="btn btn-outline-warning" for="EFEC">
+                                            <i class="fas fa-money-bill-wave"></i> EFE
+                                        </label>
 
-                            <div class="mb-2"><label class="small fw-bold text-muted">MESES</label></div>
-                            <div class="">
-                                {% for numero, abreviatura in meses %}
-                                <input type="checkbox" name="meses-cobro" class="btn-check" id="mes_{{numero}}" value="{{numero}}">
-                                <label class="btn btn-outline-success" for="mes_{{numero}}">{{abreviatura}}</label>
-                                {% endfor %}
-                            </div>
+                                        <input type="radio" name="forma-cobro" id="TRNF" class="btn-check" value="TRNF" required="">
+                                        <label class="btn btn-outline-warning" for="TRNF">
+                                            <i class="fas fa-exchange-alt"></i> TRNF
+                                        </label>
 
-                            <div class="total-bar mt-4">
-                                <div class="small fw-bold text-uppercase text-muted">Total a Pagar</div>
-                                <div class="total-amount" id="display-total-pagar">L 0.00</div>
-                                <button class="btn-submit" type="submit">
+                                        <input type="radio" name="forma-cobro" id="DEPO" class="btn-check" value="DEPO" required="">
+                                        <label class="btn btn-outline-warning" for="DEPO">
+                                            <i class="fas fa-university"></i> DEP
+                                        </label>
+                                    </div>
+                                    
+                                </li>
+            
+                            </ul>
+
+                            <div class="total-bar mt-4 p-4 text-center" 
+                                style="background: var(--primary-soft); 
+                                        border: 1px solid rgba(44, 35, 226, 0.1); 
+                                        border-radius: var(--radius-lg);
+                                        box-shadow: var(--shadow-md);">
+                                
+                                <div class="small fw-bold text-uppercase text-muted mb-1" 
+                                    style="letter-spacing: 0.1em; font-size: 0.7rem;">
+                                    Total a Pagar
+                                </div>
+                                
+                                <div class="total-amount-container mb-3">
+                                    <span class="total-amount" id="display-total-pagar" 
+                                        style="font-size: 2.5rem; 
+                                                font-weight: 800; 
+                                                color: var(--jaassc-blue); 
+                                                display: block; 
+                                                line-height: 1;">
+                                        L 0.00
+                                    </span>
+                                </div>
+
+                                <button class="btn btn-primary w-100 py-3 shadow-lg d-flex align-items-center justify-content-center border-0" 
+                                        type="submit" 
+                                        style="border-radius: var(--radius-md); 
+                                            background: var(--jaassc-blue); 
+                                            font-weight: 700; 
+                                            font-size: 1.1rem;
+                                            transition: transform 0.2s ease;">
                                     <i class="bi bi-check-circle-fill me-2"></i> Registrar Pago
                                 </button>
-                            </div>
 
+                            </div>
                             <input type="hidden" id="total-pagar-send" name="total-pagar" value="">
                             <input type="hidden" id="pegue-id-send" name="pegue-id" value="">
                         </form>
@@ -276,7 +316,7 @@
 
                 abonadoInfo.textContent = data.nombre;
                 dniInfo.textContent = data.dni;
-                tarifa.textContent = "L "+ data.tarifa_mensual;
+                tarifa.textContent = data.tarifa_mensual;
                 barrioInfo.textContent = data.barrio;
                 lineaDistribucionInfo.textContent = data.linea_distribucion;
                 serviciosInfo.textContent = data.servicios.join(" | ");
@@ -349,6 +389,7 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("fecha-cobro-info").textContent = new Date().toLocaleString("es-MX");
+        limpiarCampos();
         pegueSelect.value = "";
         document.querySelectorAll(".link_abonado").forEach((link) => {
             link.addEventListener("click", function (e) {
