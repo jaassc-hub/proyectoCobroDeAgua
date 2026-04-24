@@ -1,7 +1,8 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
+from cobros.models import Pago
 from pegues.forms import PegueForm
-from pegues.models import Pegue, Abonado
+from pegues.models import Pegue
 from django.urls import reverse
 
 
@@ -15,6 +16,8 @@ def obtener_informacion_pegue(request, codigo_pegue):
     linea_distribucion = pegue.linea_distribucion.codigo if pegue.linea_distribucion else "N/A"
     tarifa = sum(servicio.monto for servicio in pegue.servicios.filter(activo=True))
     servicios = list([servicio.nombre for servicio in pegue.servicios.filter(activo=True)])
+    pagos = list(pegue.pagos.all().values('id', 'fecha_pago', 'monto', 'mes', 'anio'))
+    print(pagos)
 
     if ultimo_pago:
         datos_ultimo_pago = {
@@ -27,7 +30,7 @@ def obtener_informacion_pegue(request, codigo_pegue):
     else:   
         datos_ultimo_pago = None
 
-    return JsonResponse({'nombre': nombre , 'dni' : dni, 'tarifa_mensual': tarifa, 'barrio': barrio, 'linea_distribucion': linea_distribucion, 'servicios': servicios, 'ultimo_pago': datos_ultimo_pago})
+    return JsonResponse({'nombre': nombre , 'dni' : dni, 'tarifa_mensual': tarifa, 'barrio': barrio, 'linea_distribucion': linea_distribucion, 'servicios': servicios, 'ultimo_pago': datos_ultimo_pago, "historial": pagos})
 
 def view(request):
     pegues = Pegue.objects.all().order_by('codigo_pegue')

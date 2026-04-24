@@ -1,1107 +1,614 @@
-{% load static %}
+{% load static%}
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="JAASSC" />
-
-    <title>{% block title %}{% endblock%}</title>
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/css/sb-admin-2.min.css" rel="stylesheet" />
-    <link href="{% static 'css/custom-styles.css' %}" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <style>
-        /* ========================================
-        NAVBAR EJECUTIVO - MINIMALISTA
-        ======================================== */
-
-        /* Navbar principal */
-        .navbar {
-            padding: 0.75rem 1.5rem;
-            border-bottom: 1px solid #e8e9ed;
-            transition: all 0.3s ease;
-        }
-
-        /* Brand/Logo */
-        .navbar-brand {
-            font-weight: 600;
-            font-size: 1.25rem;
-            color: #ffffff !important;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0;
-        }
-
-        .brand-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.1rem;
-        }
-
-        .brand-text {
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        /* Nav Items */
-        .navbar-nav {
-            gap: 0.25rem;
-        }
-
-        .nav-link {
-            color: #ffffff !important;
-            font-weight: 500;
-            font-size: 0.9rem;
-            padding: 0.6rem 1rem !important;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-link:hover {
-            background-color: #f8f9fa;
-            color: #667eea !important;
-        }
-
-        .nav-link.active {
-            background-color: #eef2ff;
-            color: #667eea !important;
-        }
-
-        .nav-link i {
-            font-size: 1rem;
-            width: 20px;
-            text-align: center;
-        }
-
-        /* Dropdown menu moderno */
-        .dropdown-menu-modern {
-            border: none;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            padding: 0.5rem;
-            margin-top: 0.5rem;
-            min-width: 220px;
-        }
-
-        .dropdown-item {
-            padding: 0.65rem 1rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #5a6c7d;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 2px;
-        }
-
-        .dropdown-item i {
-            width: 20px;
-            text-align: center;
-            color: #9ca3af;
-            font-size: 0.95rem;
-        }
-
-        .dropdown-item:hover {
-            background-color: #f8f9fa;
-            color: #667eea;
-            transform: translateX(4px);
-        }
-
-        .dropdown-item:hover i {
-            color: #667eea;
-        }
-
-        .dropdown-divider {
-            margin: 0.5rem 0;
-            border-color: #e8e9ed;
-        }
-
-        /* User menu */
-        .user-nav {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0.4rem 0.8rem !important;
-        }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.9rem;
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #2c3e50;
-        }
-
-        /* Responsive */
-        @media (max-width: 991px) {
-            .navbar-collapse {
-                margin-top: 1rem;
-                padding: 1rem;
-                background: #f8f9fa;
-                border-radius: 12px;
-            }
-
-            .navbar-nav {
-                gap: 0.5rem;
-            }
-
-            .nav-link {
-                padding: 0.75rem 1rem !important;
-            }
-
-            .dropdown-menu-modern {
-                box-shadow: none;
-                background: #ffffff;
-                margin-top: 0.25rem;
-            }
-        }
-
-        /* Animación suave para dropdowns */
-        .dropdown-menu {
-            animation: slideDown 0.2s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Hover effect en el toggle */
-        .dropdown-toggle::after {
-            transition: transform 0.2s ease;
-        }
-
-        .dropdown-toggle[aria-expanded="true"]::after {
-            transform: rotate(180deg);
-        }
-
-
-        @media (min-width: 992px) {
-            .table-responsive {
-                overflow-x: visible !important;
-                overflow: visible !important;
-            }
-        }
-
-        .informacionCobro>* {
-            margin-bottom: 5px;
-        }
-
-        .custom-radio-input {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .custom-radio-label {
-            display: inline-block;
-            padding: 4px 8px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            cursor: pointer;
-            background-color: #f8f9fc;
-            color: #495057;
-            transition: all 0.2s ease;
-            user-select: none;
-            font-size: 0.85rem;
-        }
-
-
-        .custom-radio-label:hover {
-            background-color: #e2e6ea;
-            border-color: #adadad;
-        }
-
-
-        .custom-radio-input:checked+.custom-radio-label {
-            background-color: #4263c4;
-            color: white;
-            border-color: #4e73df;
-        }
-
-
-        .custom-radio-input:focus+.custom-radio-label {
-            box-shadow: 0 0 0 0.25rem rgba(105, 136, 228, 0.25);
-            border-color: #4e73df;
-        }
-
-        .custom-checkbox-input {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .custom-checkbox-label {
-            display: inline-block;
-            padding: 6px 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            cursor: pointer;
-            background-color: #f8f9fc;
-            color: #495057;
-            transition: all 0.2s ease;
-            user-select: none;
-            white-space: nowrap;
-        }
-
-        .custom-checkbox-label:hover {
-            background-color: #e2e6ea;
-            border-color: #adadad;
-        }
-
-        .custom-checkbox-input:checked+.custom-checkbox-label {
-            background-color: #1cc88a;
-            color: white;
-            border-color: #1cc88a;
-        }
-
-
-        .custom-checkbox-input:focus+.custom-checkbox-label {
-            box-shadow: 0 0 0 0.25rem rgba(28, 200, 138, 0.25);
-            border-color: #1cc88a;
-        }
-
-        /* ----------------------------------------------------
-        ESTILOS DE DESHABILITADO PARA RADIO BUTTONS
-        ---------------------------------------------------- */
-
-        /* 1. Estilo General de Deshabilitado (opcional: hacerlo más gris) */
-        /* Aplicamos al label cuando el input asociado está deshabilitado */
-        .custom-radio-input[disabled]+.custom-radio-label {
-            opacity: 0.6;
-            /* Hace el color un poco más claro */
-            cursor: not-allowed;
-            /* Muestra el cursor de "prohibido" */
-            pointer-events: none;
-            /* Asegura que no se pueda hacer clic en el label */
-        }
-
-        /* 2. Neutralizar el HOVER solo para elementos [disabled] */
-        .custom-radio-input[disabled]+.custom-radio-label:hover {
-            /* Mantenemos el mismo color de fondo del estado normal */
-            background-color: #f8f9fc;
-            /* Mantenemos el mismo color de borde del estado normal */
-            border-color: #ccc;
-            /* Aseguramos que el cursor no cambie (aunque 'cursor: not-allowed' es más fuerte) */
-            cursor: not-allowed;
-        }
-
-        /* 3. Estilo del estado CHECKED/DISABLED (opcional: para que se vea diferente al checked normal) */
-        .custom-radio-input:checked[disabled]+.custom-radio-label {
-            /* Mantenemos el fondo azul (o el color de checked), pero con opacidad reducida */
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        /* ----------------------------------------------------
-        ESTILOS DE DESHABILITADO PARA CHECKBOXES (MESES)
-        ---------------------------------------------------- */
-
-        /* 1. Estilo General de Deshabilitado (aplica al input[disabled] y su label) */
-        .custom-checkbox-input[disabled]+.custom-checkbox-label {
-            opacity: 0.6;
-            /* Hace el color un poco más claro para indicar inactividad */
-            cursor: not-allowed;
-            /* Muestra el cursor de "prohibido" */
-            /* pointer-events: none; Opcional: Puede ser útil para navegadores antiguos */
-        }
-
-        /* 2. Neutralizar el HOVER y FOCUS solo para elementos [disabled] */
-        .custom-checkbox-input[disabled]+.custom-checkbox-label:hover,
-        .custom-checkbox-input[disabled]+.custom-checkbox-label:focus {
-            /* Mantenemos el mismo color de fondo del estado normal */
-            background-color: #f8f9fc;
-            /* Mantenemos el mismo color de borde del estado normal */
-            border-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        /* 3. Estilo del estado CHECKED/DISABLED (para cuando un mes ya pagado no puede deseleccionarse) */
-        .custom-checkbox-input:checked[disabled]+.custom-checkbox-label {
-            /* Mantenemos el color de checked (verde), pero con opacidad reducida */
-            opacity: 0.4;
-            cursor: not-allowed;
-            /* Sobrescribimos el hover si se aplica a :checked */
-            background-color: #1cc88a;
-            /* Color de checked original */
-            border-color: #1cc88a;
-            /* Borde de checked original */
-        }
-
-        /* 4. Neutralizar el hover específicamente si está CHECKED y DISABLED */
-        .custom-checkbox-input:checked[disabled]+.custom-checkbox-label:hover {
-            /* Aseguramos que el hover no altere el color deshabilitado/checked */
-            background-color: #1cc88a;
-            border-color: #1cc88a;
-            opacity: 0.4;
-        }
-    </style>
-
-    <style>
-        /* ══════════════════════════════════════════════════════════════
-          VARIABLES CSS - LIGHT & DARK MODE
-        ══════════════════════════════════════════════════════════════ */
-        :root {
-            /* Colores principales */
-            --primary: #4e73df;
-            --success: #1cc88a;
-            --warning: #f6c23e;
-            --danger: #e74a3b;
-            --info: #36b9cc;
-
-            /* Modo claro */
-            --bg-primary: #f0f4f8;
-            --bg-secondary: #f8fafc;
-            --bg-card: #ffffff;
-            --text-primary: #2d3748;
-            --text-secondary: #5a6481;
-            --text-muted: #8e9ab0;
-            --border-color: #e3e8f0;
-            --shadow: 0 4px 24px rgba(78, 115, 223, 0.10);
-            --card-radius: 16px;
-
-            /* Total bar */
-            --total-bar-bg: linear-gradient(135deg, #1a1f36 0%, #2d3561 100%);
-            --total-bar-label: rgba(255, 255, 255, 0.65);
-
-            /* Warning colors */
-            --warning-bg: #fff7e6;
-            --warning-text: #b7720a;
-        }
-
-        /* ══════════════════════════════════════════════════════════════
-       DARK MODE
-        ══════════════════════════════════════════════════════════════ */
-        [data-theme="dark"] {
-            --bg-primary: #0f1419;
-            --bg-secondary: #1a1f2e;
-            --bg-card: #1e2533;
-            --text-primary: #e2e8f0;
-            --text-secondary: #a0aec0;
-            --text-muted: #718096;
-            --border-color: #2d3748;
-            --shadow: 0 4px 24px rgba(0, 0, 0, 0.40);
-
-            /* Total bar dark */
-            --total-bar-bg: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
-            --total-bar-label: rgba(255, 255, 255, 0.50);
-
-            /* Warning colors dark */
-            --warning-bg: #2d2416;
-            --warning-text: #f6c23e;
-        }
-
-        /* ══════════════════════════════════════════════════════════════
-       BASE STYLES
-        ══════════════════════════════════════════════════════════════ */
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            transition: background 0.3s, color 0.3s;
-        }
-
-        /* ══════════════════════════════════════════════════════════════
-       CARDS
-        ══════════════════════════════════════════════════════════════ */
-        .card-modern {
-            background: var(--bg-card);
-            border-radius: var(--card-radius);
-            box-shadow: var(--shadow);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            transition: background 0.3s, box-shadow 0.3s;
-        }
-
-        /* ══════════════════════════════════════════════════════════════
-       PAGE HEADER
-        ══════════════════════════════════════════════════════════════ */
-        .page-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 1.5rem;
-        }
-
-        .page-header-icon {
-            background: linear-gradient(135deg, #4e73df, #6f8ff5);
-            border-radius: 12px;
-            padding: 10px 14px;
-        }
-
-        .page-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
-            margin: 0;
-        }
-
-        .page-subtitle {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        /* ══════════════════════════════════════════════════════════════
-       LABELS & FIELDS
-        ══════════════════════════════════════════════════════════════ */
-        .section-label {
-            font-size: 0.70rem;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            color: var(--primary);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .field-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.9px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        /* ══════════════════════════════════════════════════════════════
-       INFO GRID
-        ══════════════════════════════════════════════════════════════ */
-        .info-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-        }
-
-        .info-field {
-            background: var(--bg-secondary);
-            border-radius: 10px;
-            padding: 0.65rem 1rem;
-            border-left: 4px solid var(--border-color);
-            transition: background 0.3s, border-color 0.3s;
-        }
-
-        .info-field.hl-primary {
-            border-left-color: var(--primary);
-        }
-
-        .info-field.hl-success {
-            border-left-color: var(--success);
-        }
-
-        .info-field.hl-warning {
-            border-left-color: var(--warning);
-        }
-
-        .info-field label {
-            font-size: 0.70rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-            display: block;
-        }
-
-        .info-field span {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        /* ══════════════════════════════════════════════════════════════
-       TABLES
-        ══════════════════════════════════════════════════════════════ */
-        .table-card {
-            background: var(--bg-card);
-            border-radius: var(--card-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-        }
-
-        .table-header {
-            background: linear-gradient(90deg, var(--primary) 0%, #6f8ff5 100%);
-            padding: 1rem 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .table-header h6 {
-            color: #fff;
-            font-weight: 700;
-            font-size: 0.95rem;
-            margin: 0;
-            letter-spacing: 0.5px;
-        }
-
-        .table thead th {
-            background: var(--bg-secondary);
-            color: var(--text-secondary);
-            font-size: 0.74rem;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            border-bottom: 2px solid var(--border-color);
-            padding: 0.85rem 1rem;
-        }
-
-        .table tbody td {
-            font-size: 0.87rem;
-            color: var(--text-primary);
-            vertical-align: middle;
-            padding: 0.78rem 1rem;
-            border-bottom: 1px solid var(--border-color);
-            background: var(--bg-card);
-        }
-
-        .table tbody tr:hover td {
-            background: var(--bg-secondary);
-        }
-
-        .link_abonado {
-            font-weight: 700;
-            color: var(--primary);
-            text-decoration: none;
-            padding: 3px 10px;
-            border-radius: 6px;
-            background: rgba(78, 115, 223, 0.08);
-            transition: background 0.15s;
-        }
-
-        .link_abonado:hover {
-            background: rgba(78, 115, 223, 0.18);
-            text-decoration: none;
-        }
-
-        /* ══════════════════════════════════════════════════════════════
-       DIVIDER
-        ══════════════════════════════════════════════════════════════ */
-        .divider {
-            border: none;
-            border-top: 2px solid var(--border-color);
-            margin: 1.1rem 0;
-        }
-
-        /* ══════════════════════════════════════════════════════════════
-       DARK MODE TOGGLE BUTTON
-        ══════════════════════════════════════════════════════════════ */
-        .dark-mode-toggle {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: transform 0.2s, background 0.3s;
-            z-index: 1000;
-        }
-
-        .dark-mode-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        /* ══════════════════════════════════════════════════════════════
-       FORM CONTROLS
-        ══════════════════════════════════════════════════════════════ */
-        .form-control {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            border-color: var(--border-color);
-        }
-
-        .form-control:focus {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border-color: var(--primary);
-        }
-
-        /* ══════════════════════════════════════════════════════════════
-       MOBILE RESPONSIVE
-        ══════════════════════════════════════════════════════════════ */
-        @media (max-width: 768px) {
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .page-title {
-                font-size: 1.3rem;
-            }
-
-            .card-modern {
-                padding: 1rem;
-            }
-
-            .dark-mode-toggle {
-                bottom: 20px;
-                right: 20px;
-                width: 45px;
-                height: 45px;
-            }
-        }
-    </style>
-
-    <!-- SCRIPT DE DARK MODE -->
-    <script>
-        // ══════════════════════════════════════════════════════════════
-        // DARK MODE FUNCTIONALITY
-        // ══════════════════════════════════════════════════════════════
-
-        // Detectar preferencia del sistema
-        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-
-        // Obtener tema guardado o usar preferencia del sistema
-        const currentTheme = localStorage.getItem("theme") ||
-            (prefersDarkScheme.matches ? "dark" : "light");
-
-        // Aplicar tema al cargar
-        document.documentElement.setAttribute("data-theme", currentTheme);
-
-        // Función para cambiar tema
-        function toggleDarkMode() {
-            const currentTheme = document.documentElement.getAttribute("data-theme");
-            const newTheme = currentTheme === "dark" ? "light" : "dark";
-
-            document.documentElement.setAttribute("data-theme", newTheme);
-            localStorage.setItem("theme", newTheme);
-
-            // Actualizar icono del botón
-            const icon = document.querySelector(".dark-mode-toggle i");
-            if (icon) {
-                icon.className = newTheme === "dark" ? "fas fa-sun" : "fas fa-moon";
-            }
-        }
-
-        // Agregar botón de dark mode cuando el DOM esté listo
-        document.addEventListener("DOMContentLoaded", function () {
-            const currentTheme = document.documentElement.getAttribute("data-theme");
-            const toggleBtn = document.createElement("button");
-            toggleBtn.className = "dark-mode-toggle";
-            toggleBtn.innerHTML = `<i class="fas fa-${currentTheme === "dark" ? "sun" : "moon"}"></i>`;
-            toggleBtn.onclick = toggleDarkMode;
-            toggleBtn.title = "Cambiar tema";
-            document.body.appendChild(toggleBtn);
-        });
-    </script>
-
-    {% block links %}{% endblock links %}
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JAASSC · Estado de Cuenta</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <style>
+    :root {
+      --blue:     #2563eb;
+      --blue-s:   #eff6ff;
+      --blue-b:   #bfdbfe;
+      --ok:       #16a34a;
+      --ok-s:     #f0fdf4;
+      --ok-b:     #bbf7d0;
+      --red:      #dc2626;
+      --red-s:    #fef2f2;
+      --red-b:    #fecaca;
+      --border:   rgba(0,0,0,0.09);
+      --muted:    #6b7280;
+      --label:    #374151;
+      --value:    #111827;
+      --r:        12px;
+      --rs:       8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f4;
+      min-height: 100vh;
+    }
+
+    /* ══════════════════════════════
+       PANTALLA LOGIN
+    ══════════════════════════════ */
+    #screen-login {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 36px;
+    }
+    .brand-icon {
+      width: 46px; height: 46px;
+      background: var(--blue);
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .brand-icon i { color: #fff; font-size: 22px; }
+    .brand-name  { font-size: 16px; font-weight: 600; color: var(--value); line-height: 1.2; margin: 0; }
+    .brand-sub   { font-size: 12px; color: var(--muted); margin: 0; }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 28px;
+    }
+    .login-card h2 { font-size: 18px; font-weight: 600; color: var(--value); margin-bottom: 4px; }
+    .login-card .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+    .field-label {
+      font-size: 12px; font-weight: 500;
+      color: var(--label); margin-bottom: 6px; display: block;
+    }
+    .field-input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--rs);
+      padding: 9px 12px;
+      font-size: 14px;
+      color: var(--value);
+      background: #fafafa;
+      outline: none;
+      transition: border-color .15s, background .15s;
+      text-transform: uppercase;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      letter-spacing: 1px;
+    }
+    .field-input::placeholder { text-transform: none; font-family: inherit; letter-spacing: 0; }
+    .field-input:focus { border-color: var(--blue); background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,.08); }
+
+    .hint { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+    .btn-primary-custom {
+      width: 100%; margin-top: 20px;
+      background: var(--blue); color: #fff;
+      border: none; border-radius: var(--rs);
+      padding: 11px; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: opacity .15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary-custom:hover { opacity: .88; }
+    .btn-primary-custom:active { transform: scale(.99); }
+
+    .error-box {
+      background: var(--red-s);
+      border: 1px solid var(--red-b);
+      border-radius: var(--rs);
+      padding: 8px 12px;
+      font-size: 12px; color: var(--red);
+      margin-top: 10px;
+      display: none;
+    }
+    .error-box.show { display: block; }
+
+    .login-footer {
+      font-size: 11px; color: var(--muted);
+      margin-top: 20px; text-align: center;
+    }
+
+    /* ══════════════════════════════
+       PANTALLA ESTADO DE CUENTA
+    ══════════════════════════════ */
+    #screen-estado {
+      display: none;
+      padding: 28px 20px;
+    }
+    .estado-wrap { max-width: 820px; margin: 0 auto; }
+
+    /* top bar */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px; margin-bottom: 22px;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .usr-avatar {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: var(--blue-s); color: var(--blue);
+      font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; letter-spacing: -.5px;
+    }
+    .usr-name  { font-size: 15px; font-weight: 600; color: var(--value); margin: 0; }
+    .usr-code  { font-size: 12px; color: var(--muted); font-family: monospace; margin: 0; }
+    .btn-salir {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: var(--rs); padding: 7px 16px;
+      font-size: 12px; font-weight: 500; color: var(--label);
+      cursor: pointer; transition: background .12s;
+    }
+    .btn-salir:hover { background: #f5f5f4; }
+
+    /* métricas */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-bottom: 16px;
+    }
+    @media (max-width: 600px) { .metrics-grid { grid-template-columns: 1fr 1fr; } }
+
+    .metric-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px 16px;
+    }
+    .metric-lbl {
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .5px;
+      color: var(--muted); margin-bottom: 6px;
+    }
+    .metric-val { font-size: 22px; font-weight: 700; color: var(--value); letter-spacing: -.5px; }
+    .metric-val.ok  { color: var(--ok); }
+    .metric-val.red { color: var(--red); }
+    .metric-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+    /* sección dos columnas */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px; margin-bottom: 16px;
+    }
+    @media (max-width: 620px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* cards de info */
+    .info-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .card-head {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .5px;
+      color: var(--label);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .card-head i { font-size: 13px; color: var(--muted); }
+
+    .field-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 16px; border-bottom: 1px solid var(--border); gap: 10px;
+    }
+    .field-row:last-child { border-bottom: none; }
+    .fl { font-size: 12px; color: var(--muted); }
+    .fv { font-size: 13px; font-weight: 500; color: var(--value); text-align: right; }
+    .fv.blue { color: var(--blue); }
+
+    .pill-ok {
+      background: var(--ok-s); color: var(--ok);
+      border: 1px solid var(--ok-b); border-radius: 20px;
+      padding: 2px 9px; font-size: 11px; font-weight: 600;
+    }
+    .pill-tarifa {
+      background: var(--blue-s); color: var(--blue);
+      border: 1px solid var(--blue-b); border-radius: 20px;
+      padding: 2px 9px; font-size: 11px; font-weight: 600;
+    }
+
+    /* calendario meses */
+    .meses-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px; padding: 14px 16px;
+    }
+    .mes-chip {
+      border-radius: 7px; padding: 7px 4px;
+      text-align: center; font-size: 11px; font-weight: 600;
+    }
+    .mes-chip .mes-icono { display: block; font-size: 9px; font-weight: 400; margin-top: 2px; opacity: .75; }
+    .mes-chip.pagado    { background: var(--ok-s);   color: var(--ok);  border: 1px solid var(--ok-b); }
+    .mes-chip.pendiente { background: var(--red-s);  color: var(--red); border: 1px solid var(--red-b); }
+    .mes-chip.futuro    { background: #f5f5f4; color: #bbb; border: 1px solid #e5e5e5; }
+
+    /* historial */
+    .hist-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; border-bottom: 1px solid var(--border); gap: 10px;
+    }
+    .hist-row:last-child { border-bottom: none; }
+    .hist-left  { display: flex; align-items: center; gap: 10px; }
+    .hist-dot   { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); flex-shrink: 0; }
+    .hist-desc  { font-size: 13px; font-weight: 500; color: var(--value); margin: 0; }
+    .hist-date  { font-size: 11px; color: var(--muted); margin: 0; }
+    .hist-monto { font-size: 13px; font-weight: 600; color: var(--ok); white-space: nowrap; }
+
+    /* estado activo pill */
+    .pill-activo {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--ok-s); border: 1px solid var(--ok-b);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 13px; font-weight: 600; color: var(--ok);
+    }
+    .pill-activo-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--ok); flex-shrink: 0;
+    }
+
+    /* loading spinner */
+    .spinner-wrap {
+      display: none;
+      align-items: center; justify-content: center;
+      gap: 8px; padding: 20px; font-size: 13px; color: var(--muted);
+    }
+    .spinner-wrap.show { display: flex; }
+  </style>
 </head>
+<body>
 
-<body id="page-top">
+  <div id="screen-login">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg  bg-primary">
-        <div class="container-fluid">
-            <!-- Logo/Brand -->
-            <a class="navbar-brand" href="#">
-                <img src="{% static 'img/logoJAASSC.jpg' %}" width="60px">
-                <span class="text-sm">JAASSC | Santa Cruz</span>
-            </a>
-
-            <!-- Botón hamburguesa para móvil -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Navbar Mejorado -->
-            <nav>
-                <div class="container-fluid">
-
-                    <!-- Botón hamburguesa para móvil -->
-                    <button class="navbar-toggler border-0" type="button" data-toggle="collapse"
-                        data-target="#navbarNav">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <!-- Menú -->
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav mx-auto">
-
-                            <!-- Inicio -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="/index/">
-                                    <i class="fas fa-home"></i>
-                                    <span>Inicio</span>
-                                </a>
-                            </li>
-
-                            <!-- Abonados -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" href="{% url 'abonados:view'%}" id="navbarClientes">
-                                    <i class="fas fa-users"></i>
-                                    <span>Abonados</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-modern">
-                                    <a class="dropdown-item" href=>
-                                        <i class="fas fa-list"></i>
-                                        <span>Listado de Abonados</span>
-                                    </a>
-                                </div>
-                            </li>
-
-                            <!-- Pagos -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarPagos" data-toggle="dropdown">
-                                    <i class="fas fa-credit-card"></i>
-                                    <span>Pagos</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-modern">
-                                    <a class="dropdown-item" href="{% url 'cobros:cobro'%}">
-                                        <i class="fas fa-cash-register"></i>
-                                        <span>Registrar Pago</span>
-                                    </a>
-                                    <a class="dropdown-item" href="{% url 'cobros:day_payments'%}">
-                                        <i class="fas fa-calendar-day"></i>
-                                        <span>Pagos del Día</span>
-                                    </a>
-                                    <a class="dropdown-item" href="{% url 'cobros:view'%}">
-                                        <i class="fas fa-list-alt"></i>
-                                        <span>Historial de pagos</span>
-                                    </a>
-                                </div>
-                            </li>
-
-                            <!-- Facturación -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarFacturacion"
-                                    data-toggle="dropdown">
-                                    <i class="fas fa-file-invoice-dollar"></i>
-                                    <span>Facturación</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-modern">
-                                    <a class="dropdown-item" href="generar-facturas.php">
-                                        <i class="fas fa-file-invoice"></i>
-                                        <span>Generar Facturas</span>
-                                    </a>
-                                    <a class="dropdown-item" href="facturas-emitidas.php">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Emitidas</span>
-                                    </a>
-                                    <a class="dropdown-item" href="facturas-pendientes.php">
-                                        <i class="fas fa-exclamation-circle"></i>
-                                        <span>Pendientes</span>
-                                    </a>
-                                </div>
-                            </li>
-
-                            <!-- Pegues -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarLecturas" data-toggle="dropdown">
-                                    <i class="fas fa-tachometer-alt"></i>
-                                    <span>Pegues</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-modern">
-                                    <a class="dropdown-item" href="{% url 'pegues:view'%}">
-                                        <i class="fas fa-list"></i>
-                                        <span>Listado de Pegues</span>
-                                    </a>
-                                    <a class="dropdown-item" href="{% url 'pegues:create'%}">
-                                        <i class="fas fa-money-bill"></i>
-                                        <span>Pegues en plan de pago</span>
-                                    </a>
-                                    <a class="dropdown-item" href="{% url 'pegues:view'%}">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Pegues a Futuro</span>
-                                    </a>
-                                </div>
-                            </li>
-
-
-                            <!-- Reportes -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarReportes" data-toggle="dropdown">
-                                    <i class="fas fa-chart-bar"></i>
-                                    <span>Reportes</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-modern">
-                                    <a class="dropdown-item" href="cartera-vencida.php">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                        <span>Cartera Vencida</span>
-                                    </a>
-                                    <a class="dropdown-item" href="consumo-mensual.php">
-                                        <i class="fas fa-chart-line"></i>
-                                        <span>Consumo Mensual</span>
-                                    </a>
-                                    <a class="dropdown-item" href="ingresos.php">
-                                        <i class="fas fa-dollar-sign"></i>
-                                        <span>Ingresos</span>
-                                    </a>
-                                    <a class="dropdown-item" href="estadisticas.php">
-                                        <i class="fas fa-chart-pie"></i>
-                                        <span>Estadísticas</span>
-                                    </a>
-                                </div>
-                            </li>
-
-                            <!-- Configuración -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarConfig" data-toggle="dropdown">
-                                    <i class="fas fa-cog"></i>
-                                    <span>Configuración</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-modern">
-                                    <a class="dropdown-item" href="tarifas.php">
-                                        <i class="fas fa-money-bill-wave"></i>
-                                        <span>Tarifas</span>
-                                    </a>
-                                    <a class="dropdown-item" href="usuarios-sistema.php">
-                                        <i class="fas fa-user-cog"></i>
-                                        <span>Usuarios</span>
-                                    </a>
-                                    <a class="dropdown-item" href="parametros.php">
-                                        <i class="fas fa-sliders-h"></i>
-                                        <span>Parámetros</span>
-                                    </a>
-                                </div>
-                            </li>
-
-                        </ul>
-
-                        <!-- Menú usuario (derecha) -->
-                        <ul class="navbar-nav">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle user-nav" href="#" id="navbarUsuario"
-                                    data-toggle="dropdown">
-                                    <div class="user-avatar">
-                                        <i class="fas fa-user"></i>
-                                    </div>
-                                    <span class="user-name">Admin</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-modern dropdown-menu-right">
-                                    <a class="dropdown-item" href="perfil.php">
-                                        <i class="fas fa-user-circle"></i>
-                                        <span>Mi Perfil</span>
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-danger" href="{% url 'logout'%}">
-                                        <i class="fas fa-sign-out-alt"></i>
-                                        <span>Cerrar Sesión</span>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-
-                    </div>
-                </div>
-            </nav>
-
-
-    </nav>
-
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-                <div class="container">
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h2 mb-0 text-gray-800">
-                            {% block header %}{% endblock %}
-                        </h1>
-                        {% block boton_agregar %}{% endblock %}
-
-                    </div>
-
-                    {% block content %} {% endblock %}
-
-                </div>
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
-        </div>
-        <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Select "Logout" below if you are ready to end your current session.
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">
-                        Cancel
-                    </button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
-        </div>
+    <div class="brand">
+        <img src="{% static 'img/logoJAASSC.jpg' %}" alt="Logo de mi empresa" width="200" height="200">
     </div>
 
+    <div class="login-card">
+      <h2>Consulta tu estado de cuenta</h2>
+      <p class="subtitle">Ingresa el código de tu pegue para ver tu información</p>
 
+      <label class="field-label" for="inp-codigo">Código del pegue</label>
+      <input
+        id="inp-codigo"
+        class="field-input"
+        type="text"
+        placeholder="Ej: GUA008"
+        maxlength="12"
+        autocomplete="off"
+      >
+      <p class="hint"><i class="bi bi-info-circle me-1"></i>Encuentra tu código en tu recibo de pago anterior</p>
 
-    {% block modales %}
+      <div class="error-box" id="error-box">
+        <i class="bi bi-exclamation-circle me-1"></i>
+        Código no encontrado. Verifica e intenta de nuevo.
+      </div>
 
-    <div class="modal fade" id="modal_create" data-backdrop="static" data-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="col mr-2">
+      <div class="spinner-wrap" id="spinner">
+        <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+        Buscando...
+      </div>
 
-                        <i id="iconModal" class="text-primary"></i>
-
-                        <span class=" font-weight-bold text-primary text-uppercase modal-title" id="modalTitulo">
-                        </span>
-                    </div>
-                </div>
-                <div class="modal-body" id="modal-body">
-                </div>
-            </div>
-        </div>
+      <button class="btn-primary-custom" id="btn-consultar" type="button">
+        <i class="bi bi-search"></i> Consultar estado de cuenta
+      </button>
     </div>
 
-    {% endblock modales %}
+    <p class="login-footer">
+      <i class="bi bi-telephone me-1"></i> ¿Problemas para acceder? Contacta a tu cobrador
+    </p>
 
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/js/sb-admin-2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
-    <script>
-        document.addEventListener('htmx:beforeRequest', function (event) {
-            const titulo = event.detail.elt.getAttribute('data-modal-title');
-            const icon = event.detail.elt.getAttribute('data-modal-icon');
+  </div><!-- /screen-login -->
 
-            if (titulo) {
-                document.getElementById('modalTitulo').textContent = titulo;
-            }
 
-            if (icon) {
-                iconoModal = document.getElementById('iconModal');
-                iconoModal.className = "text-primary " + icon;
-            }
+  <!-- ══════════════════════════════
+       PANTALLA 2 · Estado de Cuenta
+  ══════════════════════════════ -->
+  <div id="screen-estado">
+    <div class="estado-wrap">
+
+      <!-- Top bar -->
+      <div class="topbar">
+        <div class="topbar-left">
+          <div class="usr-avatar" id="usr-avatar">?</div>
+          <div>
+            <p class="usr-name" id="usr-nombre">—</p>
+            <p class="usr-code" id="usr-codigo">—</p>
+          </div>
+        </div>
+        <button class="btn-salir" id="btn-salir" type="button">
+          <i class="bi bi-arrow-left me-1"></i> Salir
+        </button>
+      </div>
+
+      <!-- Métricas -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-lbl">Estado</div>
+          <div id="m-estado" class="mt-1">
+            <span class="pill-activo"><span class="pill-activo-dot"></span>Activo</span>
+          </div>
+          <div class="metric-sub" id="m-pagado-hasta">—</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-lbl">Tarifa mensual</div>
+          <div class="metric-val" id="m-tarifa">—</div>
+          <div class="metric-sub">Por mes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-lbl">Deuda acumulada</div>
+          <div class="metric-val red" id="m-deuda">—</div>
+          <div class="metric-sub" id="m-deuda-sub">—</div>
+        </div>
+      </div>
+
+      <!-- Datos + Meses -->
+      <div class="two-col">
+
+        <div class="info-card">
+          <div class="card-head"><i class="bi bi-person"></i> Datos del abonado</div>
+          <div class="field-row"><span class="fl">Nombre</span>       <span class="fv blue" id="i-nombre">—</span></div>
+          <div class="field-row"><span class="fl">Código</span>       <span class="fv"      id="i-codigo">—</span></div>
+          <div class="field-row"><span class="fl">Barrio</span>       <span class="fv"      id="i-barrio">—</span></div>
+          <div class="field-row"><span class="fl">Línea de dist.</span><span class="fv"     id="i-linea">—</span></div>
+          <div class="field-row"><span class="fl">Tarifa</span>       <span class="fv"      id="i-tarifa">—</span></div>
+          <div class="field-row"><span class="fl">Pagado hasta</span> <span class="fv"      id="i-hasta">—</span></div>
+        </div>
+
+        <div class="info-card">
+          <div class="card-head"><i class="bi bi-calendar3"></i> Meses <span id="anio-calendario" style="font-weight:400;color:var(--muted);"></span></div>
+          <div class="meses-grid" id="meses-grid">
+            <!-- generado por JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Historial -->
+      <div class="info-card" id="historial-card">
+        <div class="card-head"><i class="bi bi-clock-history"></i> Historial de pagos recientes</div>
+        <div id="historial-body">
+          <!-- generado por JS -->
+        </div>
+      </div>
+
+      <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:20px;padding-bottom:20px;">
+        JAASSC · Santa Cruz &nbsp;·&nbsp; Portal de abonados
+      </p>
+
+    </div>
+  </div><!-- /screen-estado -->
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+
+    /* ══════════════════════════════════════════
+       CONFIGURACIÓN — ajusta estas variables
+    ══════════════════════════════════════════ */
+
+    // URL de tu API. Debe devolver JSON con el formato descrito abajo.
+    // Si no tienes endpoint público separado, reemplaza por la URL real.
+    const API_URL = (codigo) => `/pegues/obtener_informacion_pegue/${codigo}/`;
+    
+
+    // Año a mostrar en el calendario de meses
+    const ANIO_CALENDARIO = 2026;
+
+    // Mes actual (1-12). Cambia por: new Date().getMonth() + 1  para que sea dinámico.
+    const MES_ACTUAL = new Date().getMonth() + 1;
+
+    /*
+      Formato de respuesta esperado de la API:
+      {
+        nombre:            "Edwin Lovo",
+        dni:               "0704196900250",     // opcional
+        barrio:            "Guadalupe",
+        tarifa_mensual:    50,
+        linea_distribucion:"GUA21",
+        servicios:         ["ALC"],             // opcional
+        estado:            "Activo",            // o "HAB"
+        ultimo_pago: {
+          mes:       3,          // número 1-12
+          anio:      2026,
+          fecha_pago:"2026-03-02"
+        }
+        // ultimo_pago puede ser null si no tiene pagos
+        historial: [             // opcional, array de pagos recientes
+          { descripcion:"ENE–MAR 2026", fecha:"2 mar 2026", monto:150 },
+          ...
+        ]
+      }
+    */
+
+    function obtenerDatos(codigo) {
+ 
+      return fetch(`/pegues/obtener_informacion_pegue/${codigo}/`)
+        .then(r => { if (!r.ok) throw new Error('No encontrado'); return r.json(); });
+      
+    }
+
+    /* ══════════════════════════════════════════
+       CONSTANTES
+    ══════════════════════════════════════════ */
+    const MESES_NOM = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+
+    /* ══════════════════════════════════════════
+       REFERENCIAS DOM
+    ══════════════════════════════════════════ */
+    const screenLogin  = document.getElementById('screen-login');
+    const screenEstado = document.getElementById('screen-estado');
+    const inpCodigo    = document.getElementById('inp-codigo');
+    const errorBox     = document.getElementById('error-box');
+    const spinner      = document.getElementById('spinner');
+    const btnConsultar = document.getElementById('btn-consultar');
+    const btnSalir     = document.getElementById('btn-salir');
+
+    /* ══════════════════════════════════════════
+       EVENTOS
+    ══════════════════════════════════════════ */
+    btnConsultar.addEventListener('click', consultar);
+    btnSalir.addEventListener('click', salir);
+    inpCodigo.addEventListener('keydown', e => { if (e.key === 'Enter') consultar(); });
+
+    /* ══════════════════════════════════════════
+       CONSULTAR
+    ══════════════════════════════════════════ */
+    function consultar() {
+      const codigo = inpCodigo.value.trim().toUpperCase();
+      if (!codigo) { mostrarError(true); return; }
+
+      mostrarError(false);
+      setLoading(true);
+
+      obtenerDatos(codigo)
+        .then(data => {
+          setLoading(false);
+          renderEstado(codigo, data);
+          screenLogin.style.display  = 'none';
+          screenEstado.style.display = 'block';
+          window.scrollTo(0, 0);
+        })
+        .catch(() => {
+          setLoading(false);
+          mostrarError(true);
         });
+    }
 
-        // Cerrar modal
-        document.body.addEventListener('cerrarModal', function () {
-            const modal = bootstrap.Modal.getInstance(document.getElementById('modal_create'));
-            if (modal) {
-                modal.hide();
-            }
+    function salir() {
+      screenEstado.style.display = 'none';
+      screenLogin.style.display  = 'flex';
+      inpCodigo.value = '';
+      mostrarError(false);
+    }
+
+    function mostrarError(show) {
+      errorBox.classList.toggle('show', show);
+    }
+
+    function setLoading(on) {
+      spinner.classList.toggle('show', on);
+      btnConsultar.style.display = on ? 'none' : 'flex';
+    }
+
+    /* ══════════════════════════════════════════
+       RENDERIZAR ESTADO DE CUENTA
+    ══════════════════════════════════════════ */
+    function renderEstado(codigo, d) {
+
+      /* Iniciales del avatar */
+      const partes   = d.nombre.trim().split(' ');
+      const iniciales = (partes[0][0] + (partes[1] ? partes[1][0] : '')).toUpperCase();
+      document.getElementById('usr-avatar').textContent = iniciales;
+      document.getElementById('usr-nombre').textContent = d.nombre;
+      document.getElementById('usr-codigo').textContent = '#' + codigo + ' · ' + d.barrio;
+
+      /* Info abonado */
+      document.getElementById('i-nombre').textContent = d.nombre;
+      document.getElementById('i-codigo').textContent = '#' + codigo;
+      document.getElementById('i-barrio').textContent = d.barrio;
+      document.getElementById('i-linea').textContent  = d.linea_distribucion || '—';
+      document.getElementById('i-tarifa').innerHTML   =
+        `<span class="pill-tarifa">L ${d.tarifa_mensual} / mes</span>`;
+
+      const tieneUltimoPago = d.ultimo_pago != null;
+      const hastaLabel = tieneUltimoPago
+        ? MESES_NOM[d.ultimo_pago.mes - 1] + '/' + d.ultimo_pago.anio
+        : 'Sin pagos';
+
+      document.getElementById('i-hasta').innerHTML = tieneUltimoPago
+        ? `<span class="pill-ok">${hastaLabel}</span>`
+        : '<span style="color:var(--red);font-size:13px;">Sin pagos</span>';
+
+      /* Métricas */
+      document.getElementById('m-tarifa').textContent      = 'L ' + d.tarifa_mensual;
+      document.getElementById('m-pagado-hasta').textContent = 'Pagado hasta ' + hastaLabel;
+
+      /* Cálculo deuda */
+      let mesesDeuda = 0;
+      if (tieneUltimoPago) {
+        const { mes: uMes, anio: uAnio } = d.ultimo_pago;
+        if (uAnio < ANIO_CALENDARIO) {
+          mesesDeuda = (MES_ACTUAL - 1) + (12 - uMes);
+        } else if (uAnio === ANIO_CALENDARIO && uMes < MES_ACTUAL - 1) {
+          mesesDeuda = (MES_ACTUAL - 1) - uMes;
+        }
+      } else {
+        mesesDeuda = MES_ACTUAL - 1;
+      }
+      const deuda    = mesesDeuda * d.tarifa_mensual;
+      const deudaEl  = document.getElementById('m-deuda');
+      deudaEl.textContent = 'L ' + deuda ;
+      deudaEl.className   = 'metric-val ' + (deuda > 0 ? 'red' : 'ok');
+      document.getElementById('m-deuda-sub').textContent = deuda > 0
+        ? mesesDeuda + ' mes' + (mesesDeuda !== 1 ? 'es' : '') + ' pendiente' + (mesesDeuda !== 1 ? 's' : '')
+        : 'Al día ✓';
+
+      /* Calendario meses */
+      document.getElementById('anio-calendario').textContent = ANIO_CALENDARIO;
+      const grid = document.getElementById('meses-grid');
+      grid.innerHTML = '';
+      for (let i = 1; i <= 12; i++) {
+        const esFuturo  = i > MES_ACTUAL - 1;
+        let   esPagado  = false;
+        if (tieneUltimoPago) {
+          const { mes: uMes, anio: uAnio } = d.ultimo_pago;
+          esPagado = (uAnio > ANIO_CALENDARIO) ||
+                     (uAnio === ANIO_CALENDARIO && i <= uMes);
+        }
+        const clase  = esFuturo ? 'futuro' : (esPagado ? 'pagado' : 'pendiente');
+        const icono  = esFuturo ? '·'      : (esPagado ? '✓'      : '!');
+        const chip   = document.createElement('div');
+        chip.className = 'mes-chip ' + clase;
+        chip.innerHTML = MESES_NOM[i - 1] + `<span class="mes-icono">${icono}</span>`;
+        grid.appendChild(chip);
+      }
+
+      /* Historial de pagos */
+      const histBody = document.getElementById('historial-body');
+      histBody.innerHTML = '';
+      const historial = d.historial || [];
+      if (historial.length === 0) {
+        histBody.innerHTML =
+          '<div style="padding:14px 16px;font-size:13px;color:var(--muted);">Sin pagos registrados.</div>';
+      } else {
+        historial.forEach(h => {
+          const row = document.createElement('div');
+          row.className = 'hist-row';
+          row.innerHTML = `
+            <div class="hist-left">
+              <div class="hist-dot"></div>
+              <div>
+                <p class="hist-desc">${h.fecha_pago}</p>
+                <p class="hist-date">${h.fecha_pago}</p>
+              </div>
+            </div>
+            <div class="hist-monto">L ${h.monto}</div>`;
+          histBody.appendChild(row);
         });
+      }
+    }
 
-        $(document).ready(function () {
-            $('#dataTable').DataTable({
-                "language": {
-                    "url": "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
-                },
-                "paging": true,       // Paginación
-                "searching": true,    // BARRA DE BÚSQUEDA
-                "ordering": true,     // Ordenar columnas
-                "info": true,         // Información de registros
-                "responsive": true    // Adaptable a móviles
-            });
-        });
-
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        {% if messages %}
-            {% for message in messages %}
-            Swal.fire({
-                icon: '{% if message.tags == "success" %}success{% else %}info{% endif %}',
-                title: '<span style="color: #ffffff; font-family: sans-serif;">¡Registro Exitoso!</span>',
-                text: '{{ message|escapejs }}',
-                background: '#2c3e50', 
-                color: '#ffffff', 
-                confirmButtonColor: '#1cc88a',
-                confirmButtonText: 'Entendido',
-                iconColor: '#1cc88a', 
-                backdrop: `rgba(0,0,0,0.5)`, 
-                customClass: {
-                    popup: 'border-radius-15', 
-                }
-            });
-            {% endfor %}
-        {% endif %}
-        });
-    </script>
-
-    {% block scripts %} {% endblock scripts %}
+  </script>
 </body>
-
 </html>

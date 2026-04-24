@@ -172,3 +172,7 @@ def imprimir_recibo(request, id):
     c.showPage()
     c.save()
     return response
+
+def facturacion(request):
+    pegues = Pegue.objects.all().select_related('abonado').filter(estado='HAB')
+    return render(request, "facturacion.html", {"pegues": pegues})

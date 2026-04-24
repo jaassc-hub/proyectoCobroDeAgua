@@ -1,6 +1,4 @@
 {% extends "index.html" %}
-{% block title %}Cobro Abonados{% endblock %}
-
 {% block content %}
 
 <div class="row p-1">
@@ -13,7 +11,7 @@
 
 <div class="row ">
 
-    <div class=" col-xl col-lg col-md-12 col-sm-12 card p-3 m-3">
+    <div class=" col-xl col-lg-4 col-md-12 col-sm-12 card p-3 m-3">
         
         <div class="card-body">
             <table id="dataTable" class="table table-hover">
@@ -39,7 +37,7 @@
         </div>
     </div>
     
-    <div class=" col-xl col-lg col-md-12 col-sm-12  card p-3 m-3">            
+    <div class=" col-xl col-lg-4 col-md-12 col-sm-12  card p-3 m-3">            
         <div class="card-body">    
             
             <input id="input-buscar-pegue" type="hidden" class="text-uppercase" placeholder="Ingrese código del pegue...">
@@ -112,7 +110,7 @@
         </div>
     </div>
 
-    <div class=" col-xl col-lg-12 col-md-12 col-sm-12  card p-3 m-3">
+    <div class=" col-xl col-lg-4 col-md-12 col-sm-12  card p-3 m-3">
         
                     <div class="card-header">
                 <span>Hola</span>
@@ -227,146 +225,5 @@
 
 </div>
 
+
 {% endblock %}
-
-
-{% block scripts %}
-<script>
-
-    $(document).ready(function () {
-
-        if ($.fn.DataTable.isDataTable('#dataTable')) {
-            return;
-        }
-
-        $('#dataTable').DataTable({
-            "language": { "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json" },
-            "pageLength": 2,
-            "ordering": false,
-            "paging": false,
-            "dom": '<"d-flex justify-content-between mb-3"fl>rtip'
-        });
-
-    });
-
-
-    const pegueSelect = document.getElementById("input-buscar-pegue");
-    const abonadoInfo = document.getElementById("abonado-info");
-    const dniInfo = document.getElementById("dni-info");
-    const tarifa = document.getElementById("tarifa-info");
-    const serviciosInfo = document.getElementById("servicios-info");
-    const barrioInfo = document.getElementById("barrio-info");
-    const totalPagar = document.getElementById("display-total-pagar");
-    const lineaDistribucionInfo = document.getElementById("linea-distribucion-info");
-    const ultimoPagoInfo = document.getElementById("ultimo-pago-info");
-    const fechaUltimoPagoInfo = document.getElementById("fecha-ultimo-pago-info");
-    const aniosCancelados = document.querySelectorAll(`input[name="anio-cobro"]`);
-    const mesesCancelados = document.querySelectorAll(`input[name="meses-cobro"]`);
-
-    let tPS = document.getElementById("total-pagar-send");
-    let pIS = document.getElementById("pegue-id-send");
-
-    const MESES = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
-
-    //document.getElementById("buscar-pegue").addEventListener("click", capturarDatosAbonado());
-    pegueSelect.addEventListener("keydown", (e) => { if (e.key === "Enter") capturarDatosAbonado(); });
-
-    function capturarDatosAbonado() {
-        const pegue = pegueSelect.value.toUpperCase();
-        document.getElementById("fecha-cobro-info").textContent = new Date().toLocaleString("es-MX");
-        fetch(`/pegues/obtener_informacion_pegue/${pegue}/`)
-            .then((response) => {
-                if (!response.ok) throw new Error("No encontrado");
-                return response.json();
-            })
-            .then((data) => {
-                limpiarCampos();
-                let tieneUltimoPago = data.ultimo_pago != null;
-
-                abonadoInfo.textContent = data.nombre;
-                dniInfo.textContent = data.dni;
-                tarifa.textContent = data.tarifa_mensual;
-                barrioInfo.textContent = data.barrio;
-                lineaDistribucionInfo.textContent = data.linea_distribucion;
-                serviciosInfo.textContent = data.servicios.join(" | ");
-
-                if (tieneUltimoPago) {
-                    ultimoPagoInfo.textContent = MESES[data.ultimo_pago.mes - 1] + "/" + data.ultimo_pago.anio;
-                    fechaUltimoPagoInfo.textContent = new Date(data.ultimo_pago.fecha_pago)
-                        .toLocaleDateString("es-MX", {
-                            weekday: "long",
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
-                        });
-                    checarMeses(data);
-                } else {
-                    ultimoPagoInfo.textContent = "Sin pagos";
-                    aniosCancelados.forEach((a) => a.disabled = false);
-                    mesesCancelados.forEach((m) => m.disabled = false);
-                }
-            })
-            .catch((error) => {
-                limpiarCampos();
-                abonadoInfo.textContent = "Error: Pegue no existe";
-            });
-    }
-
-    function limpiarCampos() {
-        abonadoInfo.textContent = "--";
-        dniInfo.textContent = "--";
-        tarifa.textContent = "--";
-        barrioInfo.textContent = "--";
-        lineaDistribucionInfo.textContent = "--";
-        serviciosInfo.textContent = "--";
-        ultimoPagoInfo.textContent = "--";
-        fechaUltimoPagoInfo.textContent = "--";
-        totalPagar.textContent = "L 0.00";
-        tPS.value = "";
-        pIS.value = "";
-        aniosCancelados.forEach((a) => { a.checked = false; a.disabled = true; });
-        mesesCancelados.forEach((m) => { m.checked = false; m.disabled = true; });
-    }
-
-    function checarMeses(data) {
-        const ultimoAnioPagado = data.ultimo_pago.anio;
-        const ultimoMesPagado = data.ultimo_pago.mes;
-        if (ultimoMesPagado != 12) {
-            Array.from(mesesCancelados).forEach((mesInput, indice) => {
-                if (indice >= ultimoMesPagado) { mesInput.disabled = false; }
-            });
-        } else {
-            mesesCancelados.forEach((m) => m.disabled = false);
-        }
-        let habilitarSiguienteAnio = false;
-        for (const a of aniosCancelados) {
-            const anioActual = a.value;
-            if (habilitarSiguienteAnio) { a.disabled = false; habilitarSiguienteAnio = false; }
-            if (anioActual == ultimoAnioPagado && ultimoMesPagado != 12) { a.disabled = false; }
-            else if (anioActual == ultimoAnioPagado && ultimoMesPagado == 12) { habilitarSiguienteAnio = true; }
-        }
-    }
-
-    mesesCancelados.forEach((checkbox) => {
-        checkbox.addEventListener("change", () => {
-            const montoTotal = Array.from(mesesCancelados).filter(c => c.checked).length * parseInt(tarifa.textContent);
-            totalPagar.textContent = `L ${isNaN(montoTotal) ? "0" : montoTotal}.00`;
-            tPS.value = montoTotal;
-            pIS.value = pegueSelect.value;
-        });
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("fecha-cobro-info").textContent = new Date().toLocaleString("es-MX");
-        limpiarCampos();
-        pegueSelect.value = "";
-        document.querySelectorAll(".link_abonado").forEach((link) => {
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
-                pegueSelect.value = this.id;
-                capturarDatosAbonado();
-            });
-        });
-    });
-</script>
-{% endblock scripts %}
